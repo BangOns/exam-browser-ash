@@ -4,6 +4,16 @@ type Column<T> = {
   render?: (row: T) => React.ReactNode;
 };
 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Card } from "@/components/ui/card";
+
 export default function DataTable<T extends Record<string, unknown>>({
   columns,
   data,
@@ -16,9 +26,9 @@ export default function DataTable<T extends Record<string, unknown>>({
   action?: React.ReactNode;
 }) {
   return (
-    <div className="glass-card overflow-hidden animate-slide-up">
+    <Card className="rounded-2xl border bg-white/50 backdrop-blur-sm shadow-sm overflow-hidden animate-slide-up">
       {(title || action) && (
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100/50">
           {title && (
             <h3 className="text-base font-semibold text-slate-800">{title}</h3>
           )}
@@ -26,36 +36,36 @@ export default function DataTable<T extends Record<string, unknown>>({
         </div>
       )}
       <div className="overflow-x-auto">
-        <table className="data-table">
-          <thead>
-            <tr>
+        <Table>
+          <TableHeader>
+            <TableRow>
               {columns.map((col) => (
-                <th key={col.key}>{col.label}</th>
+                <TableHead key={col.key}>{col.label}</TableHead>
               ))}
-            </tr>
-          </thead>
-          <tbody>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {data.map((row, idx) => (
-              <tr key={idx}>
+              <TableRow key={idx}>
                 {columns.map((col) => (
-                  <td key={col.key}>
+                  <TableCell key={col.key}>
                     {col.render
                       ? col.render(row)
                       : (row[col.key] as React.ReactNode) ?? "—"}
-                  </td>
+                  </TableCell>
                 ))}
-              </tr>
+              </TableRow>
             ))}
             {data.length === 0 && (
-              <tr>
-                <td colSpan={columns.length} className="text-center py-8 text-slate-400">
+              <TableRow>
+                <TableCell colSpan={columns.length} className="h-24 text-center text-slate-400">
                   No data available
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             )}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
-    </div>
+    </Card>
   );
 }

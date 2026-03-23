@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import DataTable from "@/components/ui/DataTable";
 import Modal from "@/components/ui/Modal";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 type ExamRow = { 
   id: number;
@@ -122,12 +123,13 @@ export default function AdminExamsPage() {
           ) : (
             <span className="text-xs text-slate-400 italic">Not generated</span>
           )}
-          <button 
+          <Button
+            variant="ghost"
             onClick={() => generateToken(row.id)}
-            className="text-xs px-2 py-1 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100 transition-colors font-medium"
+            className="text-xs px-2 py-1 h-7 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100 transition-colors font-medium"
           >
             {row.token ? "Regenerate" : "Generate"}
-          </button>
+          </Button>
         </div>
       )
     },
@@ -177,12 +179,19 @@ export default function AdminExamsPage() {
           <p className="text-sm text-slate-500 mt-1">Create exams, manage tokens, and configure global subject timers</p>
         </div>
         <div className="flex gap-3">
-          <button onClick={() => setTimerModalOpen(true)} className="px-5 py-2.5 rounded-xl bg-slate-100 text-slate-700 text-sm font-semibold hover:bg-slate-200 transition-colors shadow-sm">
+          <Button
+            variant="secondary"
+            onClick={() => setTimerModalOpen(true)}
+            className="px-5 py-2.5 h-10 rounded-xl bg-slate-100 text-slate-700 text-sm font-semibold hover:bg-slate-200 transition-colors shadow-sm"
+          >
             Configure Timers
-          </button>
-          <button onClick={openAdd} className="px-5 py-2.5 rounded-xl bg-indigo-500 text-white text-sm font-semibold hover:bg-indigo-600 transition-colors shadow-sm">
+          </Button>
+          <Button
+            onClick={openAdd}
+            className="px-5 py-2.5 h-10 rounded-xl bg-indigo-500 text-white text-sm font-semibold hover:bg-indigo-600 transition-colors shadow-sm"
+          >
             + Create Exam
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -235,9 +244,9 @@ export default function AdminExamsPage() {
           <div className="space-y-5">
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-1.5">Exam Name</label>
-              <input
+              <Input
                 type="text"
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all"
+                className="h-10 w-full px-4 rounded-xl border-slate-200 text-sm focus-visible:ring-2 focus-visible:ring-indigo-500/30 focus-visible:border-indigo-500 transition-all shadow-none"
                 value={editingExam.name}
                 onChange={(e) => setEditingExam({ ...editingExam, name: e.target.value })}
                 placeholder="e.g. UTS Mathematics"
@@ -268,10 +277,10 @@ export default function AdminExamsPage() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-1.5">Number of Questions</label>
-                <input
+                <Input
                   type="number"
                   min={1}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all"
+                  className="h-10 w-full px-4 rounded-xl border-slate-200 text-sm focus-visible:ring-2 focus-visible:ring-indigo-500/30 focus-visible:border-indigo-500 transition-all shadow-none"
                   value={editingExam.questions}
                   onChange={(e) => setEditingExam({ ...editingExam, questions: parseInt(e.target.value) || 0 })}
                 />
@@ -291,19 +300,20 @@ export default function AdminExamsPage() {
             </div>
 
             <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
-              <button
+              <Button
+                variant="ghost"
                 onClick={() => setModalOpen(false)}
-                className="px-5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-100 transition-colors"
+                className="px-5 py-2.5 h-10 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-100 transition-colors"
               >
                 Cancel
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={handleSave}
                 disabled={!editingExam.name.trim()}
-                className="px-5 py-2.5 rounded-xl bg-indigo-500 text-white text-sm font-semibold hover:bg-indigo-600 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-5 py-2.5 h-10 rounded-xl bg-indigo-500 text-white text-sm font-semibold hover:bg-indigo-600 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {exams.find((e) => e.id === editingExam.id) ? "Save Changes" : "Create Exam"}
-              </button>
+              </Button>
             </div>
           </div>
         )}
@@ -332,12 +342,12 @@ export default function AdminExamsPage() {
           ))}
           
           <div className="flex justify-end pt-4">
-            <button
+            <Button
               onClick={() => setTimerModalOpen(false)}
-              className="px-5 py-2.5 rounded-xl bg-indigo-500 text-white text-sm font-semibold hover:bg-indigo-600 transition-colors shadow-sm"
+              className="px-5 py-2.5 h-10 rounded-xl bg-indigo-500 text-white text-sm font-semibold hover:bg-indigo-600 transition-colors shadow-sm"
             >
               Done Settings
-            </button>
+            </Button>
           </div>
         </div>
       </Modal>

@@ -1,3 +1,5 @@
+import { Card, CardContent } from "@/components/ui/card";
+
 export default function StatCard({
   icon,
   label,
@@ -26,42 +28,42 @@ export default function StatCard({
   const colors = accentMap[accent] ?? accentMap.info;
 
   return (
-    <div
-      className={`glass-card border-l-4 ${colors.border} p-5 animate-slide-up`}
-    >
-      <div className="flex items-start justify-between">
-        <div className="space-y-1">
-          <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-            {label}
-          </p>
-          <p className="text-2xl font-bold text-slate-800">{value}</p>
-          {trend && (
-            <p
-              className={`text-xs font-medium flex items-center gap-1 ${
-                trendUp ? "text-emerald-500" : "text-red-500"
-              }`}
-            >
-              <svg
-                className={`w-3 h-3 ${trendUp ? "" : "rotate-180"}`}
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              {trend}
+    <Card className={`border-l-4 ${colors.border} animate-slide-up bg-white/50 backdrop-blur-sm shadow-sm border-y-transparent border-r-transparent rounded-r-2xl rounded-l-md`}>
+      <CardContent className="p-5">
+        <div className="flex items-start justify-between">
+          <div className="space-y-1">
+            <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+              {label}
             </p>
-          )}
+            <p className="text-2xl font-bold text-slate-800">{value}</p>
+            {trend && (
+              <p
+                className={`text-xs font-medium flex items-center gap-1 ${
+                  trendUp ? "text-emerald-500" : "text-red-500"
+                }`}
+              >
+                <svg
+                  className={`w-3 h-3 ${trendUp ? "" : "rotate-180"}`}
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                {trend}
+              </p>
+            )}
+          </div>
+          <div
+            className={`w-12 h-12 rounded-2xl ${colors.bg} ${colors.text} flex items-center justify-center`}
+          >
+            {icon}
+          </div>
         </div>
-        <div
-          className={`w-12 h-12 rounded-2xl ${colors.bg} ${colors.text} flex items-center justify-center`}
-        >
-          {icon}
-        </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }

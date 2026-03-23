@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { getCurrentUser, User } from "@/lib/auth";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 
 export default function DashboardLayout({
   role,
@@ -47,32 +48,23 @@ export default function DashboardLayout({
 
   return (
     <div className="flex min-h-screen bg-background">
-      {mobileOpen && (
-        <div
-          className="fixed inset-0 bg-black/30 z-30 lg:hidden animate-fade-in"
-          onClick={closeMobile}
-        />
-      )}
+      <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+        <SheetContent side="left" className="">
+          <Sidebar
+            role={role}
+            collapsed={false}
+            onToggle={() => setMobileOpen(false)}
+            isMobile={true}
+            onCloseMobile={() => setMobileOpen(false)}
+          />
+        </SheetContent>
+      </Sheet>
 
       <div className="hidden lg:block">
         <Sidebar
           role={role}
           collapsed={collapsed}
           onToggle={() => setCollapsed(!collapsed)}
-        />
-      </div>
-
-      <div
-        className={`lg:hidden fixed inset-y-0 left-0 z-40 transition-transform duration-300 ${
-          mobileOpen ? "translate-x-0 w-[260px]" : "-translate-x-full"
-        }`}
-      >
-        <Sidebar
-          role={role}
-          collapsed={false}
-          onToggle={closeMobile}
-          isMobile={true}
-          onCloseMobile={closeMobile}
         />
       </div>
 

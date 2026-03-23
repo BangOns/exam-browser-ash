@@ -4,6 +4,8 @@ import StatCard from "@/components/ui/StatCard";
 import Modal from "@/components/ui/Modal";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 const statsData = [
   {
@@ -174,12 +176,12 @@ export default function StudentDashboard() {
                   {exam.startsIn === "Now" ? "🟢 Live Now" : `⏰ ${exam.startsIn}`}
                 </div>
                 {exam.status === "available" ? (
-                  <button
+                  <Button
                     onClick={() => handleStartExam(exam.id)}
-                    className="px-5 py-2 rounded-xl bg-sky-500 text-white text-sm font-semibold hover:bg-sky-600 transition-colors shadow-sm hover:shadow-md cursor-pointer"
+                    className="px-5 py-2 h-9 rounded-xl bg-sky-500 text-white text-sm font-semibold hover:bg-sky-600 transition-colors shadow-sm hover:shadow-md cursor-pointer"
                   >
                     Start Exam
-                  </button>
+                  </Button>
                 ) : (
                   <span className="badge badge-neutral">Upcoming</span>
                 )}
@@ -267,27 +269,28 @@ export default function StudentDashboard() {
               {errorMsg}
             </div>
           )}
-          <input
+          <Input
             type="text"
-            className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 tracking-widest font-mono text-center uppercase"
+            className="h-12 w-full px-4 rounded-xl border-slate-200 focus-visible:ring-2 focus-visible:ring-sky-500/30 focus-visible:border-sky-500 tracking-widest font-mono text-center uppercase"
             placeholder="XXXXXX"
             value={tokenInput}
             onChange={(e) => setTokenInput(e.target.value.toUpperCase())}
           />
           <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
-            <button
+            <Button
+              variant="ghost"
               onClick={() => setVerifyModal(false)}
-              className="px-5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-100 transition-colors"
+              className="px-5 py-2.5 h-10 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-100 transition-colors"
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={handleVerifyToken}
               disabled={!tokenInput}
-              className="px-5 py-2.5 rounded-xl bg-sky-500 text-white text-sm font-semibold hover:bg-sky-600 transition-colors shadow-sm disabled:opacity-50"
+              className="px-5 py-2.5 h-10 rounded-xl bg-sky-500 text-white text-sm font-semibold hover:bg-sky-600 transition-colors shadow-sm disabled:opacity-50"
             >
               Verify & Start
-            </button>
+            </Button>
           </div>
         </div>
       </Modal>

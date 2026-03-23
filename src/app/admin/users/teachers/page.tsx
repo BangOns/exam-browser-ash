@@ -3,6 +3,8 @@
 import { useState } from "react";
 import DataTable from "@/components/ui/DataTable";
 import Modal from "@/components/ui/Modal";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 type Teacher = {
   id: number;
@@ -142,12 +144,12 @@ export default function AdminTeacherListPage() {
           <h1 className="text-2xl font-bold text-slate-800">Teacher List</h1>
           <p className="text-sm text-slate-500 mt-1">Manage teacher accounts and assignments</p>
         </div>
-        <button
+        <Button
           onClick={openAdd}
-          className="px-5 py-2.5 rounded-xl bg-indigo-500 text-white text-sm font-semibold hover:bg-indigo-600 transition-colors shadow-sm"
+          className="px-5 py-2.5 h-10 rounded-xl bg-indigo-500 text-white text-sm font-semibold hover:bg-indigo-600 transition-colors shadow-sm"
         >
           + Add Teacher
-        </button>
+        </Button>
       </div>
 
       {/* Summary */}
@@ -181,9 +183,9 @@ export default function AdminTeacherListPage() {
           <div className="space-y-5">
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-1.5">Full Name</label>
-              <input
+              <Input
                 type="text"
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all"
+                className="h-10 w-full px-4 rounded-xl border-slate-200 text-sm focus-visible:ring-2 focus-visible:ring-indigo-500/30 focus-visible:border-indigo-500 transition-all shadow-none"
                 value={editing.name}
                 onChange={(e) => setEditing({ ...editing, name: e.target.value })}
                 placeholder="e.g. Ahmad Fauzi"
@@ -192,9 +194,9 @@ export default function AdminTeacherListPage() {
 
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-1.5">Email</label>
-              <input
+              <Input
                 type="email"
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all"
+                className="h-10 w-full px-4 rounded-xl border-slate-200 text-sm focus-visible:ring-2 focus-visible:ring-indigo-500/30 focus-visible:border-indigo-500 transition-all shadow-none"
                 value={editing.email}
                 onChange={(e) => setEditing({ ...editing, email: e.target.value })}
                 placeholder="e.g. ahmad@school.id"
@@ -228,19 +230,20 @@ export default function AdminTeacherListPage() {
             </div>
 
             <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
-              <button
+              <Button
+                variant="ghost"
                 onClick={() => setModalOpen(false)}
-                className="px-5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-100 transition-colors"
+                className="px-5 py-2.5 h-10 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-100 transition-colors"
               >
                 Cancel
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={handleSave}
                 disabled={!editing.name.trim() || !editing.email.trim()}
-                className="px-5 py-2.5 rounded-xl bg-indigo-500 text-white text-sm font-semibold hover:bg-indigo-600 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-5 py-2.5 h-10 rounded-xl bg-indigo-500 text-white text-sm font-semibold hover:bg-indigo-600 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {teachers.find((t) => t.id === editing.id) ? "Save Changes" : "Add Teacher"}
-              </button>
+              </Button>
             </div>
           </div>
         )}

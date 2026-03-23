@@ -3,6 +3,8 @@
 import { useState } from "react";
 import DataTable from "@/components/ui/DataTable";
 import Modal from "@/components/ui/Modal";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 type Option = { label: string; text: string };
 
@@ -281,12 +283,12 @@ export default function TeacherQuestionsPage() {
           <h1 className="text-2xl font-bold text-slate-800">Question Bank</h1>
           <p className="text-sm text-slate-500 mt-1">Manage and organize your exam questions</p>
         </div>
-        <button
+        <Button
           onClick={openAdd}
-          className="px-5 py-2.5 rounded-xl bg-emerald-500 text-white text-sm font-semibold hover:bg-emerald-600 transition-colors shadow-sm"
+          className="px-5 py-2.5 h-10 rounded-xl bg-emerald-500 text-white text-sm font-semibold hover:bg-emerald-600 transition-colors shadow-sm"
         >
           + Add Question
-        </button>
+        </Button>
       </div>
 
       {/* Summary */}
@@ -394,8 +396,9 @@ export default function TeacherQuestionsPage() {
               <label className="block text-sm font-semibold text-slate-700 mb-1.5">Question Type</label>
               <div className="flex gap-3">
                 {(["Multiple Choice", "Essay"] as const).map((t) => (
-                  <button
+                  <Button
                     key={t}
+                    variant="ghost"
                     onClick={() => {
                       setEditingQuestion({
                         ...editingQuestion,
@@ -411,14 +414,14 @@ export default function TeacherQuestionsPage() {
                         correctAnswer: t === "Multiple Choice" ? editingQuestion.correctAnswer || "A" : undefined,
                       });
                     }}
-                    className={`flex-1 px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                    className={`flex-1 px-4 py-2.5 h-10 rounded-xl text-sm font-medium transition-all ${
                       editingQuestion.type === t
-                        ? "bg-emerald-500 text-white shadow-sm"
+                        ? "bg-emerald-500 text-white shadow-sm hover:bg-emerald-600 hover:text-white"
                         : "bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200"
                     }`}
                   >
                     {t === "Multiple Choice" ? "☑️ " : "✍️ "}{t}
-                  </button>
+                  </Button>
                 ))}
               </div>
             </div>
@@ -429,19 +432,20 @@ export default function TeacherQuestionsPage() {
                 <label className="block text-sm font-semibold text-slate-700">Answer Options</label>
                 {editingQuestion.options.map((opt, idx) => (
                   <div key={opt.label} className="flex items-center gap-3">
-                    <button
+                    <Button
+                      variant="ghost"
                       onClick={() => setEditingQuestion({ ...editingQuestion, correctAnswer: opt.label })}
-                      className={`w-9 h-9 rounded-xl text-sm font-bold shrink-0 transition-all ${
+                      className={`w-9 h-9 p-0 rounded-xl text-sm font-bold shrink-0 transition-all ${
                         editingQuestion.correctAnswer === opt.label
-                          ? "bg-emerald-500 text-white shadow-sm"
-                          : "bg-slate-100 text-slate-500 hover:bg-slate-200"
+                          ? "bg-emerald-500 text-white shadow-sm hover:bg-emerald-600 hover:text-white"
+                          : "bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-600"
                       }`}
                     >
                       {opt.label}
-                    </button>
-                    <input
+                    </Button>
+                    <Input
                       type="text"
-                      className="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all"
+                      className="h-10 flex-1 px-4 rounded-xl border-slate-200 text-sm focus-visible:ring-2 focus-visible:ring-emerald-500/30 focus-visible:border-emerald-500 transition-all shadow-none"
                       value={opt.text}
                       onChange={(e) => {
                         const newOptions = [...editingQuestion.options!];
@@ -471,10 +475,10 @@ export default function TeacherQuestionsPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-slate-700 mb-1.5">Maximum Points</label>
-                  <input
+                  <Input
                     type="number"
                     min={1}
-                    className="w-32 px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all"
+                    className="h-10 w-32 px-4 rounded-xl border-slate-200 text-sm focus-visible:ring-2 focus-visible:ring-emerald-500/30 focus-visible:border-emerald-500 transition-all shadow-none"
                     value={editingQuestion.maxPoints || 10}
                     onChange={(e) => setEditingQuestion({ ...editingQuestion, maxPoints: parseInt(e.target.value) || 10 })}
                   />
@@ -484,19 +488,20 @@ export default function TeacherQuestionsPage() {
 
             {/* Actions */}
             <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
-              <button
+              <Button
+                variant="ghost"
                 onClick={() => setModalOpen(false)}
-                className="px-5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-100 transition-colors"
+                className="px-5 py-2.5 h-10 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-100 transition-colors"
               >
                 Cancel
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={handleSave}
                 disabled={!editingQuestion.question.trim()}
-                className="px-5 py-2.5 rounded-xl bg-emerald-500 text-white text-sm font-semibold hover:bg-emerald-600 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-5 py-2.5 h-10 rounded-xl bg-emerald-500 text-white text-sm font-semibold hover:bg-emerald-600 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {questions.find((q) => q.id === editingQuestion.id) ? "Save Changes" : "Add Question"}
-              </button>
+              </Button>
             </div>
           </div>
         )}

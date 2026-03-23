@@ -1,5 +1,15 @@
 "use client";
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "../ui/button";
+
 export default function Navbar({
   role,
   onMenuToggle,
@@ -22,10 +32,10 @@ export default function Navbar({
   return (
     <header className="sticky top-0 z-30 h-16 bg-white/80 backdrop-blur-lg border-b border-surface-border flex items-center justify-between px-6 gap-4">
       {/* Left: menu toggle + breadcrumb */}
-      <div className="flex items-center gap-4">
-        <button
+      <section className="flex items-center gap-4">
+        <Button
           onClick={onMenuToggle}
-          className="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-all duration-200 lg:hidden"
+          className=" bg-slate-50 p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-all duration-200 lg:hidden"
         >
           <svg
             className="w-5 h-5"
@@ -40,18 +50,18 @@ export default function Navbar({
               d="M4 6h16M4 12h16M4 18h16"
             />
           </svg>
-        </button>
-        <div className="hidden sm:flex items-center gap-2 text-sm text-slate-400">
+        </Button>
+        <section className="hidden sm:flex items-center gap-2 text-sm text-slate-400">
           <span className="font-semibold" style={{ color: roleColors[role] }}>
             {roleLabels[role]}
           </span>
           <span>/</span>
           <span className="text-slate-600 font-medium">Dashboard</span>
-        </div>
-      </div>
+        </section>
+      </section>
 
       {/* Right: search, notifications, profile */}
-      <div className="flex items-center gap-3">
+      <section className="flex items-center gap-3">
         {/* Search */}
         <div className="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200/60 text-sm text-slate-400 w-56 hover:border-slate-300 transition-colors">
           <svg
@@ -71,7 +81,7 @@ export default function Navbar({
         </div>
 
         {/* Notifications */}
-        <button className="relative p-2.5 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-all duration-200">
+        <Button className="relative p-2.5 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-all duration-200 bg-slate-50">
           <svg
             className="w-5 h-5"
             fill="none"
@@ -86,24 +96,38 @@ export default function Navbar({
             />
           </svg>
           <span className="notification-dot" />
-        </button>
+        </Button>
 
         {/* Profile */}
-        <div className="flex items-center gap-3 pl-3 border-l border-slate-200">
-          <div
-            className="w-9 h-9 rounded-xl flex items-center justify-center text-white text-sm font-bold"
-            style={{ background: roleColors[role] }}
-          >
-            {roleLabels[role]?.[0] ?? "U"}
-          </div>
-          <div className="hidden sm:block">
-            <p className="text-sm font-semibold text-slate-700">
-              {roleLabels[role]}
-            </p>
-            <p className="text-xs text-slate-400">Online</p>
-          </div>
-        </div>
-      </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <section className="flex items-center gap-3 pl-3 border-l border-slate-200 cursor-pointer">
+              <header
+                className="w-9 h-9 rounded-xl flex items-center justify-center text-white text-sm font-bold"
+                style={{ background: roleColors[role] }}
+              >
+                {roleLabels[role]?.[0] ?? "U"}
+              </header>
+              <section className="hidden sm:block text-left">
+                <p className="text-sm font-semibold text-slate-700">
+                  {roleLabels[role]}
+                </p>
+                <p className="text-xs text-slate-400">Online</p>
+              </section>
+            </section>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56 rounded-xl">
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Profile</DropdownMenuItem>
+            <DropdownMenuItem>Settings</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="text-red-500 focus:text-red-600 focus:bg-red-50">
+              Log out
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </section>
     </header>
   );
 }
