@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { getCurrentUser } from "@/lib/auth";
+import { getCurrentUser, User } from "@/lib/auth";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 
@@ -14,20 +14,28 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
+
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [mounted, setMounted] = useState(true); //default false for bypass error
-  const user = typeof window !== "undefined" ? getCurrentUser() : null;
-  const isAuthorized = user && user.role === role;
+  const [mounted, setMounted] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    // setMounted(true);
-    if (!user || user.role !== role) {
-      router.push("/");
-    }
-  }, [user, role, router]);
+    const currentUser = getCurrentUser();
 
-  const closeMobile = () => setMobileOpen(false);
+    if (!currentUser || currentUser.role !== role) {
+      router.push("/");
+    } else {
+      setUser(currentUser);
+      setMounted(true);
+    }
+  }, [role, router]);
+
+  const isAuthorized = user && user.role === role;
+
+  const closeMobile = () => {
+    setMobileOpen(!mobileOpen);
+  };
 
   if (!mounted || !isAuthorized) {
     return (
@@ -39,7 +47,6 @@ export default function DashboardLayout({
 
   return (
     <div className="flex min-h-screen bg-background">
-      {/* Mobile overlay */}
       {mobileOpen && (
         <div
           className="fixed inset-0 bg-black/30 z-30 lg:hidden animate-fade-in"
@@ -47,7 +54,6 @@ export default function DashboardLayout({
         />
       )}
 
-      {/* Sidebar: desktop */}
       <div className="hidden lg:block">
         <Sidebar
           role={role}
@@ -56,10 +62,9 @@ export default function DashboardLayout({
         />
       </div>
 
-      {/* Sidebar: mobile */}
       <div
         className={`lg:hidden fixed inset-y-0 left-0 z-40 transition-transform duration-300 ${
-          mobileOpen ? "translate-x-0" : "-translate-x-full"
+          mobileOpen ? "translate-x-0 w-[260px]" : "-translate-x-full"
         }`}
       >
         <Sidebar
@@ -71,7 +76,6 @@ export default function DashboardLayout({
         />
       </div>
 
-      {/* Main content */}
       <div
         className={`flex-1 flex flex-col transition-all duration-300 ${
           collapsed ? "lg:pl-[72px]" : "lg:pl-[260px]"
