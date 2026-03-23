@@ -16,12 +16,12 @@ export default function DashboardLayout({
   const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const user = typeof window !== 'undefined' ? getCurrentUser() : null;
+  const [mounted, setMounted] = useState(true); //default false for bypass error
+  const user = typeof window !== "undefined" ? getCurrentUser() : null;
   const isAuthorized = user && user.role === role;
 
   useEffect(() => {
-    setMounted(true);
+    // setMounted(true);
     if (!user || user.role !== role) {
       router.push("/");
     }
