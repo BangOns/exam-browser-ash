@@ -34,10 +34,6 @@ export default function DashboardLayout({
 
   const isAuthorized = user && user.role === role;
 
-  const closeMobile = () => {
-    setMobileOpen(!mobileOpen);
-  };
-
   if (!mounted || !isAuthorized) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
