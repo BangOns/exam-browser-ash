@@ -5,140 +5,13 @@ import DataTable from "@/components/ui/DataTable";
 import Modal from "@/components/ui/Modal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
-type Option = { label: string; text: string };
-
-type Question = {
-  id: number;
-  question: string;
-  subject: string;
-  difficulty: "Easy" | "Medium" | "Hard";
-  type: "Multiple Choice" | "Essay";
-  options?: Option[];
-  correctAnswer?: string;
-  rubric?: string;
-  maxPoints?: number;
-  used: number;
-};
-
-const initialQuestions: Question[] = [
-  {
-    id: 1,
-    question: "What is Newton's First Law of Motion?",
-    subject: "Physics",
-    difficulty: "Easy",
-    type: "Multiple Choice",
-    options: [
-      { label: "A", text: "An object at rest stays at rest unless acted upon by a force" },
-      { label: "B", text: "Force equals mass times acceleration" },
-      { label: "C", text: "Every action has an equal and opposite reaction" },
-      { label: "D", text: "Energy cannot be created or destroyed" },
-    ],
-    correctAnswer: "A",
-    used: 5,
-  },
-  {
-    id: 2,
-    question: "Solve: 2x² + 5x - 3 = 0",
-    subject: "Mathematics",
-    difficulty: "Hard",
-    type: "Multiple Choice",
-    options: [
-      { label: "A", text: "x = 1/2, x = -3" },
-      { label: "B", text: "x = -1/2, x = 3" },
-      { label: "C", text: "x = 1, x = -3" },
-      { label: "D", text: "x = 2, x = -1" },
-    ],
-    correctAnswer: "A",
-    used: 3,
-  },
-  {
-    id: 3,
-    question: "Explain the process of photosynthesis in detail",
-    subject: "Biology",
-    difficulty: "Hard",
-    type: "Essay",
-    rubric: "Students should cover: light-dependent reactions, Calvin cycle, inputs (CO₂, H₂O, light), outputs (glucose, O₂). Award marks for diagrams and correct terminology.",
-    maxPoints: 20,
-    used: 2,
-  },
-  {
-    id: 4,
-    question: "What is the past tense of 'swim'?",
-    subject: "English",
-    difficulty: "Easy",
-    type: "Multiple Choice",
-    options: [
-      { label: "A", text: "Swam" },
-      { label: "B", text: "Swimmed" },
-      { label: "C", text: "Swum" },
-      { label: "D", text: "Sweem" },
-    ],
-    correctAnswer: "A",
-    used: 8,
-  },
-  {
-    id: 5,
-    question: "Define the atomic number of an element",
-    subject: "Chemistry",
-    difficulty: "Medium",
-    type: "Multiple Choice",
-    options: [
-      { label: "A", text: "Number of protons in the nucleus" },
-      { label: "B", text: "Number of neutrons in the nucleus" },
-      { label: "C", text: "Total number of protons and neutrons" },
-      { label: "D", text: "Number of electrons in the outer shell" },
-    ],
-    correctAnswer: "A",
-    used: 4,
-  },
-  {
-    id: 6,
-    question: "Explain the water cycle with diagrams",
-    subject: "Geography",
-    difficulty: "Medium",
-    type: "Essay",
-    rubric: "Describe evaporation, condensation, precipitation, and collection. Include a labeled diagram. Award marks for clarity and scientific vocabulary.",
-    maxPoints: 15,
-    used: 1,
-  },
-  {
-    id: 7,
-    question: "Calculate the acceleration of a 5kg object with 20N force",
-    subject: "Physics",
-    difficulty: "Medium",
-    type: "Multiple Choice",
-    options: [
-      { label: "A", text: "4 m/s²" },
-      { label: "B", text: "100 m/s²" },
-      { label: "C", text: "25 m/s²" },
-      { label: "D", text: "0.25 m/s²" },
-    ],
-    correctAnswer: "A",
-    used: 6,
-  },
-  {
-    id: 8,
-    question: "Who wrote 'Romeo and Juliet'?",
-    subject: "English",
-    difficulty: "Easy",
-    type: "Multiple Choice",
-    options: [
-      { label: "A", text: "William Shakespeare" },
-      { label: "B", text: "Charles Dickens" },
-      { label: "C", text: "Jane Austen" },
-      { label: "D", text: "Mark Twain" },
-    ],
-    correctAnswer: "A",
-    used: 9,
-  },
-];
+import { Question } from "@/types/question";
+import { initialQuestions as bankQuestions } from "@/data/dummy/questions";
 
 const emptyQuestion: Question = {
   id: 0,
   question: "",
   subject: "Physics",
-  difficulty: "Medium",
   type: "Multiple Choice",
   options: [
     { label: "A", text: "" },
@@ -153,11 +26,10 @@ const emptyQuestion: Question = {
 };
 
 const subjects = ["All", "Physics", "Mathematics", "Biology", "English", "Chemistry", "Geography"];
-const difficulties: Array<"Easy" | "Medium" | "Hard"> = ["Easy", "Medium", "Hard"];
 const types = ["All", "Multiple Choice", "Essay"];
 
 export default function TeacherQuestionsPage() {
-  const [questions, setQuestions] = useState<Question[]>(initialQuestions);
+  const [questions, setQuestions] = useState<Question[]>(bankQuestions);
   const [modalOpen, setModalOpen] = useState(false);
   const [editingQuestion, setEditingQuestion] = useState<Question | null>(null);
   const [activeSubject, setActiveSubject] = useState("All");
@@ -210,26 +82,7 @@ export default function TeacherQuestionsPage() {
         </div>
       ),
     },
-    {
-      key: "difficulty",
-      label: "Difficulty",
-      render: (row: Question) => (
-        <span
-          className={`badge ${
-            row.difficulty === "Easy"
-              ? "badge-success"
-              : row.difficulty === "Medium"
-              ? "badge-warning"
-              : "badge-danger"
-          }`}
-        >
-          {row.difficulty}
-        </span>
-      ),
-    },
-    {
-      key: "type",
-      label: "Type",
+    { key: "type", label: "Type",
       render: (row: Question) => (
         <span className={`badge ${row.type === "Multiple Choice" ? "badge-info" : "badge-neutral"}`}>
           {row.type}
@@ -361,34 +214,6 @@ export default function TeacherQuestionsPage() {
                 onChange={(e) => setEditingQuestion({ ...editingQuestion, question: e.target.value })}
                 placeholder="Enter your question..."
               />
-            </div>
-
-            {/* Subject + Difficulty */}
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1.5">Subject</label>
-                <select
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all bg-white"
-                  value={editingQuestion.subject}
-                  onChange={(e) => setEditingQuestion({ ...editingQuestion, subject: e.target.value })}
-                >
-                  {subjects.filter((s) => s !== "All").map((s) => (
-                    <option key={s} value={s}>{s}</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1.5">Difficulty</label>
-                <select
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all bg-white"
-                  value={editingQuestion.difficulty}
-                  onChange={(e) => setEditingQuestion({ ...editingQuestion, difficulty: e.target.value as "Easy" | "Medium" | "Hard" })}
-                >
-                  {difficulties.map((d) => (
-                    <option key={d} value={d}>{d}</option>
-                  ))}
-                </select>
-              </div>
             </div>
 
             {/* Type selector */}

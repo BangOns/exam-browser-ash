@@ -7,7 +7,7 @@ import { scheduleData } from "@/data/dummy/schedule";
 import { statsData } from "@/data/dummy/stats";
 import PageHeader from "@/components/shared/PageHeader";
 import Link from "next/link";
-import RecentNotif from "@/components/feature/Admin/Dashboard/RecentNotif";
+import RecentNotif from "@/components/feature/Admin/Dashboard/components/RecentNotif";
 
 const userColumns = [
   { key: "name", label: "Name" },

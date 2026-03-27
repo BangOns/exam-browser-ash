@@ -92,63 +92,20 @@ const statsData = [
 type QuestionRow = {
   question: string;
   subject: string;
-  difficulty: string;
   type: string;
 };
 
 const questionsData: QuestionRow[] = [
-  {
-    question: "What is Newton's First Law?",
-    subject: "Physics",
-    difficulty: "Easy",
-    type: "Multiple Choice",
-  },
-  {
-    question: "Solve: 2x + 5 = 15",
-    subject: "Mathematics",
-    difficulty: "Medium",
-    type: "Short Answer",
-  },
-  {
-    question: "Explain photosynthesis process",
-    subject: "Biology",
-    difficulty: "Hard",
-    type: "Essay",
-  },
-  {
-    question: "Past tense of 'swim'",
-    subject: "English",
-    difficulty: "Easy",
-    type: "Multiple Choice",
-  },
-  {
-    question: "What is the atomic number of Carbon?",
-    subject: "Chemistry",
-    difficulty: "Easy",
-    type: "Multiple Choice",
-  },
+  { question: "What is Newton's First Law?", subject: "Physics", type: "Multiple Choice" },
+  { question: "Solve: 2x + 5 = 15", subject: "Mathematics", type: "Short Answer" },
+  { question: "Explain photosynthesis process", subject: "Biology", type: "Essay" },
+  { question: "Past tense of 'swim'", subject: "English", type: "Multiple Choice" },
+  { question: "What is the atomic number of Carbon?", subject: "Chemistry", type: "Multiple Choice" },
 ];
 
 const questionColumns = [
   { key: "question", label: "Question" },
   { key: "subject", label: "Subject" },
-  {
-    key: "difficulty",
-    label: "Difficulty",
-    render: (row: QuestionRow) => (
-      <span
-        className={`badge ${
-          row.difficulty === "Easy"
-            ? "badge-success"
-            : row.difficulty === "Medium"
-              ? "badge-warning"
-              : "badge-danger"
-        }`}
-      >
-        {row.difficulty}
-      </span>
-    ),
-  },
   {
     key: "type",
     label: "Type",

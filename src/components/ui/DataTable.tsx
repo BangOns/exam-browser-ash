@@ -19,14 +19,18 @@ export default function DataTable<T extends Record<string, unknown>>({
   data,
   title,
   action,
+  className,
 }: {
   columns: Column<T>[];
   data: T[];
   title?: string;
   action?: React.ReactNode;
+  className?: string;
 }) {
   return (
-    <Card className="rounded-2xl border bg-white/50 backdrop-blur-sm shadow-sm overflow-hidden animate-slide-up">
+    <Card
+      className={`rounded-2xl border bg-white/50 backdrop-blur-sm shadow-sm overflow-hidden animate-slide-up ${className}`}
+    >
       {(title || action) && (
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100/50">
           {title && (
@@ -51,14 +55,17 @@ export default function DataTable<T extends Record<string, unknown>>({
                   <TableCell key={col.key}>
                     {col.render
                       ? col.render(row)
-                      : (row[col.key] as React.ReactNode) ?? "—"}
+                      : ((row[col.key] as React.ReactNode) ?? "—")}
                   </TableCell>
                 ))}
               </TableRow>
             ))}
             {data.length === 0 && (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center text-slate-400">
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center text-slate-400"
+                >
                   No data available
                 </TableCell>
               </TableRow>

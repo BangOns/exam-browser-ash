@@ -6,52 +6,71 @@ import Modal from "@/components/ui/Modal";
 import { getCurrentUser } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { initialQuestions } from "@/data/dummy/questions";
+import QuestionPickerModal from "@/components/feature/Teacher/Exams/QuestionPickerModal";
 
 type Exam = {
   id: number;
   name: string;
   subject: string;
+  targetClass: string;
   questions: number;
   students: number;
   status: "Active" | "Scheduled" | "Draft" | "Completed";
+  questionIds: number[];
 };
 
-const initialExams: Exam[] = [
-  { id: 1, name: "UTS Mathematics", subject: "Mathematics", questions: 40, students: 45, status: "Active" },
-  { id: 2, name: "Quiz Physics", subject: "Physics", questions: 20, students: 38, status: "Active" },
-  { id: 3, name: "UAS English", subject: "English", questions: 50, students: 0, status: "Scheduled" },
-  { id: 4, name: "Quiz Chemistry", subject: "Chemistry", questions: 15, students: 42, status: "Completed" },
-  { id: 5, name: "UTS Biology", subject: "Biology", questions: 35, students: 0, status: "Draft" },
+const subjectOptions = [
+  "Mathematics", "Physics", "English", "Chemistry", "Biology", "Geography", "History",
 ];
 
-const emptyExam: Exam = {
+const classOptions = [
+  "X IPA 1", "X IPA 2", "X IPS 1", "X IPS 2",
+  "XI IPA 1", "XI IPA 2", "XI IPS 1", "XI IPS 2",
+  "XII IPA 1", "XII IPA 2", "XII IPS 1", "XII IPS 2",
+  "All Classes",
+];
+
+const buildInitialExams = (subject: string): Exam[] => [
+  { id: 1, name: "UTS Mathematics", subject: "Mathematics", targetClass: "XII IPA 1", questions: 40, students: 45, status: "Active" as const, questionIds: [] },
+  { id: 2, name: "Quiz Physics", subject: "Physics", targetClass: "XII IPA 2", questions: 20, students: 38, status: "Active" as const, questionIds: [] },
+  { id: 3, name: "UAS English", subject: "English", targetClass: "All Classes", questions: 50, students: 0, status: "Scheduled" as const, questionIds: [] },
+  { id: 4, name: "Quiz Chemistry", subject: "Chemistry", targetClass: "XI IPA 1", questions: 15, students: 42, status: "Completed" as const, questionIds: [] },
+  { id: 5, name: "UTS Biology", subject: "Biology", targetClass: "XI IPA 2", questions: 35, students: 0, status: "Draft" as const, questionIds: [] },
+].filter((e) => e.subject === subject);
+
+const emptyExam = (subject: string): Exam => ({
   id: 0,
   name: "",
-  subject: "Mathematics",
+  subject,
+  targetClass: "All Classes",
   questions: 20,
   students: 0,
   status: "Draft",
-};
+  questionIds: [],
+});
 
 const statusOptions: Exam["status"][] = ["Draft", "Scheduled", "Active", "Completed"];
 const statusTabs = ["All", "Active", "Scheduled", "Draft", "Completed"];
 
 export default function TeacherExamsPage() {
-  const user = typeof window !== 'undefined' ? getCurrentUser() : null;
+  const user = typeof window !== "undefined" ? getCurrentUser() : null;
   const teacherSubject = user?.subject || "Mathematics";
 
-  const [exams, setExams] = useState<Exam[]>(() => 
-    initialExams.filter(e => e.subject === teacherSubject)
-  );
+  const [exams, setExams] = useState<Exam[]>(() => buildInitialExams(teacherSubject));
   const [modalOpen, setModalOpen] = useState(false);
   const [editingExam, setEditingExam] = useState<Exam | null>(null);
   const [activeTab, setActiveTab] = useState("All");
   const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
 
+  // Question Picker state
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [pickerExam, setPickerExam] = useState<Exam | null>(null);
+
   const filtered = activeTab === "All" ? exams : exams.filter((e) => e.status === activeTab);
 
   const openAdd = () => {
-    setEditingExam({ ...emptyExam, id: Date.now() });
+    setEditingExam({ ...emptyExam(teacherSubject), id: Date.now() });
     setModalOpen(true);
   };
 
@@ -76,18 +95,64 @@ export default function TeacherExamsPage() {
     setDeleteConfirm(null);
   };
 
+  const openPicker = (exam: Exam) => {
+    setPickerExam(exam);
+    setPickerOpen(true);
+  };
+
+  const handlePickerSave = (ids: number[]) => {
+    if (!pickerExam) return;
+    setExams((prev) =>
+      prev.map((e) =>
+        e.id === pickerExam.id
+          ? { ...e, questionIds: ids, questions: ids.length }
+          : e
+      )
+    );
+    setPickerExam(null);
+  };
+
   const columns = [
     {
       key: "name",
       label: "Exam Name",
       render: (row: Exam) => (
-        <div>
-          <p className="font-medium text-slate-700">{row.name}</p>
-          <p className="text-xs text-slate-400">{row.subject}</p>
+        <p className="font-medium text-slate-700">{row.name}</p>
+      ),
+    },
+    {
+      key: "subject",
+      label: "Subject",
+      render: (row: Exam) => (
+        <span className="badge badge-info">{row.subject}</span>
+      ),
+    },
+    {
+      key: "targetClass",
+      label: "Class",
+      render: (row: Exam) => (
+        <span className="badge badge-neutral">{row.targetClass}</span>
+      ),
+    },
+    {
+      key: "questions",
+      label: "Questions",
+      render: (row: Exam) => (
+        <div className="flex items-center gap-2">
+          <span
+            className={`text-sm font-semibold ${
+              row.questionIds.length > 0 ? "text-emerald-600" : "text-slate-400"
+            }`}
+          >
+            {row.questionIds.length > 0
+              ? `${row.questionIds.length} selected`
+              : row.questions > 0
+              ? `${row.questions} (unlinked)`
+              : "—"}
+          </span>
         </div>
       ),
     },
-    { key: "questions", label: "Questions" },
     { key: "students", label: "Students" },
     {
       key: "status",
@@ -112,10 +177,17 @@ export default function TeacherExamsPage() {
       key: "actions",
       label: "Actions",
       render: (row: Exam) => (
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
+          <button
+            onClick={() => openPicker(row)}
+            className="text-xs px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100 transition-colors font-medium"
+            title="Select questions from bank"
+          >
+            📋 Questions
+          </button>
           <button
             onClick={() => openEdit(row)}
-            className="text-xs px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100 transition-colors font-medium"
+            className="text-xs px-3 py-1.5 rounded-lg bg-indigo-50 text-indigo-600 hover:bg-indigo-100 transition-colors font-medium"
           >
             Edit
           </button>
@@ -223,35 +295,50 @@ export default function TeacherExamsPage() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-1.5">Subject</label>
-                <div className="w-full px-4 py-2.5 rounded-xl border border-slate-100 bg-slate-50 text-slate-500 text-sm font-medium">
-                  {teacherSubject}
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1.5">Number of Questions</label>
-                <Input
-                  type="number"
-                  min={1}
-                  className="h-10 w-full px-4 rounded-xl border-slate-200 text-sm focus-visible:ring-2 focus-visible:ring-emerald-500/30 focus-visible:border-emerald-500 transition-all"
-                  value={editingExam.questions}
-                  onChange={(e) => setEditingExam({ ...editingExam, questions: parseInt(e.target.value) || 0 })}
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1.5">Status</label>
                 <select
                   className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all bg-white"
-                  value={editingExam.status}
-                  onChange={(e) => setEditingExam({ ...editingExam, status: e.target.value as Exam["status"] })}
+                  value={editingExam.subject}
+                  onChange={(e) => setEditingExam({ ...editingExam, subject: e.target.value })}
                 >
-                  {statusOptions.map((s) => (
+                  {subjectOptions.map((s) => (
                     <option key={s} value={s}>{s}</option>
                   ))}
                 </select>
               </div>
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-1.5">Target Class</label>
+                <select
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all bg-white"
+                  value={editingExam.targetClass}
+                  onChange={(e) => setEditingExam({ ...editingExam, targetClass: e.target.value })}
+                >
+                  {classOptions.map((c) => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1.5">Status</label>
+              <select
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all bg-white"
+                value={editingExam.status}
+                onChange={(e) => setEditingExam({ ...editingExam, status: e.target.value as Exam["status"] })}
+              >
+                {statusOptions.map((s) => (
+                  <option key={s} value={s}>{s}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Question count info */}
+            <div className="px-4 py-3 rounded-xl bg-emerald-50 border border-emerald-100 text-sm text-emerald-700">
+              <span className="font-semibold">{editingExam.questionIds.length}</span> question
+              {editingExam.questionIds.length !== 1 ? "s" : ""} selected from Question Bank.{" "}
+              <span className="text-emerald-500">
+                Use the &quot;📋 Questions&quot; button on the exam row to pick questions.
+              </span>
             </div>
 
             <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
@@ -273,6 +360,19 @@ export default function TeacherExamsPage() {
           </div>
         )}
       </Modal>
+
+      {/* Question Picker Modal */}
+      {pickerExam && (
+        <QuestionPickerModal
+          isOpen={pickerOpen}
+          onClose={() => { setPickerOpen(false); setPickerExam(null); }}
+          examName={pickerExam.name}
+          examSubject={pickerExam.subject}
+          allQuestions={initialQuestions}
+          selectedIds={pickerExam.questionIds}
+          onSave={handlePickerSave}
+        />
+      )}
     </div>
   );
 }
