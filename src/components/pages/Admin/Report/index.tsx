@@ -1,0 +1,57 @@
+import InfoCard from "@/components/shared/InfoCard";
+import PageHeader from "@/components/shared/PageHeader";
+import { auditLog } from "@/data/dummy/report";
+import { TYPE_STYLES } from "@/constants/styles";
+import ReportCard from "@/components/feature/Admin/Report/components/ReportCard";
+import { Button } from "@/components/ui/button";
+
+export default function AdminReportsPage() {
+  const stats = [
+    { label: "Total Events", value: "1,284", emoji: "📊" },
+    { label: "Violations", value: "23", emoji: "⚠️" },
+    { label: "System Events", value: "856", emoji: "🔧" },
+    { label: "User Actions", value: "405", emoji: "👤" },
+  ];
+
+  return (
+    <div className="space-y-6">
+      <PageHeader
+        title="Reports & Audit Log"
+        description="System activity timeline and violation reports"
+      />
+
+      {/* Quick stats */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {stats.map((s, i) => (
+          <InfoCard key={i} {...s} />
+        ))}
+      </div>
+
+      {/* Filter */}
+      <div className="flex gap-2">
+        {["All", "Violations", "System", "User Actions"].map((tab, i) => (
+          <Button
+            key={tab}
+            className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
+              i === 0
+                ? "bg-indigo-500 text-white"
+                : "bg-white text-slate-500 hover:bg-slate-50 border border-slate-200"
+            }`}
+          >
+            {tab}
+          </Button>
+        ))}
+      </div>
+
+      {/* Audit timeline */}
+      <div className="glass-card p-6 animate-slide-up">
+        <div className="space-y-4">
+          {auditLog.map((entry) => {
+            const styles = TYPE_STYLES[entry.type];
+            return <ReportCard key={entry.id} entry={entry} styles={styles} />;
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}

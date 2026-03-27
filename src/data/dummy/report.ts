@@ -1,0 +1,68 @@
+import { AuditEntry } from "@/types/report";
+
+export const auditLog: AuditEntry[] = [
+  {
+    id: 1,
+    action: "Student Budi Santoso attempted tab switch during Quiz Physics",
+    user: "Budi Santoso",
+    role: "Student",
+    timestamp: "Mar 22, 2026 12:05",
+    type: "danger",
+  },
+  {
+    id: 2,
+    action: "New exam 'UTS Biology' created by Dewi Lestari",
+    user: "Dewi Lestari",
+    role: "Teacher",
+    timestamp: "Mar 22, 2026 11:30",
+    type: "info",
+  },
+  {
+    id: 3,
+    action: "Student Reza Pratama left fullscreen mode during Quiz Physics",
+    user: "Reza Pratama",
+    role: "Student",
+    timestamp: "Mar 22, 2026 11:22",
+    type: "danger",
+  },
+  {
+    id: 4,
+    action: "User Andi Wijaya account suspended by admin",
+    user: "Admin",
+    role: "Admin",
+    timestamp: "Mar 22, 2026 10:45",
+    type: "warning",
+  },
+  {
+    id: 5,
+    action: "Exam 'Quiz Chemistry' completed — 45 students participated",
+    user: "System",
+    role: "System",
+    timestamp: "Mar 21, 2026 15:00",
+    type: "info",
+  },
+  {
+    id: 6,
+    action: "Server backup completed successfully",
+    user: "System",
+    role: "System",
+    timestamp: "Mar 21, 2026 03:00",
+    type: "info",
+  },
+  {
+    id: 7,
+    action: "Student Maya Anggraeni flagged for suspicious activity",
+    user: "Maya Anggraeni",
+    role: "Student",
+    timestamp: "Mar 20, 2026 14:30",
+    type: "warning",
+  },
+  {
+    id: 8,
+    action: "System update applied — version 2.4.1",
+    user: "System",
+    role: "System",
+    timestamp: "Mar 20, 2026 02:00",
+    type: "info",
+  },
+];

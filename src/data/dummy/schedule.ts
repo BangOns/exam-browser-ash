@@ -1,4 +1,4 @@
-import { ScheduleRow } from "@/types/schedule";
+import { Schedule, ScheduleRow } from "@/types/schedule";
 
 export const scheduleData: ScheduleRow[] = [
   {
@@ -27,6 +27,36 @@ export const scheduleData: ScheduleRow[] = [
     subject: "Biology",
     date: "Mar 27, 2026",
     time: "08:00 - 10:00",
+    status: "Scheduled",
+  },
+];
+
+export const initialSchedules: Schedule[] = [
+  {
+    id: 1,
+    name: "UTS Mathematics",
+    subject: "Mathematics",
+    date: "2026-03-24",
+    startTime: "08:00",
+    endTime: "10:00",
+    status: "Scheduled",
+  },
+  {
+    id: 2,
+    name: "Quiz Physics",
+    subject: "Physics",
+    date: "2026-03-25",
+    startTime: "09:00",
+    endTime: "10:00",
+    status: "Ongoing",
+  },
+  {
+    id: 3,
+    name: "UAS English",
+    subject: "English",
+    date: "2026-03-26",
+    startTime: "10:00",
+    endTime: "11:30",
     status: "Scheduled",
   },
 ];
