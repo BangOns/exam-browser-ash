@@ -23,11 +23,4 @@ export const defaultSubjectTimers: Record<string, string> = {
   History: "90 min",
 };
 
-export const subjectOptions = Object.keys(defaultSubjectTimers);
-export const statusOptions: ExamRow["status"][] = [
-  "Draft",
-  "Scheduled",
-  "Active",
-  "Completed",
-];
 export const statusTabs = ["All", "Active", "Scheduled", "Draft", "Completed"];

@@ -9,13 +9,3 @@ export const emptyTeacher: Teacher = {
   lastLogin: "Never",
   examsCreated: 0,
 };
-
-export const subjectOptions = [
-  "Physics",
-  "Mathematics",
-  "English",
-  "Chemistry",
-  "Biology",
-  "Geography",
-  "History",
-];

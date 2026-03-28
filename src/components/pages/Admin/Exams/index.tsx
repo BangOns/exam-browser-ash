@@ -5,14 +5,13 @@ import { Button } from "@/components/ui/button";
 import PageHeader from "@/components/shared/PageHeader";
 import ExamFormModal from "@/components/feature/Admin/Exams/components/ExamFormModal";
 import SubjectTimerModal from "@/components/feature/Admin/Exams/components/SubjectTimerModal";
-import {
-  subjectOptions,
-  statusOptions,
-  statusTabs,
-} from "@/components/feature/Admin/Exams/constants";
+import { statusTabs } from "@/components/feature/Admin/Exams/constants";
 import { useExamsManagement } from "@/components/feature/Admin/Exams/hooks/useExamsManagement";
 import { statsExams } from "@/data/dummy/exams";
 import InfoCard from "@/components/shared/InfoCard";
+import { subjectOptions } from "@/constants/subjectOption";
+import { statusOptions } from "@/constants/statusOption";
+import { ExamRow } from "@/types/exam";
 
 export default function AdminExamsPage() {
   const {
@@ -96,7 +95,7 @@ export default function AdminExamsPage() {
         setEditingExam={setEditingExam}
         handleSave={handleSave}
         subjectOptions={subjectOptions}
-        statusOptions={statusOptions}
+        statusOptions={statusOptions as ExamRow["status"][]}
         subjectTimers={subjectTimers}
         exams={exams}
       />

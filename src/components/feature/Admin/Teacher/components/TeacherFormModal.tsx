@@ -2,7 +2,7 @@ import Modal from "@/components/ui/Modal";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Teacher } from "@/types/teacher";
-import { subjectOptions } from "../constants";
+import { subjectOptions } from "@/constants/subjectOption";
 
 interface TeacherFormModalProps {
   modalOpen: boolean;

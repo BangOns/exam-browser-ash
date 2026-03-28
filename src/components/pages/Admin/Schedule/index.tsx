@@ -6,7 +6,7 @@ import InfoCard from "@/components/shared/InfoCard";
 import PageHeader from "@/components/shared/PageHeader";
 import SheduleFormModal from "@/components/feature/Admin/Schedule/components/SheduleFormModal";
 import { useScheduleManagement } from "@/components/feature/Admin/Schedule/hooks/useScheduleManagement";
-import { subjectOptions } from "@/components/feature/Admin/Schedule/constant";
+import { subjectOptions } from "@/constants/subjectOption";
 export default function AdminSchedulePage() {
   const {
     schedules,

@@ -3,8 +3,21 @@ export type ExamRow = {
   name: string;
   subject: string;
   questions: number;
+  targetClass?: stringl;
   status: "Active" | "Scheduled" | "Draft" | "Completed";
-  created: string;
+  created?: string;
+  students?: number;
+
   token?: string;
   questionIds?: number[];
 };
+// type Exam = {
+//   id: number;
+//   name: string;
+//   subject: string;
+//   targetClass: string;
+//   questions: number;
+//   students: number;
+//   status: "Active" | "Scheduled" | "Draft" | "Completed";
+//   questionIds: number[];
+// };

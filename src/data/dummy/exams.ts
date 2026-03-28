@@ -1,4 +1,5 @@
 import { ExamRow } from "@/types/exam";
+import { ExamRow as Exam } from "@/types/exam";
 
 export const initialExams: ExamRow[] = [
   {
@@ -71,3 +72,56 @@ export const statsExams = [
     emoji: "📋",
   },
 ];
+export const buildInitialExams = (subject: string): Exam[] =>
+  [
+    {
+      id: 1,
+      name: "UTS Mathematics",
+      subject: "Mathematics",
+      targetClass: "XII IPA 1",
+      questions: 40,
+      students: 45,
+      status: "Active" as const,
+      questionIds: [],
+    },
+    {
+      id: 2,
+      name: "Quiz Physics",
+      subject: "Physics",
+      targetClass: "XII IPA 2",
+      questions: 20,
+      students: 38,
+      status: "Active" as const,
+      questionIds: [],
+    },
+    {
+      id: 3,
+      name: "UAS English",
+      subject: "English",
+      targetClass: "All Classes",
+      questions: 50,
+      students: 0,
+      status: "Scheduled" as const,
+      questionIds: [],
+    },
+    {
+      id: 4,
+      name: "Quiz Chemistry",
+      subject: "Chemistry",
+      targetClass: "XI IPA 1",
+      questions: 15,
+      students: 42,
+      status: "Completed" as const,
+      questionIds: [],
+    },
+    {
+      id: 5,
+      name: "UTS Biology",
+      subject: "Biology",
+      targetClass: "XI IPA 2",
+      questions: 35,
+      students: 0,
+      status: "Draft" as const,
+      questionIds: [],
+    },
+  ].filter((e) => e.subject === subject);

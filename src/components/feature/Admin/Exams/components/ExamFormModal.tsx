@@ -1,5 +1,4 @@
 import Modal from "@/components/ui/Modal";
-import React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ExamRow } from "@/types/exam";
