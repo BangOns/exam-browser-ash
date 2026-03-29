@@ -7,9 +7,13 @@ export type ExamRow = {
   status: "Active" | "Scheduled" | "Draft" | "Completed";
   created?: string;
   students?: number;
-
   token?: string;
   questionIds?: number[];
+};
+export type ExamQuestionNow = Omit<ExamRow, "status"> & {
+  startsIn: string;
+  status: "available" | "upcoming" | "completed";
+  duration: string;
 };
 // type Exam = {
 //   id: number;

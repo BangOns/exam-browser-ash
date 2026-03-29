@@ -9,3 +9,8 @@ export type ResultRow = {
   /** Links to a StudentSubmission.id */
   submissionId: string;
 };
+
+export type ResultStudent = Pick<
+  ResultRow,
+  "exam" | "score" | "grade" | "date"
+>;

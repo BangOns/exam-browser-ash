@@ -1,5 +1,6 @@
 import { ExamRow } from "@/types/exam";
 import { ExamRow as Exam } from "@/types/exam";
+import { ExamQuestionNow } from "@/types/exam";
 
 export const initialExams: ExamRow[] = [
   {
@@ -125,3 +126,41 @@ export const buildInitialExams = (subject: string): Exam[] =>
       questionIds: [],
     },
   ].filter((e) => e.subject === subject);
+export const examsQuestionNow: ExamQuestionNow[] = [
+  {
+    id: 1,
+    name: "UTS Mathematics",
+    subject: "Mathematics",
+    duration: "120 min",
+    questions: 40,
+    startsIn: "2h 30m",
+    status: "available",
+  },
+  {
+    id: 2,
+    name: "Quiz Physics",
+    subject: "Physics",
+    duration: "60 min",
+    questions: 20,
+    startsIn: "Now",
+    status: "available",
+  },
+  {
+    id: 3,
+    name: "UAS English",
+    subject: "English",
+    duration: "90 min",
+    questions: 50,
+    startsIn: "3 days",
+    status: "upcoming",
+  },
+  {
+    id: 4,
+    name: "Quiz Chemistry",
+    subject: "Chemistry",
+    duration: "45 min",
+    questions: 15,
+    startsIn: "5 days",
+    status: "upcoming",
+  },
+];

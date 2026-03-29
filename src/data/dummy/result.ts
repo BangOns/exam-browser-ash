@@ -1,4 +1,4 @@
-import { ResultRow } from "@/types/result";
+import { ResultRow, ResultStudent } from "@/types/result";
 import { StudentSubmission } from "@/types/submission";
 
 export const resultsData: ResultRow[] = [
@@ -100,7 +100,12 @@ export const submissionsData: StudentSubmission[] = [
     answers: [
       { questionId: 2, answer: "A" }, // correct
       { questionId: 9, answer: "A" }, // correct
-      { questionId: 10, answer: "The mitochondria is the powerhouse of the cell. It produces ATP through cellular respiration using oxygen and glucose. The inner membrane folds (cristae) increase surface area for the electron transport chain, generating energy efficiently for cellular processes.", earnedPoints: undefined },
+      {
+        questionId: 10,
+        answer:
+          "The mitochondria is the powerhouse of the cell. It produces ATP through cellular respiration using oxygen and glucose. The inner membrane folds (cristae) increase surface area for the electron transport chain, generating energy efficiently for cellular processes.",
+        earnedPoints: undefined,
+      },
     ],
   },
   {
@@ -111,7 +116,12 @@ export const submissionsData: StudentSubmission[] = [
     answers: [
       { questionId: 2, answer: "A" }, // correct
       { questionId: 9, answer: "B" }, // wrong
-      { questionId: 10, answer: "Mitochondria produce energy in the form of ATP. They do this through oxidative phosphorylation and the Krebs cycle. The electron transport chain on the inner mitochondrial membrane pumps protons to create a gradient that drives ATP synthase.", earnedPoints: undefined },
+      {
+        questionId: 10,
+        answer:
+          "Mitochondria produce energy in the form of ATP. They do this through oxidative phosphorylation and the Krebs cycle. The electron transport chain on the inner mitochondrial membrane pumps protons to create a gradient that drives ATP synthase.",
+        earnedPoints: undefined,
+      },
     ],
   },
   {
@@ -122,7 +132,12 @@ export const submissionsData: StudentSubmission[] = [
     answers: [
       { questionId: 2, answer: "C" }, // wrong
       { questionId: 9, answer: "A" }, // correct
-      { questionId: 10, answer: "Mitochondria make ATP for energy. They have an outer and inner membrane. The inner membrane is folded into cristae. Energy production happens inside.", earnedPoints: undefined },
+      {
+        questionId: 10,
+        answer:
+          "Mitochondria make ATP for energy. They have an outer and inner membrane. The inner membrane is folded into cristae. Energy production happens inside.",
+        earnedPoints: undefined,
+      },
     ],
   },
   {
@@ -133,7 +148,12 @@ export const submissionsData: StudentSubmission[] = [
     answers: [
       { questionId: 1, answer: "A" }, // correct
       { questionId: 7, answer: "A" }, // correct
-      { questionId: 3, answer: "Photosynthesis is the process by which plants use sunlight, water, and carbon dioxide to produce glucose and oxygen. The light-dependent reactions occur in the thylakoids and the Calvin cycle occurs in the stroma. 6CO₂ + 6H₂O + light → C₆H₁₂O₆ + 6O₂.", earnedPoints: undefined },
+      {
+        questionId: 3,
+        answer:
+          "Photosynthesis is the process by which plants use sunlight, water, and carbon dioxide to produce glucose and oxygen. The light-dependent reactions occur in the thylakoids and the Calvin cycle occurs in the stroma. 6CO₂ + 6H₂O + light → C₆H₁₂O₆ + 6O₂.",
+        earnedPoints: undefined,
+      },
     ],
   },
   {
@@ -144,7 +164,12 @@ export const submissionsData: StudentSubmission[] = [
     answers: [
       { questionId: 5, answer: "B" }, // wrong
       { questionId: 11, answer: "A" }, // correct
-      { questionId: 6, answer: "The water cycle involves evaporation from oceans and lakes, condensation into clouds, and precipitation as rain or snow. Water then collects in rivers and groundwater, and the cycle repeats.", earnedPoints: undefined },
+      {
+        questionId: 6,
+        answer:
+          "The water cycle involves evaporation from oceans and lakes, condensation into clouds, and precipitation as rain or snow. Water then collects in rivers and groundwater, and the cycle repeats.",
+        earnedPoints: undefined,
+      },
     ],
   },
   {
@@ -155,7 +180,12 @@ export const submissionsData: StudentSubmission[] = [
     answers: [
       { questionId: 2, answer: "A" }, // correct
       { questionId: 9, answer: "A" }, // correct
-      { questionId: 10, answer: "Mitochondria are double-membraned organelles responsible for aerobic respiration. They generate ATP via the electron transport chain located on the inner mitochondrial membrane (cristae). The matrix houses the Krebs cycle enzymes. They also regulate apoptosis and calcium signaling. Their genome suggests endosymbiotic bacterial origin.", earnedPoints: undefined },
+      {
+        questionId: 10,
+        answer:
+          "Mitochondria are double-membraned organelles responsible for aerobic respiration. They generate ATP via the electron transport chain located on the inner mitochondrial membrane (cristae). The matrix houses the Krebs cycle enzymes. They also regulate apoptosis and calcium signaling. Their genome suggests endosymbiotic bacterial origin.",
+        earnedPoints: undefined,
+      },
     ],
   },
   {
@@ -166,7 +196,12 @@ export const submissionsData: StudentSubmission[] = [
     answers: [
       { questionId: 1, answer: "A" }, // correct
       { questionId: 7, answer: "A" }, // correct
-      { questionId: 3, answer: "Photosynthesis converts light energy to chemical energy stored as glucose. Light reactions split water and produce NADPH and ATP. The Calvin cycle uses these to fix CO₂ into glucose. Plants release O₂ as a byproduct.", earnedPoints: undefined },
+      {
+        questionId: 3,
+        answer:
+          "Photosynthesis converts light energy to chemical energy stored as glucose. Light reactions split water and produce NADPH and ATP. The Calvin cycle uses these to fix CO₂ into glucose. Plants release O₂ as a byproduct.",
+        earnedPoints: undefined,
+      },
     ],
   },
   {
@@ -177,7 +212,18 @@ export const submissionsData: StudentSubmission[] = [
     answers: [
       { questionId: 2, answer: "A" }, // correct
       { questionId: 9, answer: "D" }, // wrong
-      { questionId: 10, answer: "Mitochondria are found in eukaryotic cells and produce ATP through cellular respiration. The process involves glycolysis, the Krebs cycle, and oxidative phosphorylation. Without mitochondria, cells cannot produce enough energy for most functions.", earnedPoints: undefined },
+      {
+        questionId: 10,
+        answer:
+          "Mitochondria are found in eukaryotic cells and produce ATP through cellular respiration. The process involves glycolysis, the Krebs cycle, and oxidative phosphorylation. Without mitochondria, cells cannot produce enough energy for most functions.",
+        earnedPoints: undefined,
+      },
     ],
   },
+];
+
+export const recentResults: ResultStudent[] = [
+  { exam: "Quiz Biology", score: 88, grade: "A-", date: "Mar 20, 2026" },
+  { exam: "UTS Indonesian", score: 76, grade: "B+", date: "Mar 18, 2026" },
+  { exam: "Quiz History", score: 92, grade: "A", date: "Mar 15, 2026" },
 ];
