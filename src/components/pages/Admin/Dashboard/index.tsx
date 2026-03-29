@@ -1,7 +1,6 @@
 import StatCard from "@/components/ui/StatCard";
 import DataTable from "@/components/ui/DataTable";
-import { UserRow } from "@/types/user";
-import { ScheduleRow } from "@/types/schedule";
+
 import { usersData } from "@/data/dummy/user";
 import { scheduleData } from "@/data/dummy/schedule";
 import { statsData } from "@/data/dummy/stats";
