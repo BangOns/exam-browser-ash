@@ -14,7 +14,7 @@ export default function TeacherDashboardPage() {
     <article className="space-y-8">
       {/* Page header */}
       <PageHeader
-        title="Admin Dashboard"
+        title="Teacher Dashboard"
         description="Manage your exams, questions, and monitor student progress"
       />
 

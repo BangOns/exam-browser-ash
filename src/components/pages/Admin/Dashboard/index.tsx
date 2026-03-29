@@ -8,53 +8,12 @@ import { statsData } from "@/data/dummy/stats";
 import PageHeader from "@/components/shared/PageHeader";
 import Link from "next/link";
 import RecentNotif from "@/components/feature/Admin/Dashboard/components/RecentNotif";
-
-const userColumns = [
-  { key: "name", label: "Name" },
-  { key: "email", label: "Email" },
-  {
-    key: "role",
-    label: "Role",
-    render: (row: UserRow) => (
-      <span
-        className={`badge ${row.role === "Teacher" ? "badge-info" : "badge-neutral"}`}
-      >
-        {row.role}
-      </span>
-    ),
-  },
-  {
-    key: "status",
-    label: "Status",
-    render: (row: UserRow) => (
-      <span
-        className={`badge ${row.status === "Active" ? "badge-success" : "badge-danger"}`}
-      >
-        {row.status}
-      </span>
-    ),
-  },
-];
-
-const scheduleColumns = [
-  { key: "exam", label: "Exam Name" },
-  { key: "subject", label: "Subject" },
-  { key: "date", label: "Date" },
-  { key: "time", label: "Time" },
-  {
-    key: "status",
-    label: "Status",
-    render: (row: ScheduleRow) => (
-      <span
-        className={`badge ${row.status === "In Progress" ? "badge-warning" : "badge-info"}`}
-      >
-        {row.status}
-      </span>
-    ),
-  },
-];
+import { DashboardUserColumns } from "@/components/feature/Admin/Dashboard/components/DashboardUserColumns";
+import { DashboardScheduleColumns } from "@/components/feature/Admin/Dashboard/components/DashboardScheduleColumns";
 
 export default function AdminDashboard() {
+  const userColumns = DashboardUserColumns();
+  const scheduleColumns = DashboardScheduleColumns();
   return (
     <article className="space-y-8">
       {/* Page header */}
