@@ -1,4 +1,4 @@
-import { Student } from "@/types/student";
+import { Student, StudentSession } from "@/types/student";
 
 export const initialStudents: Student[] = [
   {
@@ -50,5 +50,79 @@ export const initialStudents: Student[] = [
     lastLogin: "1 week ago",
     examsTaken: 2,
     avgScore: 65,
+  },
+];
+export const studentsSessions: StudentSession[] = [
+  {
+    name: "Siti Nurhaliza",
+    status: "active",
+    progress: 72,
+    timeLeft: "28:15",
+    violations: 0,
+    currentQuestion: 15,
+    totalQuestions: 20,
+  },
+  {
+    name: "Reza Pratama",
+    status: "idle",
+    progress: 45,
+    timeLeft: "35:42",
+    violations: 0,
+    currentQuestion: 9,
+    totalQuestions: 20,
+  },
+  {
+    name: "Budi Santoso",
+    status: "flagged",
+    progress: 30,
+    timeLeft: "42:30",
+    violations: 2,
+    currentQuestion: 6,
+    totalQuestions: 20,
+  },
+  {
+    name: "Maya Anggraeni",
+    status: "active",
+    progress: 85,
+    timeLeft: "12:18",
+    violations: 0,
+    currentQuestion: 17,
+    totalQuestions: 20,
+  },
+  {
+    name: "Andi Wijaya",
+    status: "flagged",
+    progress: 55,
+    timeLeft: "25:00",
+    violations: 1,
+    currentQuestion: 11,
+    totalQuestions: 20,
+  },
+  {
+    name: "Putri Handayani",
+    status: "active",
+    progress: 60,
+    timeLeft: "31:45",
+    violations: 0,
+    currentQuestion: 12,
+    totalQuestions: 20,
+  },
+  {
+    name: "Dani Saputra",
+    status: "completed",
+    progress: 100,
+    timeLeft: "00:00",
+    violations: 0,
+    currentQuestion: 20,
+    totalQuestions: 20,
+  },
+  {
+    name: "Lina Marlina",
+    status: "active",
+    progress: 40,
+    timeLeft: "38:20",
+    violations: 0,
+    currentQuestion: 8,
+    totalQuestions: 20,
   },
 ];

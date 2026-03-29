@@ -3,7 +3,7 @@
 import DataTable from "@/components/ui/DataTable";
 import { Button } from "@/components/ui/button";
 import { initialQuestions } from "@/data/dummy/questions";
-import QuestionPickerModal from "@/components/feature/Teacher/Exams/QuestionPickerModal";
+import QuestionPickerModal from "@/components/feature/Teacher/Exams/components/QuestionPickerModal";
 import PageHeader from "@/components/shared/PageHeader";
 import InfoCard from "@/components/shared/InfoCard";
 import { useExamTeacherManagement } from "@/components/feature/Teacher/Exams/hooks/useExamManagement";

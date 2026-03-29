@@ -33,7 +33,7 @@ export default function AdminExamsPage() {
   } = useExamsManagement();
 
   return (
-    <section className="space-y-6">
+    <article className="space-y-6">
       <header className="flex items-center justify-between flex-wrap gap-4">
         <PageHeader
           title="Exam Management"
@@ -64,7 +64,7 @@ export default function AdminExamsPage() {
       </section>
 
       {/* Filter tabs */}
-      <div className="flex gap-2 flex-wrap">
+      <section className="flex gap-2 flex-wrap">
         {statusTabs.map((tab) => (
           <Button
             key={tab}
@@ -78,7 +78,7 @@ export default function AdminExamsPage() {
             {tab}
           </Button>
         ))}
-      </div>
+      </section>
       <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
         <DataTable
           columns={columns}
@@ -107,6 +107,6 @@ export default function AdminExamsPage() {
         subjectTimers={subjectTimers}
         setSubjectTimers={setSubjectTimers}
       />
-    </section>
+    </article>
   );
 }

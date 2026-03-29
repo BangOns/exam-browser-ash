@@ -21,8 +21,11 @@ export function useExamTeacherManagement() {
   const [pickerOpen, setPickerOpen] = useState(false);
   const [pickerExam, setPickerExam] = useState<Exam | null>(null);
 
-  const filtered =
-    activeTab === "All" ? exams : exams.filter((e) => e.status === activeTab);
+  const filtered = useMemo(() => {
+    return activeTab === "All"
+      ? exams
+      : exams.filter((e) => e.status === activeTab);
+  }, [activeTab, exams]);
 
   const openAdd = useCallback(() => {
     setEditingExam({ ...emptyExam(teacherSubject), id: Date.now() });
