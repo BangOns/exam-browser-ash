@@ -95,7 +95,11 @@ export default function TeacherQuestionsPage() {
         </div>
       </section>
       <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
-        <DataTable columns={columns} data={filtered} />
+        <DataTable
+          columns={columns}
+          data={filtered}
+          className="col-span-full"
+        />
       </section>
 
       {/* Add/Edit Modal */}

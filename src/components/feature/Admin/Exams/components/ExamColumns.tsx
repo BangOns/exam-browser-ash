@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { ExamRow } from "@/types/exam";
 
 export function columnsTableExams(
-  subjectTimers: Record<string, string>,
   generateToken: (id: number) => void,
   openEdit: (exam: ExamRow) => void,
   deleteConfirm: number | null,
@@ -28,9 +27,7 @@ export function columnsTableExams(
     {
       key: "duration",
       label: "Duration",
-      render: (row: ExamRow) => (
-        <span>{subjectTimers[row.subject] || "60 min"}</span>
-      ),
+      render: (row: ExamRow) => <span>{row.timer || "60 min"}</span>,
     },
     {
       key: "status",

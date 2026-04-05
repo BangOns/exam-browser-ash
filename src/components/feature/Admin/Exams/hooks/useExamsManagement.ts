@@ -1,15 +1,13 @@
 import { useState, useMemo, useCallback } from "react";
 import { ExamRow } from "@/types/exam";
 import { initialExams } from "@/data/dummy/exams";
-import { defaultSubjectTimers } from "@/components/feature/Admin/Exams/constants";
 import { columnsTableExams } from "@/components/feature/Admin/Exams/components/ExamColumns";
 import { emptyExam } from "@/components/feature/Admin/Exams/constants";
 export function useExamsManagement() {
   const [exams, setExams] = useState<ExamRow[]>(initialExams);
-  const [subjectTimers, setSubjectTimers] =
-    useState<Record<string, string>>(defaultSubjectTimers);
+  // const [subjectTimers, setSubjectTimers] =
+  //   useState<Record<string, string>>(defaultSubjectTimers);
   const [modalOpen, setModalOpen] = useState(false);
-  const [timerModalOpen, setTimerModalOpen] = useState(false);
   const [editingExam, setEditingExam] = useState<ExamRow | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState("All");
@@ -83,20 +81,17 @@ export function useExamsManagement() {
   const columns = useMemo(
     () =>
       columnsTableExams(
-        subjectTimers,
         generateToken,
         openEdit,
         deleteConfirm,
         setDeleteConfirm,
         handleDelete,
       ),
-    [subjectTimers, generateToken, openEdit, deleteConfirm, handleDelete],
+    [generateToken, openEdit, deleteConfirm, handleDelete],
   );
   return {
     exams,
-    subjectTimers,
     modalOpen,
-    timerModalOpen,
     editingExam,
     deleteConfirm,
     activeTab,
@@ -108,10 +103,8 @@ export function useExamsManagement() {
     handleDelete,
     columns,
     setModalOpen,
-    setTimerModalOpen,
     setEditingExam,
     setDeleteConfirm,
     setActiveTab,
-    setSubjectTimers,
   };
 }

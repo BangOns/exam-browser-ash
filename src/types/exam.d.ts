@@ -9,6 +9,7 @@ export type ExamRow = {
   students?: number;
   token?: string;
   questionIds?: number[];
+  timer?: number;
 };
 export type ExamQuestionNow = Omit<ExamRow, "status"> & {
   startsIn: string;

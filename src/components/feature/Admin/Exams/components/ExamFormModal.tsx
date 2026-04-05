@@ -1,6 +1,14 @@
 import Modal from "@/components/ui/Modal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { ExamRow } from "@/types/exam";
 
 export default function ExamFormModal({
@@ -11,7 +19,6 @@ export default function ExamFormModal({
   handleSave,
   subjectOptions,
   statusOptions,
-  subjectTimers,
   exams,
 }: {
   modalOpen: boolean;
@@ -21,9 +28,9 @@ export default function ExamFormModal({
   handleSave: () => void;
   subjectOptions: string[];
   statusOptions: ExamRow["status"][];
-  subjectTimers: Record<string, string>;
   exams: ExamRow[];
 }) {
+  const listTimer = [30, 60, 90, 120, 150, 180];
   return (
     <Modal
       isOpen={modalOpen}
@@ -42,11 +49,9 @@ export default function ExamFormModal({
             </label>
             <Input
               type="text"
+              disabled
               className="h-10 w-full px-4 rounded-xl border-slate-200 text-sm focus-visible:ring-2 focus-visible:ring-indigo-500/30 focus-visible:border-indigo-500 transition-all shadow-none"
               value={editingExam.name}
-              onChange={(e) =>
-                setEditingExam({ ...editingExam, name: e.target.value })
-              }
               placeholder="e.g. UTS Mathematics"
             />
           </div>
@@ -56,28 +61,50 @@ export default function ExamFormModal({
               <label className="block text-sm font-semibold text-slate-700 mb-1.5">
                 Subject
               </label>
-              <select
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all bg-white"
+              <Select
+                disabled
                 value={editingExam.subject}
-                onChange={(e) =>
-                  setEditingExam({ ...editingExam, subject: e.target.value })
+                onValueChange={(value) =>
+                  setEditingExam({ ...editingExam, subject: value as string })
                 }
               >
-                {subjectOptions.map((s) => (
-                  <option key={s} value={s}>
-                    {s}
-                  </option>
-                ))}
-              </select>
+                <SelectTrigger className="h-10! w-full px-4 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all bg-white">
+                  <SelectValue placeholder="Select Subject" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {subjectOptions.map((s) => (
+                      <SelectItem key={s} value={s}>
+                        {s}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-1.5">
-                Global Duration Override
+                Timer
               </label>
-              <div className="w-full px-4 py-2.5 rounded-xl border border-slate-100 bg-slate-50 text-slate-500 text-sm italic">
-                Inherits {subjectTimers[editingExam.subject] || "60 min"} from
-                Subject settings
-              </div>
+              <Select
+                value={editingExam.timer}
+                onValueChange={(value) =>
+                  setEditingExam({ ...editingExam, timer: value as number })
+                }
+              >
+                <SelectTrigger className="h-10! w-full px-4 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all bg-white">
+                  <SelectValue placeholder="Select Subject" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {listTimer.map((s) => (
+                      <SelectItem key={s} value={s}>
+                        {s} minutes
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
@@ -89,36 +116,37 @@ export default function ExamFormModal({
               <Input
                 type="number"
                 min={1}
-                className="h-10 w-full px-4 rounded-xl border-slate-200 text-sm focus-visible:ring-2 focus-visible:ring-indigo-500/30 focus-visible:border-indigo-500 transition-all shadow-none"
+                disabled
+                className="h-10  w-full px-4 rounded-xl border-slate-200 text-sm focus-visible:ring-2 focus-visible:ring-indigo-500/30 focus-visible:border-indigo-500 transition-all shadow-none"
                 value={editingExam.questions}
-                onChange={(e) =>
-                  setEditingExam({
-                    ...editingExam,
-                    questions: parseInt(e.target.value) || 0,
-                  })
-                }
               />
             </div>
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-1.5">
                 Status
               </label>
-              <select
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all bg-white"
+              <Select
                 value={editingExam.status}
-                onChange={(e) =>
+                onValueChange={(value) =>
                   setEditingExam({
                     ...editingExam,
-                    status: e.target.value as ExamRow["status"],
+                    status: value as ExamRow["status"],
                   })
                 }
               >
-                {statusOptions.map((s) => (
-                  <option key={s} value={s}>
-                    {s}
-                  </option>
-                ))}
-              </select>
+                <SelectTrigger className="h-10! w-full px-4 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all bg-white">
+                  <SelectValue placeholder="Select Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {statusOptions.map((s) => (
+                      <SelectItem key={s} value={s}>
+                        {s}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
           </div>
 

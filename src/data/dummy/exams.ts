@@ -11,6 +11,7 @@ export const initialExams: ExamRow[] = [
     status: "Active",
     created: "Mar 10, 2026",
     token: "MATH123",
+    timer: 120,
   },
   {
     id: 2,
@@ -19,6 +20,7 @@ export const initialExams: ExamRow[] = [
     questions: 50,
     status: "Scheduled",
     created: "Mar 12, 2026",
+    timer: 120,
   },
   {
     id: 3,
@@ -28,6 +30,7 @@ export const initialExams: ExamRow[] = [
     status: "Active",
     created: "Mar 15, 2026",
     token: "PHYS55",
+    timer: 120,
   },
   {
     id: 4,
@@ -36,6 +39,7 @@ export const initialExams: ExamRow[] = [
     questions: 35,
     status: "Draft",
     created: "Mar 18, 2026",
+    timer: 120,
   },
   {
     id: 5,
@@ -44,6 +48,7 @@ export const initialExams: ExamRow[] = [
     questions: 15,
     status: "Completed",
     created: "Mar 5, 2026",
+    timer: 120,
   },
   {
     id: 6,
@@ -52,6 +57,7 @@ export const initialExams: ExamRow[] = [
     questions: 30,
     status: "Scheduled",
     created: "Mar 20, 2026",
+    timer: 120,
   },
 ];
 

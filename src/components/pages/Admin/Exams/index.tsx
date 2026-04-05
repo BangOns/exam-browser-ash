@@ -16,20 +16,15 @@ import { ExamRow } from "@/types/exam";
 export default function AdminExamsPage() {
   const {
     exams,
-    subjectTimers,
     modalOpen,
-    timerModalOpen,
     editingExam,
     activeTab,
     filtered,
-    openAdd,
     handleSave,
     columns,
     setModalOpen,
-    setTimerModalOpen,
     setEditingExam,
     setActiveTab,
-    setSubjectTimers,
   } = useExamsManagement();
 
   return (
@@ -39,7 +34,7 @@ export default function AdminExamsPage() {
           title="Exam Management"
           description="Create exams, manage tokens, and configure global subject timers"
         />
-        <div className="flex gap-3">
+        {/* <div className="flex gap-3">
           <Button
             variant="secondary"
             onClick={() => setTimerModalOpen(true)}
@@ -53,7 +48,7 @@ export default function AdminExamsPage() {
           >
             + Create Exam
           </Button>
-        </div>
+        </div> */}
       </header>
 
       {/* Summary Stats */}
@@ -96,17 +91,16 @@ export default function AdminExamsPage() {
         handleSave={handleSave}
         subjectOptions={subjectOptions}
         statusOptions={statusOptions as ExamRow["status"][]}
-        subjectTimers={subjectTimers}
         exams={exams}
       />
 
       {/* Timer Configuration Modal */}
-      <SubjectTimerModal
+      {/* <SubjectTimerModal
         timerModalOpen={timerModalOpen}
         setTimerModalOpen={setTimerModalOpen}
         subjectTimers={subjectTimers}
         setSubjectTimers={setSubjectTimers}
-      />
+      /> */}
     </article>
   );
 }
