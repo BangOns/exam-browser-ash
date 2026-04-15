@@ -4,33 +4,24 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { loginUser } from "@/lib/auth";
+import { useAuth } from "@/context/Auth/AuthContext";
 export default function FormLogin() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const { login, user } = useAuth();
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password) {
-      setError("Please put in both email and password.");
+    if (!username || !password) {
+      setError("Please put in both username and password.");
       return;
     }
 
     // Using mock credentials logic
-    const user = loginUser(email);
-    if (user) {
-      setError("");
-      // Redirect based on role
-      if (user.role === "admin") router.push("/admin");
-      if (user.role === "teacher") router.push("/teacher");
-      if (user.role === "student") router.push("/student");
-    } else {
-      setError(
-        "Invalid credentials. Please try admin@school.id, teacher@school.id, or student@school.id.",
-      );
-    }
+    const resp = await login(username, password);
+    console.log(resp);
   };
   return (
     <form onSubmit={handleLogin} className="space-y-6">
@@ -41,14 +32,12 @@ export default function FormLogin() {
       )}
 
       <section className="space-y-2">
-        <Label className="text-sm font-medium text-slate-700">
-          Email Address
-        </Label>
+        <Label className="text-sm font-medium text-slate-700">username</Label>
         <Input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="admin@school.id"
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="masukan username"
           className="h-12 px-4 rounded-xl bg-slate-50 border-slate-200 focus-visible:ring-2 focus-visible:ring-indigo-500/20 focus-visible:border-indigo-500 transition-all duration-300 shadow-none text-base"
         />
       </section>
