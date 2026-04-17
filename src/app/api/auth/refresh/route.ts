@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { ApiResponse } from "@/types/response";
+import { RefreshResponse } from "@/types/refresh";
 
 export async function POST(req: Request) {
   const url = process.env.API_URL;
@@ -16,7 +18,6 @@ export async function POST(req: Request) {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${refreshToken}`,
-      Cookie: `refresh_token=${refreshToken}`,
     },
   });
 
@@ -27,9 +28,18 @@ export async function POST(req: Request) {
     );
   }
 
-  const data = await request.json();
+  const data = (await request.json()) as ApiResponse<RefreshResponse>;
 
-  return NextResponse.json({
-    access_token: data.access_token,
+  const response = NextResponse.json({
+    access_token: data.data.token,
   });
+
+  response.cookies.set("access_token", data.data.token, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "strict",
+    maxAge: 60 * 60 * 24 * 7,
+  });
+
+  return response;
 }

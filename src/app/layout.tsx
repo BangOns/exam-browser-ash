@@ -3,7 +3,7 @@ import { Inter, Geist } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import AuthInitializer from "@/components/layout/AuthInitializer";
-import AuthProvider from "@/components/layout/AuthProvider";
+import ContextProvider from "@/components/layout/ContextProvider";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -38,10 +38,10 @@ export default function RootLayout({
         suppressHydrationWarning={true}
         className="min-h-full flex flex-col font-sans"
       >
-        <AuthProvider>
+        <ContextProvider>
           <AuthInitializer />
           {children}
-        </AuthProvider>
+        </ContextProvider>
       </body>
     </html>
   );

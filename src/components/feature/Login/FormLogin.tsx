@@ -12,16 +12,21 @@ export default function FormLogin() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!username || !password) {
       setError("Please put in both username and password.");
       return;
     }
-
-    // Using mock credentials logic
-    const resp = await login(username, password);
-    console.log(resp);
+    try {
+      // Using mock credentials logic
+      const data = await login(username, password);
+      if (data) {
+        router.push(`/${user?.role}`);
+      }
+    } catch (error) {
+      setError(error as string);
+    }
   };
   return (
     <form onSubmit={handleLogin} className="space-y-6">
