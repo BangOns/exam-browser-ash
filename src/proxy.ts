@@ -32,6 +32,6 @@ export function proxy(request: NextRequest) {
   return NextResponse.next();
 }
 
-export const config = {
-  matcher: "/about/:path*",
-};
+// export const config = {
+//   matcher: "/about/:path*",
+// };

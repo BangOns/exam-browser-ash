@@ -7,11 +7,10 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/Auth/AuthContext";
 export default function FormLogin() {
   const router = useRouter();
-  const { login, user } = useAuth();
+  const { login, loading } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!username || !password) {
@@ -19,13 +18,21 @@ export default function FormLogin() {
       return;
     }
     try {
-      // Using mock credentials logic
-      const data = await login(username, password);
-      if (data) {
-        router.push(`/${user?.role}`);
+      const result = await login(username, password);
+      // Kalau login() return string, berarti error message
+      if (typeof result === "string") {
+        setError(result);
+        return;
+      }
+
+      // result adalah User object
+      if (result) {
+        router.push(`/${result.role}`);
       }
     } catch (error) {
-      setError(error as string);
+      console.log(error);
+
+      setError(error instanceof Error ? error.message : "Login gagal");
     }
   };
   return (
@@ -60,6 +67,7 @@ export default function FormLogin() {
 
       <Button
         type="submit"
+        disabled={loading}
         className="w-full h-[52px] bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl shadow-lg shadow-indigo-200 transition-all duration-300 text-base"
       >
         Sign In

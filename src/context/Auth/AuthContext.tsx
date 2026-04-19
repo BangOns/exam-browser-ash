@@ -20,38 +20,52 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // 🔑 LOGIN
   const login = async (username: string, password: string) => {
+    setLoading(true);
     try {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         body: JSON.stringify({ username, password }),
       });
-      if (!res.ok) throw new Error("Login gagal");
 
+      if (!res.ok) {
+        const data = (await res.json()) as ApiResponse<DataUserLogin>;
+        throw new Error(data.message || "Login gagal");
+      }
       const data = (await res.json()) as ApiResponse<DataUserLogin>;
       setAccessToken(data.data.token);
+      console.log(data);
 
       setUser(data.data.user);
       return data.data.user;
     } catch (err: Error | unknown) {
       if (err instanceof Error) {
+        console.log(err);
+
         return err.message || "Login gagal";
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   // 🚪 LOGOUT
   const logout = async () => {
-    await fetch("/api/logout", {
-      method: "POST",
-      credentials: "include",
-    });
-
-    setAccessToken(null);
-    setUser(null);
+    setLoading(false);
+    try {
+      await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch (error) {
+    } finally {
+      setLoading(false);
+      setAccessToken(null);
+      setUser(null);
+    }
 
     window.location.href = "/";
   };

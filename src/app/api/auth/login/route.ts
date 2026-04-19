@@ -18,33 +18,37 @@ export async function POST(req: Request) {
       },
     });
     if (!request.ok) {
-      throw new Error("Login gagal");
+      const errorData = await request.json();
+      throw new Error(errorData.message || "Login gagal");
     }
     const data = (await request.json()) as ApiResponse<DataUserLogin>;
     const response = NextResponse.json(data);
+    const isProduction = process.env.NODE_ENV === "production";
 
     response.cookies.set("refresh_token", data.data.refresh_token, {
       httpOnly: true,
-      secure: true,
+      secure: isProduction,
       sameSite: "strict",
       maxAge: 60 * 60 * 24 * 7,
     });
     response.cookies.set("access_token", data.data.token, {
       httpOnly: true,
-      secure: true,
+      secure: isProduction,
       sameSite: "strict",
       maxAge: 60 * 60 * 24 * 7,
     });
     response.cookies.set("role", data.data.user.role, {
       httpOnly: true,
-      secure: true,
+      secure: isProduction,
       sameSite: "strict",
       maxAge: 60 * 60 * 24 * 7,
     });
 
     return response;
   } catch (error) {
-    console.log(error);
-    return NextResponse.json({ message: "Login gagal" }, { status: 500 });
+    return NextResponse.json(
+      { message: error instanceof Error ? error.message : "Login gagal" },
+      { status: 500 },
+    );
   }
 }

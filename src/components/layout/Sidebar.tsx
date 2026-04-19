@@ -10,6 +10,7 @@ import {
   SquareArrowRightExit,
   X,
 } from "lucide-react";
+import { useAuth } from "@/context/Auth/AuthContext";
 
 export default function Sidebar({
   role,
@@ -24,6 +25,7 @@ export default function Sidebar({
   isMobile?: boolean;
   onCloseMobile?: () => void;
 }) {
+  const { logout } = useAuth();
   const pathname = usePathname();
   const config = navConfig[role];
   if (!config) return null;
@@ -143,17 +145,16 @@ export default function Sidebar({
 
       {/* Bottom: Logout */}
       <section className="p-3 border-t border-white/5">
-        <Link
-          href="/"
-          onClick={handleNavClick}
-          className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-sidebar-text hover:text-red-400 hover:bg-red-500/10 transition-all duration-200 ${
+        <Button
+          onClick={logout}
+          className={` w-full cursor-pointer flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-sidebar-text hover:text-red-400 hover:bg-red-500/10 transition-all duration-200 ${
             collapsed && !isMobile ? "justify-center" : ""
           }`}
           title={collapsed && !isMobile ? "Logout" : undefined}
         >
           <SquareArrowRightExit />
           {(!collapsed || isMobile) && <span>Logout</span>}
-        </Link>
+        </Button>
       </section>
     </aside>
   );

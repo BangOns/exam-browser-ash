@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { getCurrentUser, User } from "@/lib/auth";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { useAuth } from "@/context/Auth/AuthContext";
 
 export default function DashboardLayout({
   role,
@@ -15,24 +16,20 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-
+  const { user } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const currentUser = getCurrentUser();
-
-    if (!currentUser || currentUser.role !== role) {
+    if (!user || user.role !== role) {
       router.push("/");
     } else {
-      setUser(currentUser);
       setMounted(true);
     }
-  }, [role, router]);
+  }, [role, router, user]);
 
-  const isAuthorized = user && user.role === role;
+  const isAuthorized = useMemo(() => user && user.role === role, [user, role]);
 
   if (!mounted || !isAuthorized) {
     return (
