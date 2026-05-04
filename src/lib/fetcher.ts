@@ -1,14 +1,14 @@
-import { ApiResponse } from "@/types/response";
+import { ApiResponse } from "@/types/api-response";
 import { getAccessToken, setAccessToken } from "./token";
 
 let isRefreshing = false;
-let queue: (() => void)[] = [];
+let queue: Array<(token: string | null) => void> = [];
 
-const waitForRefresh = () =>
-  new Promise<void>((resolve) => queue.push(resolve));
+const waitForRefresh = (): Promise<string | null> =>
+  new Promise((resolve) => queue.push(resolve));
 
-const notifyAll = () => {
-  queue.forEach((resolve) => resolve());
+const notifyAll = (token: string | null) => {
+  queue.forEach((resolve) => resolve(token));
   queue = [];
 };
 
@@ -22,42 +22,35 @@ export const fetchWithAuth = async <T>(
   const res = await fetch(input, {
     ...init,
     headers: {
+      "Content-Type": "application/json", // ✅ default
       ...(init.headers || {}),
       Authorization: token ? `Bearer ${token}` : "",
     },
     credentials: "include",
   });
 
-  // ✅ kalau bukan 401
   if (res.status !== 401) {
-    const data = await res.json();
+    const data = (await res.json()) as ApiResponse<T>;
 
     if (!res.ok) {
-      throw {
-        status: res.status,
-        data,
-      };
+      throw { status: res.status, data };
     }
 
     return {
-      data,
-      status: res.status,
+      data: data.data,
+      status: data.status,
       message: data.message,
-      code: data.code,
+      meta: data.meta,
     };
   }
 
-  // ❌ kalau sudah retry tapi masih 401
   if (!retry) {
-    throw {
-      status: 401,
-      data: null,
-    };
+    throw { status: 401, data: null };
   }
 
-  // 🔁 kalau lagi refresh → tunggu
   if (isRefreshing) {
-    await waitForRefresh();
+    const newToken = await waitForRefresh();
+    if (!newToken) throw { status: 401, data: null };
     return fetchWithAuth<T>(input, init, false);
   }
 
@@ -69,18 +62,23 @@ export const fetchWithAuth = async <T>(
       credentials: "include",
     });
 
-    if (!refreshRes.ok) {
-      throw new Error("Refresh failed");
-    }
+    if (!refreshRes.ok) throw new Error("Refresh failed");
 
     const refreshData = await refreshRes.json();
-    setAccessToken(refreshData.access_token);
+    const newToken: string = refreshData.access_token;
 
-    notifyAll();
+    if (!newToken) throw new Error("No token in refresh response"); // ✅
 
-    return fetchWithAuth<T>(input, init, false);
+    setAccessToken(newToken);
+    notifyAll(newToken);
+
+    const result = await fetchWithAuth<T>(input, init, false);
+    return result;
   } catch (err) {
-    window.location.href = "/";
+    notifyAll(null); // ✅ selalu jalan sebelum redirect
+    if (typeof window !== "undefined") {
+      window.location.href = "/"; // ✅ aman di server
+    }
     throw err;
   } finally {
     isRefreshing = false;

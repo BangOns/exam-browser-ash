@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/table";
 import { Card } from "@/components/ui/card";
 
-export default function DataTable<T extends Record<string, unknown>>({
+export default function DataTable<T>({
   columns,
   data,
   title,
@@ -55,7 +55,7 @@ export default function DataTable<T extends Record<string, unknown>>({
                   <TableCell key={col.key}>
                     {col.render
                       ? col.render(row)
-                      : ((row[col.key] as React.ReactNode) ?? "—")}
+                      : ((row[col.key as keyof T] as React.ReactNode) ?? "—")}
                   </TableCell>
                 ))}
               </TableRow>

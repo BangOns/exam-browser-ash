@@ -22,10 +22,14 @@ export async function POST(req: Request) {
   });
 
   if (!request.ok) {
-    return NextResponse.json(
+    const response = NextResponse.json(
       { message: "Refresh failed" },
       { status: request.status },
     );
+    response.cookies.delete("refresh_token");
+    response.cookies.delete("access_token");
+    response.cookies.delete("role");
+    return response;
   }
 
   const data = (await request.json()) as ApiResponse<RefreshResponse>;

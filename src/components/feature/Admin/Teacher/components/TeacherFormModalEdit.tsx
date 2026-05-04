@@ -1,13 +1,14 @@
 import Modal from "@/components/ui/Modal";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { TeacherRequest } from "@/types/teacher";
+import { TeacherRequest, TeacherRequestEdit } from "@/types/teacher";
+import { useState } from "react";
 
 interface TeacherFormModalProps {
   modalOpen: boolean;
   setModalOpen: (open: boolean) => void;
-  editing: TeacherRequest;
-  setEditing: React.Dispatch<React.SetStateAction<TeacherRequest | null>>;
+  editing: TeacherRequestEdit;
+  setEditing: React.Dispatch<React.SetStateAction<TeacherRequestEdit | null>>;
   handleSave: () => void;
   classOptions?: Options[];
   subjectOptions?: Options[];
@@ -17,7 +18,7 @@ interface Options {
   value: string;
 }
 
-export default function TeacherFormModal({
+export default function TeacherFormModalEdit({
   modalOpen,
   setModalOpen,
   editing,
@@ -26,6 +27,11 @@ export default function TeacherFormModal({
   classOptions,
   subjectOptions,
 }: TeacherFormModalProps) {
+  const [openPassword, setOpenPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setOpenPassword((prev) => !prev);
+  };
   return (
     <Modal
       isOpen={modalOpen}
@@ -64,20 +70,39 @@ export default function TeacherFormModal({
           />
         </div>
         {/* Password */}
-        <div>
-          <label className="block text-sm font-semibold text-slate-700 mb-1.5">
-            password
-          </label>
-          <Input
-            type="password"
-            className="h-10 w-full px-4 rounded-xl border-slate-200 text-sm focus-visible:ring-2 focus-visible:ring-indigo-500/30 focus-visible:border-indigo-500 transition-all shadow-none"
-            value={editing?.password || ""}
-            onChange={(e) =>
-              setEditing({ ...editing, password: e.target.value })
-            }
-            placeholder="Password"
-          />
-        </div>
+        {openPassword ? (
+          <section className="flex gap-2">
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+                password
+              </label>
+              <Input
+                type="password"
+                className="h-10 w-full px-4 rounded-xl border-slate-200 text-sm focus-visible:ring-2 focus-visible:ring-indigo-500/30 focus-visible:border-indigo-500 transition-all shadow-none"
+                value={editing?.password || ""}
+                onChange={(e) =>
+                  setEditing({ ...editing, password: e.target.value })
+                }
+                placeholder="Password"
+              />
+            </div>
+            <Button
+              type="button"
+              onClick={togglePasswordVisibility}
+              className=" cursor-pointer px-5 py-2.5 h-10 rounded-xl bg-indigo-500 text-white text-sm font-semibold hover:bg-indigo-600 transition-colors shadow-sm"
+            >
+              {openPassword ? "Hide Password" : "Show Password"}
+            </Button>
+          </section>
+        ) : (
+          <Button
+            type="button"
+            onClick={togglePasswordVisibility}
+            className=" cursor-pointer px-5 py-2.5 h-10 rounded-xl bg-indigo-500 text-white text-sm font-semibold hover:bg-indigo-600 transition-colors shadow-sm"
+          >
+            {openPassword ? "Hide Password" : "Show Password"}
+          </Button>
+        )}
         {/* NIP */}
         <div className="grid grid-cols-2 gap-4">
           <div>

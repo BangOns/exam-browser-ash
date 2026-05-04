@@ -4,19 +4,30 @@ import DataTable from "@/components/ui/DataTable";
 import { Button } from "@/components/ui/button";
 import PageHeader from "@/components/shared/PageHeader";
 import InfoCard from "@/components/shared/InfoCard";
-import TeacherFormModal from "@/components/feature/Admin/Teacher/components/TeacherFormModal";
 import { useTeacherManagement } from "@/components/feature/Admin/Teacher/hooks/useTeacherManagement";
-
+import { TeacherRequest, TeacherRequestEdit } from "@/types/teacher";
+import dynamic from "next/dynamic";
+import TeacherFormModalEdit from "@/components/feature/Admin/Teacher/components/TeacherFormModalEdit";
+const TeacherFormModal = dynamic(
+  () =>
+    import("@/components/feature/Admin/Teacher/components/TeacherFormModal"),
+  { ssr: false },
+);
 export default function AdminTeacherListPage() {
   const {
     teachers,
+    classTeacher,
+    subjectTeacher,
     modalOpen,
     editing,
+    editingId,
     openAdd,
     handleSave,
+    handleSaveEdit,
     columns,
     setModalOpen,
     setEditing,
+    setEditingId,
   } = useTeacherManagement();
 
   return (
@@ -28,7 +39,7 @@ export default function AdminTeacherListPage() {
         />
         <Button
           onClick={openAdd}
-          className="px-5 py-2.5 h-10 rounded-xl bg-indigo-500 text-white text-sm font-semibold hover:bg-indigo-600 transition-colors shadow-sm"
+          className=" cursor-pointer px-5 py-2.5 h-10 rounded-xl bg-indigo-500 text-white text-sm font-semibold hover:bg-indigo-600 transition-colors shadow-sm"
         >
           + Add Teacher
         </Button>
@@ -36,21 +47,11 @@ export default function AdminTeacherListPage() {
 
       {/* Summary */}
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-        {[
-          { label: "Total Teachers", value: teachers.length, emoji: "👩‍🏫" },
-          {
-            label: "Active",
-            value: teachers.filter((t) => t.status === "Active").length,
-            emoji: "🟢",
-          },
-          {
-            label: "Total Exams",
-            value: teachers.reduce((s, t) => s + t.examsCreated, 0),
-            emoji: "📝",
-          },
-        ].map((s, i) => (
-          <InfoCard key={i} {...s} />
-        ))}
+        {[{ label: "Total Teachers", value: teachers.length, emoji: "👩‍🏫" }].map(
+          (s, i) => (
+            <InfoCard key={i} {...s} />
+          ),
+        )}
       </div>
 
       <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
@@ -61,15 +62,37 @@ export default function AdminTeacherListPage() {
         />
       </section>
 
-      {/* Add/Edit Modal */}
-      <TeacherFormModal
-        modalOpen={modalOpen}
-        setModalOpen={setModalOpen}
-        editing={editing}
-        setEditing={setEditing}
-        handleSave={handleSave}
-        teachers={teachers}
-      />
+      {/* Add Modal */}
+      {editing && (
+        <TeacherFormModal
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}
+          editing={editing as TeacherRequest}
+          setEditing={setEditing}
+          classOptions={
+            classTeacher?.map((c) => ({ label: c.name, value: c.id })) || []
+          }
+          subjectOptions={
+            subjectTeacher?.map((s) => ({ label: s.name, value: s.id })) || []
+          }
+          handleSave={handleSave}
+        />
+      )}
+      {editingId && (
+        <TeacherFormModalEdit
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}
+          editing={editingId as TeacherRequestEdit}
+          setEditing={setEditingId}
+          classOptions={
+            classTeacher?.map((c) => ({ label: c.name, value: c.id })) || []
+          }
+          subjectOptions={
+            subjectTeacher?.map((s) => ({ label: s.name, value: s.id })) || []
+          }
+          handleSave={handleSaveEdit}
+        />
+      )}
     </div>
   );
 }

@@ -1,19 +1,23 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useAuth } from "../../context/Auth/AuthContext";
 import { getAccessToken, setAccessToken } from "@/lib/token";
 import { useRouter } from "next/navigation";
-import { ApiResponse } from "@/types/response";
 import { User } from "@/types/user";
 
 export default function AuthInitializer() {
-  const { setUser } = useAuth();
+  const { setUser, setIsLoading } = useAuth();
   const router = useRouter();
+  const initialized = useRef(false); // ✅ cegah jalan lebih dari sekali
+
   useEffect(() => {
-    // Kalau sudah ada accessToken di memory (baru saja login),
-    // jangan call refresh lagi → mencegah race condition dengan proses login
-    if (getAccessToken()) return;
+    if (initialized.current) return; // ✅ sudah pernah init, skip
+    initialized.current = true;
+    if (getAccessToken()) {
+      setIsLoading(false); // ✅ token sudah ada, langsung selesai
+      return;
+    }
 
     const init = async () => {
       try {
@@ -23,30 +27,34 @@ export default function AuthInitializer() {
         });
 
         if (!refresh.ok) {
-          router.push("/");
-          // Refresh gagal (belum login / token expired) = tidak perlu throw
+          router.push("/"); // redirect ke login
           return;
         }
 
         const data = await refresh.json();
+
+        if (data.access_token) {
+          setAccessToken(data.access_token);
+        }
+
         const me = await fetch("/api/auth/me", {
           method: "GET",
           credentials: "include",
         });
-        const dataMe = (await me.json()) as User;
-        if (data.access_token) {
-          setAccessToken(data.access_token);
-        }
-        if (dataMe) {
+
+        if (me.ok) {
+          const dataMe = (await me.json()) as User;
           setUser(dataMe);
         }
       } catch {
-        // Senyapkan error refresh saat initializer — bukan kondisi kritis
+        router.push("/");
+      } finally {
+        setIsLoading(false); // ✅ ini yang paling penting
       }
     };
 
     init();
-  }, [setUser]);
+  }, []); // ✅ dependency array kosong — hanya jalan sekali saat mount
 
   return null;
 }

@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { getCurrentUser, User } from "@/lib/auth";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
@@ -16,22 +15,22 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth(); // ✅ tambah isLoading dari context
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    if (isLoading) return; // ✅ tunggu auth selesai dulu
+
     if (!user || user.role !== role) {
       router.push("/");
-    } else {
-      setMounted(true);
     }
-  }, [role, router, user]);
+  }, [role, router, user, isLoading]);
 
   const isAuthorized = useMemo(() => user && user.role === role, [user, role]);
 
-  if (!mounted || !isAuthorized) {
+  // ✅ Selama loading, tampilkan spinner — jangan redirect dulu
+  if (isLoading || !isAuthorized) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>

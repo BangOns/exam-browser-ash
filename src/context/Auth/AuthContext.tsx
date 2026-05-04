@@ -7,24 +7,25 @@ import { createContext, useContext, useState } from "react";
 
 type AuthContextType = {
   user: User | null;
-  loading: boolean;
+  isLoading: boolean;
   login: (
     username: string,
     password: string,
   ) => Promise<string | User | undefined>;
   logout: () => Promise<void>;
   setUser: (user: User | null) => void;
+  setIsLoading: (isLoading: boolean) => void; // ✅ tambah ini
 };
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   // 🔑 LOGIN
   const login = async (username: string, password: string) => {
-    setLoading(true);
+    setIsLoading(true);
     try {
       const res = await fetch("/api/auth/login", {
         method: "POST",
@@ -37,24 +38,21 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
       const data = (await res.json()) as ApiResponse<DataUserLogin>;
       setAccessToken(data.data.token);
-      console.log(data);
 
       setUser(data.data.user);
       return data.data.user;
     } catch (err: Error | unknown) {
       if (err instanceof Error) {
-        console.log(err);
-
         return err.message || "Login gagal";
       }
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   // 🚪 LOGOUT
   const logout = async () => {
-    setLoading(false);
+    setIsLoading(false);
     try {
       await fetch("/api/auth/logout", {
         method: "POST",
@@ -62,7 +60,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       });
     } catch (error) {
     } finally {
-      setLoading(false);
+      setIsLoading(false);
       setAccessToken(null);
       setUser(null);
     }
@@ -71,7 +69,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, setUser }}>
+    <AuthContext.Provider
+      value={{ user, isLoading, setIsLoading, login, logout, setUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

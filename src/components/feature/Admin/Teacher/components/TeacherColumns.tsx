@@ -1,16 +1,16 @@
-import { Teacher } from "@/types/teacher";
+import { TeacherList } from "@/types/teacher";
 
 export function columnsTableTeacher(
-  deleteConfirm: number | null,
-  setDeleteConfirm: (id: number | null) => void,
-  handleDelete: (id: number) => void,
-  openEdit: (teacher: Teacher) => void,
+  deleteConfirm: string | null,
+  setDeleteConfirm: (id: string | null) => void,
+  handleDelete: (id: string) => void,
+  openEdit: (id: string) => void,
 ) {
   return [
     {
       key: "name",
       label: "Teacher",
-      render: (row: Teacher) => (
+      render: (row: TeacherList) => (
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-linear-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white text-xs font-bold">
             {row.name
@@ -20,38 +20,51 @@ export function columnsTableTeacher(
           </div>
           <div>
             <p className="font-medium text-slate-700">{row.name}</p>
-            <p className="text-xs text-slate-400">{row.email}</p>
+            <p className="text-xs text-slate-400">{row.nip}</p>
           </div>
         </div>
       ),
     },
     {
-      key: "subject",
-      label: "Subject",
-      render: (row: Teacher) => (
-        <span className="badge badge-info">{row.subject}</span>
+      key: "nip",
+      label: "NIP",
+      render: (row: TeacherList) => (
+        <div className="flex items-center gap-3">
+          <div>
+            <p className="font-medium text-slate-700">{row.nip}</p>
+          </div>
+        </div>
+      ),
+    },
+    {
+      key: "teaching_assignments",
+      label: "Teaching Assignments",
+      render: (row: TeacherList) => (
+        <div className="flex items-center gap-3">
+          <div className="font-medium text-slate-700">
+            {row.teaching_assignments.length} Class
+          </div>
+        </div>
       ),
     },
     {
       key: "status",
       label: "Status",
-      render: (row: Teacher) => (
+      render: (row: TeacherList) => (
         <span
-          className={`badge ${row.status === "Active" ? "badge-success" : "badge-warning"}`}
+          className={`badge ${row.status === "active" ? "badge-success" : "badge-warning"}`}
         >
           {row.status}
         </span>
       ),
     },
-    { key: "lastLogin", label: "Last Login" },
-    { key: "examsCreated", label: "Exams Created" },
     {
       key: "actions",
       label: "Actions",
-      render: (row: Teacher) => (
+      render: (row: TeacherList) => (
         <div className="flex gap-2">
           <button
-            onClick={() => openEdit(row)}
+            onClick={() => openEdit(row.id)}
             className="text-xs px-3 py-1.5 rounded-lg bg-indigo-50 text-indigo-600 hover:bg-indigo-100 transition-colors font-medium"
           >
             Edit
