@@ -2,16 +2,18 @@
 
 import DataTable from "@/components/ui/DataTable";
 import { Button } from "@/components/ui/button";
-import { gradeOptions } from "@/components/feature/Admin/Student/constant";
 import { useStudentManagement } from "@/components/feature/Admin/Student/hooks/useStudentManagement";
 import InfoCard from "@/components/shared/InfoCard";
 import StudentFormModal from "@/components/feature/Admin/Student/components/StudentFormModal";
-import { Student } from "@/types/student";
+import { StudentRequest } from "@/types/student";
 import PageHeader from "@/components/shared/PageHeader";
+import StudentFormModalEdit from "@/components/feature/Admin/Student/components/StudentFormModalEdit";
 
 export default function AdminStudentListPage() {
   const {
     students,
+    editingId,
+    classStudent,
     modalOpen,
     editing,
     openAdd,
@@ -45,18 +47,6 @@ export default function AdminStudentListPage() {
             value: students.filter((s) => s.status === "Active").length,
             emoji: "🟢",
           },
-          {
-            label: "Avg Score",
-            value: Math.round(
-              students.reduce((s, st) => s + st.avgScore, 0) / students.length,
-            ),
-            emoji: "📊",
-          },
-          {
-            label: "Total Exams",
-            value: students.reduce((s, st) => s + st.examsTaken, 0),
-            emoji: "📝",
-          },
         ].map((s, i) => (
           <InfoCard key={i} {...s} />
         ))}
@@ -70,16 +60,33 @@ export default function AdminStudentListPage() {
         />
       </section>
 
-      {/* Add/Edit Modal */}
-      <StudentFormModal
-        modalOpen={modalOpen}
-        setModalOpen={setModalOpen}
-        editing={editing as Student}
-        setEditing={setEditing}
-        handleSave={handleSave}
-        students={students}
-        gradeOptions={gradeOptions}
-      />
+      {/* Add Modal */}
+      {editing && (
+        <StudentFormModal
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}
+          editing={editing as StudentRequest}
+          setEditing={setEditing}
+          handleSave={handleSave}
+          classOptions={classStudent.map((cls) => ({
+            value: cls.id,
+            label: cls.name,
+          }))}
+        />
+      )}
+      {editingId && (
+        <StudentFormModalEdit
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}
+          editing={editing as StudentRequest}
+          setEditing={setEditing}
+          handleSave={handleSave}
+          classOptions={classStudent.map((cls) => ({
+            value: cls.id,
+            label: cls.name,
+          }))}
+        />
+      )}
     </div>
   );
 }

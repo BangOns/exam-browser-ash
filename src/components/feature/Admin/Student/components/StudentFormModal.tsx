@@ -132,9 +132,6 @@ export default function StudentFormModal({
             className="px-5 py-2.5 h-10 rounded-xl bg-indigo-500 text-white text-sm font-semibold hover:bg-indigo-600 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Add Student
-            {/* {teachers.find((t) => t.id === editing.id)
-              ? "Save Changes"
-              : "Add Teacher"} */}
           </Button>
         </div>
       </form>

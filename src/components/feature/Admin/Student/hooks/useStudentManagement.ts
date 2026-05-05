@@ -110,6 +110,8 @@ export function useStudentManagement() {
   }, [studentDataById]);
   return {
     students,
+    editingId,
+    classStudent,
     modalOpen,
     editing,
     deleteConfirm,

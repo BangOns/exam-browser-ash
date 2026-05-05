@@ -1,7 +1,7 @@
 import Modal from "@/components/ui/Modal";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { TeacherRequest, TeacherRequestEdit } from "@/types/teacher";
+import { TeacherRequestEdit } from "@/types/teacher";
 import { useState } from "react";
 
 interface TeacherFormModalProps {
@@ -36,7 +36,7 @@ export default function TeacherFormModalEdit({
     <Modal
       isOpen={modalOpen}
       onClose={() => setModalOpen(false)}
-      title={"Add Teacher"}
+      title={"Edit Teacher"}
     >
       <form className="space-y-5">
         {/* fullname */}

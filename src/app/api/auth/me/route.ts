@@ -6,6 +6,14 @@ export async function GET() {
   const url = process.env.API_URL;
   const cookieStore = await cookies();
   const token = cookieStore.get("access_token")?.value;
+  if (!token)
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  if (!url) {
+    return NextResponse.json(
+      { message: "API_URL is not defined" },
+      { status: 500 },
+    );
+  }
   try {
     const request = await fetch(`${url}/user`, {
       method: "GET",
