@@ -52,20 +52,20 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   // 🚪 LOGOUT
   const logout = async () => {
-    setIsLoading(false);
     try {
+      setIsLoading(true); // Seharusnya true saat proses
       await fetch("/api/auth/logout", {
         method: "POST",
         credentials: "include",
       });
     } catch (error) {
+      console.error("Logout failed:", error);
     } finally {
-      setIsLoading(false);
       setAccessToken(null);
       setUser(null);
+      setIsLoading(false);
+      window.location.href = "/";
     }
-
-    window.location.href = "/";
   };
 
   return (
