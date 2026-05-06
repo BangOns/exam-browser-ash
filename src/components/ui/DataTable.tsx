@@ -13,6 +13,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card } from "@/components/ui/card";
+import { TableSkeleton } from "./table-skeleton";
 
 export default function DataTable<T>({
   columns,
@@ -20,12 +21,14 @@ export default function DataTable<T>({
   title,
   action,
   className,
+  isLoading,
 }: {
   columns: Column<T>[];
   data: T[];
   title?: string;
   action?: React.ReactNode;
   className?: string;
+  isLoading?: boolean;
 }) {
   return (
     <Card
@@ -49,18 +52,22 @@ export default function DataTable<T>({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.map((row, idx) => (
-              <TableRow key={idx}>
-                {columns.map((col) => (
-                  <TableCell key={col.key}>
-                    {col.render
-                      ? col.render(row)
-                      : ((row[col.key as keyof T] as React.ReactNode) ?? "—")}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-            {data.length === 0 && (
+            {isLoading && !data.length ? (
+              <TableSkeleton />
+            ) : (
+              data.map((row, idx) => (
+                <TableRow key={idx}>
+                  {columns.map((col) => (
+                    <TableCell key={col.key}>
+                      {col.render
+                        ? col.render(row)
+                        : ((row[col.key as keyof T] as React.ReactNode) ?? "—")}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            )}
+            {!isLoading && data.length === 0 && (
               <TableRow>
                 <TableCell
                   colSpan={columns.length}

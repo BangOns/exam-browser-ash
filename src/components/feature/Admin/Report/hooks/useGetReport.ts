@@ -1,10 +1,10 @@
-import { getClass } from "@/services/class.services";
+import { getReport } from "@/services/report.services";
 import { useQuery } from "@tanstack/react-query";
 
-export function useGetClass() {
+export function useGetReports() {
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["class"],
-    queryFn: () => getClass(),
+    queryKey: ["reports"],
+    queryFn: () => getReport(),
     refetchOnWindowFocus: false,
   });
 

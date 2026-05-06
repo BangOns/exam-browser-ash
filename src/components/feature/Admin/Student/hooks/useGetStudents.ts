@@ -5,6 +5,7 @@ export function useGetStudents() {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["students"],
     queryFn: () => getStudents(),
+    refetchOnWindowFocus: false,
   });
 
   return { data, isLoading, isError };

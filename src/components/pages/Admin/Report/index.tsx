@@ -1,9 +1,11 @@
+"use client";
 import InfoCard from "@/components/shared/InfoCard";
 import PageHeader from "@/components/shared/PageHeader";
 import { auditLog } from "@/data/dummy/report";
 import { TYPE_STYLES } from "@/constants/styles";
 import ReportCard from "@/components/feature/Admin/Report/components/ReportCard";
 import { Button } from "@/components/ui/button";
+import { useReportManagement } from "@/components/feature/Admin/Report/hooks/useReportManagement";
 
 export default function AdminReportsPage() {
   const stats = [
@@ -12,6 +14,8 @@ export default function AdminReportsPage() {
     { label: "System Events", value: "856", emoji: "🔧" },
     { label: "User Actions", value: "405", emoji: "👤" },
   ];
+  const { data } = useReportManagement();
+  console.log(data);
 
   return (
     <div className="space-y-6">

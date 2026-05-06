@@ -1,14 +1,14 @@
 import Modal from "@/components/ui/Modal";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { StudentRequest } from "@/types/student";
+import { StudentRequestEdit } from "@/types/student";
 import { useState } from "react";
 
 interface StudentFormModalProps {
   modalOpen: boolean;
   setModalOpen: (open: boolean) => void;
-  editing: StudentRequest;
-  setEditing: React.Dispatch<React.SetStateAction<StudentRequest | null>>;
+  editing: StudentRequestEdit;
+  setEditing: React.Dispatch<React.SetStateAction<StudentRequestEdit | null>>;
   handleSave: () => void;
   classOptions?: Options[];
 }
@@ -156,7 +156,7 @@ export default function StudentFormModalEdit({
             disabled={!editing?.username?.trim() || !editing?.nisn?.trim()}
             className="px-5 py-2.5 h-10 rounded-xl bg-indigo-500 text-white text-sm font-semibold hover:bg-indigo-600 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Add Student
+            Save Student
           </Button>
         </div>
       </form>

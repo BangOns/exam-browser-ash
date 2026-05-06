@@ -23,7 +23,7 @@ const EMPTY_STUDENT: StudentRequest = {
   class_id: "",
 };
 export function useStudentManagement() {
-  const { data } = useGetStudents();
+  const { data, isLoading: isLoadingStudents } = useGetStudents();
   const { data: classData } = useGetClass();
   const { mutateAsync } = usePostStudent();
   const { mutateAsync: mutateEditStudent } = useEditStudent();
@@ -110,7 +110,10 @@ export function useStudentManagement() {
   }, [studentDataById]);
   return {
     students,
+    studentId,
+    isLoadingStudents,
     editingId,
+    setEditingId,
     classStudent,
     modalOpen,
     editing,

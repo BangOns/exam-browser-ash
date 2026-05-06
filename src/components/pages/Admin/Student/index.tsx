@@ -5,24 +5,27 @@ import { Button } from "@/components/ui/button";
 import { useStudentManagement } from "@/components/feature/Admin/Student/hooks/useStudentManagement";
 import InfoCard from "@/components/shared/InfoCard";
 import StudentFormModal from "@/components/feature/Admin/Student/components/StudentFormModal";
-import { StudentRequest } from "@/types/student";
+import { StudentRequest, StudentRequestEdit } from "@/types/student";
 import PageHeader from "@/components/shared/PageHeader";
 import StudentFormModalEdit from "@/components/feature/Admin/Student/components/StudentFormModalEdit";
 
 export default function AdminStudentListPage() {
   const {
     students,
+    studentId,
+    isLoadingStudents,
     editingId,
+    setEditingId,
     classStudent,
     modalOpen,
     editing,
     openAdd,
     handleSave,
+    handleSaveEdit,
     columns,
     setModalOpen,
     setEditing,
   } = useStudentManagement();
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-4">
@@ -57,6 +60,7 @@ export default function AdminStudentListPage() {
           columns={columns}
           data={students}
           className="col-span-full"
+          isLoading={isLoadingStudents}
         />
       </section>
 
@@ -74,13 +78,13 @@ export default function AdminStudentListPage() {
           }))}
         />
       )}
-      {editingId && (
+      {studentId && (
         <StudentFormModalEdit
           modalOpen={modalOpen}
           setModalOpen={setModalOpen}
-          editing={editing as StudentRequest}
-          setEditing={setEditing}
-          handleSave={handleSave}
+          editing={editingId as StudentRequestEdit}
+          setEditing={setEditingId}
+          handleSave={handleSaveEdit}
           classOptions={classStudent.map((cls) => ({
             value: cls.id,
             label: cls.name,
