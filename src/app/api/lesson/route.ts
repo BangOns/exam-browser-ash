@@ -1,22 +1,23 @@
 import { ApiResponse } from "@/types/api-response";
-import { ReportList } from "@/types/report";
+import { ClassList } from "@/types/class";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   const token = req.cookies.get("access_token")?.value;
+  const query = req.nextUrl.searchParams;
 
   if (!token) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
   try {
-    const res = await fetch(`${process.env.API_URL}/report`, {
+    const res = await fetch(`${process.env.API_URL}/lesson`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
 
-    const data = (await res.json()) as ApiResponse<ReportList>;
+    const data = (await res.json()) as ApiResponse<ClassList>;
 
     return NextResponse.json(
       {

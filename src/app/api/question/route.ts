@@ -1,5 +1,6 @@
 import { ApiResponse } from "@/types/api-response";
-import { ReportList } from "@/types/report";
+import { ClassList } from "@/types/class";
+import { QuestionList } from "@/types/question";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -10,13 +11,13 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const res = await fetch(`${process.env.API_URL}/report`, {
+    const res = await fetch(`${process.env.API_URL}/question`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
 
-    const data = (await res.json()) as ApiResponse<ReportList>;
+    const data = (await res.json()) as ApiResponse<QuestionList>;
 
     return NextResponse.json(
       {

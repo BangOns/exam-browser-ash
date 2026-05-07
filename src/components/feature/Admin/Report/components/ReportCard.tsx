@@ -1,6 +1,7 @@
 import { AuditEntry } from "@/types/report";
 import { TYPE_STYLES } from "@/constants/styles";
 import { CircleAlert, Info, TriangleAlert } from "lucide-react";
+import { formatDateIndonesia } from "@/utils/FormatDate";
 
 export default function ReportCard({
   entry,
@@ -35,7 +36,9 @@ export default function ReportCard({
       <div className="flex-1 min-w-0">
         <p className="text-sm text-slate-700">{entry.action}</p>
         <div className="flex items-center gap-3 mt-1.5">
-          <span className="text-xs text-slate-400">{entry.timestamp}</span>
+          <span className="text-xs text-slate-400">
+            {formatDateIndonesia(entry.timestamp as string)}
+          </span>
           <span
             className={`badge ${
               entry.role === "Student"

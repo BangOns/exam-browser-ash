@@ -24,7 +24,7 @@ const EMPTY_TEACHER: TeacherRequest = {
 };
 
 export function useTeacherManagement() {
-  const { data } = useGetTeacher();
+  const { data, isLoading: isLoadingTeachers } = useGetTeacher();
   const { data: classData } = useGetClass();
   const { data: subjectData } = useGetSubject();
   const { mutateAsync } = usePostTeacher();
@@ -132,6 +132,7 @@ export function useTeacherManagement() {
   }, [teacherDataById]);
   return {
     teachers,
+    isLoadingTeachers,
     classTeacher,
     subjectTeacher,
     modalOpen,

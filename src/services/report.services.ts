@@ -1,7 +1,7 @@
 import { fetchWithAuth } from "@/lib/fetcher";
-import { ClassList } from "@/types/class";
+import { ReportList } from "@/types/report";
 
 export async function getReport() {
-  const res = await fetchWithAuth<ClassList[]>("/api/report");
+  const res = await fetchWithAuth<ReportList[]>("/api/report");
   return res;
 }

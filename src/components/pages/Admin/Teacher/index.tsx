@@ -7,15 +7,20 @@ import InfoCard from "@/components/shared/InfoCard";
 import { useTeacherManagement } from "@/components/feature/Admin/Teacher/hooks/useTeacherManagement";
 import { TeacherRequest, TeacherRequestEdit } from "@/types/teacher";
 import dynamic from "next/dynamic";
-import TeacherFormModalEdit from "@/components/feature/Admin/Teacher/components/TeacherFormModalEdit";
 const TeacherFormModal = dynamic(
   () =>
     import("@/components/feature/Admin/Teacher/components/TeacherFormModal"),
   { ssr: false },
 );
+const TeacherFormModalEdit = dynamic(
+  () =>
+    import("@/components/feature/Admin/Teacher/components/TeacherFormModalEdit"),
+  { ssr: false },
+);
 export default function AdminTeacherListPage() {
   const {
     teachers,
+    isLoadingTeachers,
     classTeacher,
     subjectTeacher,
     modalOpen,
@@ -59,6 +64,7 @@ export default function AdminTeacherListPage() {
           columns={columns}
           data={teachers}
           className="col-span-full"
+          isLoading={isLoadingTeachers}
         />
       </section>
 

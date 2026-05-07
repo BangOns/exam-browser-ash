@@ -32,7 +32,7 @@ export default function DataTable<T>({
 }) {
   return (
     <Card
-      className={`rounded-2xl border bg-white/50 backdrop-blur-sm shadow-sm overflow-hidden animate-slide-up ${className}`}
+      className={`rounded-2xl border bg-white/50 backdrop-blur-sm shadow-sm  animate-slide-up ${className}`}
     >
       {(title || action) && (
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100/50">

@@ -6,16 +6,43 @@ import { TYPE_STYLES } from "@/constants/styles";
 import ReportCard from "@/components/feature/Admin/Report/components/ReportCard";
 import { Button } from "@/components/ui/button";
 import { useReportManagement } from "@/components/feature/Admin/Report/hooks/useReportManagement";
+import { useMemo } from "react";
+import { AuditEntry, ReportList } from "@/types/report";
 
 export default function AdminReportsPage() {
-  const stats = [
-    { label: "Total Events", value: "1,284", emoji: "📊" },
-    { label: "Violations", value: "23", emoji: "⚠️" },
-    { label: "System Events", value: "856", emoji: "🔧" },
-    { label: "User Actions", value: "405", emoji: "👤" },
-  ];
   const { data } = useReportManagement();
-  console.log(data);
+  const stats = [
+    {
+      label: "Total Events",
+      value: data?.meta.pagination.total || 0,
+      emoji: "📊",
+    },
+    // { label: "Violations", value: "23", emoji: "⚠️" },
+    // { label: "System Events", value: "856", emoji: "🔧" },
+    {
+      label: "User Actions",
+      value: data?.meta.pagination.total || 0,
+      emoji: "👤",
+    },
+  ];
+
+  const activityLogs: AuditEntry[] | [] = useMemo(() => {
+    if (!data?.data) return [];
+
+    return data.data.map((item: ReportList) => ({
+      id: item.id,
+      action: `${item.user.name} sedang melakukan aksi ${item.action}`,
+      user: item.user.name,
+      role: item.user.role,
+      timestamp: item.timestamp,
+      type:
+        item.action === "login" || "register"
+          ? "info"
+          : item.action === "create" || "update"
+            ? "success"
+            : "danger",
+    }));
+  }, [data]);
 
   return (
     <div className="space-y-6">
@@ -32,7 +59,7 @@ export default function AdminReportsPage() {
       </div>
 
       {/* Filter */}
-      <div className="flex gap-2">
+      {/* <div className="flex gap-2">
         {["All", "Violations", "System", "User Actions"].map((tab, i) => (
           <Button
             key={tab}
@@ -45,12 +72,12 @@ export default function AdminReportsPage() {
             {tab}
           </Button>
         ))}
-      </div>
+      </div> */}
 
       {/* Audit timeline */}
       <div className="glass-card p-6 animate-slide-up">
         <div className="space-y-4">
-          {auditLog.map((entry) => {
+          {activityLogs.map((entry) => {
             const styles = TYPE_STYLES[entry.type];
             return <ReportCard key={entry.id} entry={entry} styles={styles} />;
           })}

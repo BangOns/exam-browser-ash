@@ -3,8 +3,13 @@ import { Question } from "@/types/question";
 import { initialQuestions as bankQuestions } from "@/data/dummy/questions";
 import { emptyQuestion } from "@/components/feature/Teacher/Questions/constants";
 import { columnsQuestions } from "../components/QuestionColumns";
+import { useGetQuestion } from "./useGetQuestion";
+import { useGetLesson } from "@/hooks/lesson/useGetLesson";
 
 export default function useQuestionManagement() {
+  const { data } = useGetQuestion();
+  const { data: dataLesson } = useGetLesson();
+
   const [questions, setQuestions] = useState<Question[]>(bankQuestions);
   const [modalOpen, setModalOpen] = useState(false);
   const [editingQuestion, setEditingQuestion] = useState<Question | null>(null);
