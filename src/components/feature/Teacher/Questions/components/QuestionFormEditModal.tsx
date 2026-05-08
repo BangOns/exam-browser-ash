@@ -2,9 +2,9 @@ import Modal from "@/components/ui/Modal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { LessonList } from "@/types/lesson";
-import { QuestionRequest } from "@/types/question";
+import { QuestionRequestEdit } from "@/types/question";
 
-export default function QuestionFormModal({
+export default function QuestionFormModalEdit({
   modalOpen,
   setModalOpen,
   editingQuestion,
@@ -14,8 +14,8 @@ export default function QuestionFormModal({
 }: {
   modalOpen: boolean;
   setModalOpen: (open: boolean) => void;
-  editingQuestion: QuestionRequest;
-  setEditingQuestion: (question: QuestionRequest) => void;
+  editingQuestion: QuestionRequestEdit;
+  setEditingQuestion: (question: QuestionRequestEdit) => void;
   lessons: LessonList[];
   handleSave: () => void;
 }) {
@@ -23,7 +23,7 @@ export default function QuestionFormModal({
     <Modal
       isOpen={modalOpen}
       onClose={() => setModalOpen(false)}
-      title={"Add Question"}
+      title={"Edit Question"}
     >
       <section className="space-y-5">
         {/* Question text */}
@@ -52,9 +52,8 @@ export default function QuestionFormModal({
           </span>
           <select
             className="px-3  w-full py-1.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 bg-white"
+            value={editingQuestion.lesson_id}
             onChange={(e) => {
-              console.log(e.target.value);
-
               setEditingQuestion({
                 ...editingQuestion,
                 lesson_id: e.target.value,
@@ -179,7 +178,7 @@ export default function QuestionFormModal({
                 onChange={(e) =>
                   setEditingQuestion({
                     ...editingQuestion,
-                    max_points: parseInt(e.target.value) || 10,
+                    max_points: Number(e.target.value) || 10,
                   })
                 }
               />

@@ -1,19 +1,17 @@
 import { fetchWithAuth } from "@/lib/fetcher";
-import { QuestionList } from "@/types/question";
 import {
-  StudentList,
-  StudentRequest,
-  StudentRequestEdit,
-} from "@/types/student";
+  QuestionList,
+  QuestionRequest,
+  QuestionRequestEdit,
+} from "@/types/question";
 
 export async function getQuestion() {
   const res = await fetchWithAuth<QuestionList[]>("/api/question");
-
   return res;
 }
 
-export async function createQuestion(data: StudentRequest) {
-  const res = await fetchWithAuth("/api/student", {
+export async function createQuestion(data: QuestionRequest) {
+  const res = await fetchWithAuth("/api/question", {
     method: "POST",
     body: JSON.stringify(data),
     headers: {
@@ -24,16 +22,16 @@ export async function createQuestion(data: StudentRequest) {
   return res;
 }
 
-export async function getStudentById(studentId: string) {
-  const res = await fetchWithAuth<StudentList>(`/api/student/${studentId}`);
+export async function getQuestionById(studentId: string) {
+  const res = await fetchWithAuth<QuestionList>(`/api/question/${studentId}`);
   return res;
 }
 
-export async function editStudent(data: StudentRequestEdit) {
-  const { id, ...studentData } = data;
-  const res = await fetchWithAuth(`/api/student/${id}`, {
+export async function editQuestion(data: QuestionRequestEdit) {
+  const { id, ...questionData } = data;
+  const res = await fetchWithAuth(`/api/question/${id}`, {
     method: "PUT",
-    body: JSON.stringify(studentData),
+    body: JSON.stringify(questionData),
     headers: {
       "Content-Type": "application/json",
     },
@@ -42,8 +40,8 @@ export async function editStudent(data: StudentRequestEdit) {
   return res;
 }
 
-export async function deleteStudent(studentId: string) {
-  const res = await fetchWithAuth(`/api/student/${studentId}`, {
+export async function deleteQuestion(questionId: string) {
+  const res = await fetchWithAuth(`/api/question/${questionId}`, {
     method: "DELETE",
   });
 

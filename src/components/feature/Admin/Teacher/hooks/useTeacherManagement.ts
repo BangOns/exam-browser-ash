@@ -14,14 +14,7 @@ import { usePostTeacher } from "./mutations/usePostTeacher";
 import { useGetTeacherById } from "./useGetTeacherById";
 import { useEditTeacher } from "./mutations/useEditTeacher";
 import { useDeleteTeacher } from "./mutations/useDeleteTeacher";
-
-const EMPTY_TEACHER: TeacherRequest = {
-  full_name: "",
-  username: "",
-  password: "",
-  nip: "",
-  lessons: [],
-};
+import { EMPTY_TEACHER } from "../constants";
 
 export function useTeacherManagement() {
   const { data, isLoading: isLoadingTeachers } = useGetTeacher();

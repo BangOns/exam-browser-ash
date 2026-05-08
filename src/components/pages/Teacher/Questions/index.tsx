@@ -2,29 +2,35 @@
 
 import DataTable from "@/components/ui/DataTable";
 import { Button } from "@/components/ui/button";
-import {
-  subjects,
-  types,
-} from "@/components/feature/Teacher/Questions/constants";
+// import {
+//   subjects,
+//   types,
+// } from "@/components/feature/Teacher/Questions/constants";
 import InfoCard from "@/components/shared/InfoCard";
 import useQuestionManagement from "@/components/feature/Teacher/Questions/hooks/useQuestionManagement";
 import QuestionFormModal from "@/components/feature/Teacher/Questions/components/QuestionFormModal";
 import PageHeader from "@/components/shared/PageHeader";
+import QuestionFormModalEdit from "@/components/feature/Teacher/Questions/components/QuestionFormEditModal";
 
 export default function TeacherQuestionsPage() {
   const {
     questions,
+    questionId,
+    lessons,
     modalOpen,
     setModalOpen,
     editingQuestion,
     setEditingQuestion,
-    activeSubject,
-    setActiveSubject,
-    activeType,
-    setActiveType,
+    editingQuestionId,
+    setEditingQuestionId,
+    // activeSubject,
+    // setActiveSubject,
+    // activeType,
+    // setActiveType,
     filtered,
     openAdd,
     handleSave,
+    handleSaveEdit,
     mcCount,
     essayCount,
     columns,
@@ -53,7 +59,7 @@ export default function TeacherQuestionsPage() {
           { label: "Essay", value: essayCount, emoji: "✍️" },
           {
             label: "Subjects",
-            value: new Set(questions.map((q) => q.subject)).size,
+            value: new Set(questions.map((q) => q.lesson.subject)).size,
             emoji: "📚",
           },
         ].map((s, i) => (
@@ -62,7 +68,7 @@ export default function TeacherQuestionsPage() {
       </section>
 
       {/* Filters */}
-      <section className="space-y-3">
+      {/* <section className="space-y-3">
         <div className="flex gap-2 flex-wrap">
           {subjects.map((sub) => (
             <Button
@@ -93,7 +99,7 @@ export default function TeacherQuestionsPage() {
             </Button>
           ))}
         </div>
-      </section>
+      </section> */}
       <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
         <DataTable
           columns={columns}
@@ -103,14 +109,26 @@ export default function TeacherQuestionsPage() {
       </section>
 
       {/* Add/Edit Modal */}
-      <QuestionFormModal
-        questions={questions}
-        modalOpen={modalOpen}
-        setModalOpen={() => setModalOpen(false)}
-        editingQuestion={editingQuestion}
-        setEditingQuestion={setEditingQuestion}
-        handleSave={handleSave}
-      />
+      {editingQuestion && (
+        <QuestionFormModal
+          modalOpen={modalOpen}
+          setModalOpen={() => setModalOpen(false)}
+          editingQuestion={editingQuestion}
+          setEditingQuestion={setEditingQuestion}
+          handleSave={handleSave}
+          lessons={lessons}
+        />
+      )}
+      {questionId && editingQuestionId && (
+        <QuestionFormModalEdit
+          modalOpen={modalOpen}
+          setModalOpen={() => setModalOpen(false)}
+          editingQuestion={editingQuestionId}
+          setEditingQuestion={setEditingQuestionId}
+          handleSave={handleSaveEdit}
+          lessons={lessons}
+        />
+      )}
     </div>
   );
 }

@@ -1,20 +1,18 @@
-import { Question } from "@/types/question";
+import { QuestionRequest } from "@/types/question";
 
-export const emptyQuestion: Question = {
-  id: 0,
+export const EMPTY_QUESTION: QuestionRequest = {
   question: "",
-  subject: "Physics",
-  type: "Multiple Choice",
+  lesson_id: "",
+  type: "",
   options: [
     { label: "A", text: "" },
     { label: "B", text: "" },
     { label: "C", text: "" },
     { label: "D", text: "" },
   ],
-  correctAnswer: "A",
+  correct_answer: "",
   rubric: "",
-  maxPoints: 10,
-  used: 0,
+  max_points: 0,
 };
 
 export const subjects = [

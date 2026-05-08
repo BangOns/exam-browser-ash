@@ -1,10 +1,9 @@
 import { ApiResponse } from "@/types/api-response";
-import { ClassList } from "@/types/class";
+import { LessonList } from "@/types/lesson";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   const token = req.cookies.get("access_token")?.value;
-  const query = req.nextUrl.searchParams;
 
   if (!token) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -17,7 +16,7 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    const data = (await res.json()) as ApiResponse<ClassList>;
+    const data = (await res.json()) as ApiResponse<LessonList>;
 
     return NextResponse.json(
       {

@@ -16,12 +16,43 @@ export interface QuestionList {
   id: string;
   question: string;
   type: string;
-  options: string[] | null;
-  correct_answer: string | null;
-  rubric: string | null;
+  options: Option[];
+  correct_answer: string;
+  rubric: string;
   max_points: number;
-  class: string | null;
-  subject: string | null;
+  lesson: Lesson;
   created_at: string;
   updated_at: string;
+}
+
+export interface QuestionRequest {
+  question: string;
+  lesson_id: string;
+  type: string;
+  options?: QuestionOption[];
+  correct_answer?: string;
+  rubric?: string;
+  max_points?: number;
+}
+
+export interface QuestionRequestEdit {
+  id: string;
+  question: string;
+  lesson_id: string;
+  type: string;
+  options?: QuestionOption[];
+  correct_answer?: string;
+  rubric?: string;
+  max_points?: number;
+}
+
+export interface Option {
+  label: string;
+  text: string;
+}
+
+export interface Lesson {
+  id: string;
+  name: string;
+  subject: string;
 }
