@@ -73,7 +73,7 @@ export default function TeacherExamsPage() {
       </div>
 
       {/* Filters */}
-      <div className="flex gap-2 flex-wrap">
+      {/* <div className="flex gap-2 flex-wrap">
         {statusTabs.map((tab) => (
           <Button
             key={tab}
@@ -87,7 +87,7 @@ export default function TeacherExamsPage() {
             {tab}
           </Button>
         ))}
-      </div>
+      </div> */}
       <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
         <DataTable
           columns={columns}

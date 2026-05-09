@@ -15,7 +15,7 @@ import { useGetQuestionById } from "./useGetQuesionById";
 import { useDeleteQuestion } from "./mutations/useDeleteQuestion";
 
 export default function useQuestionManagement() {
-  const { data } = useGetQuestion();
+  const { data, isLoading: isLoadingQuestion } = useGetQuestion();
   const { data: dataLesson } = useGetLesson();
   const { mutateAsync: mutatePostQuestion } = usePostQuestion();
   const { mutateAsync: mutateEditQuestion } = useEditQuestion();
@@ -36,7 +36,7 @@ export default function useQuestionManagement() {
   const filtered = useMemo(
     () =>
       questions.filter((q) => {
-        if (activeSubject !== "All" && q.lesson.subject !== activeSubject)
+        if (activeSubject !== "All" && q.lesson.subject.name !== activeSubject)
           return false;
         if (activeType !== "All" && q.type !== activeType) return false;
         return true;
@@ -132,6 +132,7 @@ export default function useQuestionManagement() {
   }, [dataQuestionById]);
   return {
     questions,
+    isLoadingQuestion,
     questionId,
     setQuestions,
     lessons,

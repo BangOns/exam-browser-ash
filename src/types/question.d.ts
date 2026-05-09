@@ -1,3 +1,5 @@
+import { LessonList } from "./lesson";
+
 export type QuestionOption = { label: string; text: string };
 
 export type Question = {
@@ -20,7 +22,7 @@ export interface QuestionList {
   correct_answer: string;
   rubric: string;
   max_points: number;
-  lesson: Lesson;
+  lesson: LessonList;
   created_at: string;
   updated_at: string;
 }
@@ -51,8 +53,7 @@ export interface Option {
   text: string;
 }
 
-export interface Lesson {
+export interface DetailQuestion {
   id: string;
   name: string;
-  subject: string;
 }

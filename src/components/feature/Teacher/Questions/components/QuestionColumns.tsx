@@ -13,7 +13,9 @@ export function columnsQuestions(
       render: (row: QuestionList) => (
         <div className="max-w-xs">
           <p className="font-medium text-slate-700 truncate">{row.question}</p>
-          <p className="text-xs text-slate-400 mt-0.5">{row.lesson.subject}</p>
+          <p className="text-xs text-slate-400 mt-0.5">
+            {row.lesson.subject.name}
+          </p>
         </div>
       ),
     },
@@ -31,7 +33,7 @@ export function columnsQuestions(
     {
       key: "class",
       label: "Kelas",
-      render: (row: QuestionList) => <span>{row.lesson.name}</span>,
+      render: (row: QuestionList) => <span>{row.lesson.class.name}</span>,
     },
 
     {

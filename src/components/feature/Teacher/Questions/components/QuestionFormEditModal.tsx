@@ -65,7 +65,7 @@ export default function QuestionFormModalEdit({
             </option>
             {lessons.map((l) => (
               <option key={l.id} value={l.id}>
-                {l.subject} - {l.class}
+                {l.subject.name} - {l.class.name}
               </option>
             ))}
           </select>

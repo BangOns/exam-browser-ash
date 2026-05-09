@@ -15,6 +15,7 @@ import QuestionFormModalEdit from "@/components/feature/Teacher/Questions/compon
 export default function TeacherQuestionsPage() {
   const {
     questions,
+    isLoadingQuestion,
     questionId,
     lessons,
     modalOpen,
@@ -105,6 +106,7 @@ export default function TeacherQuestionsPage() {
           columns={columns}
           data={filtered}
           className="col-span-full"
+          isLoading={isLoadingQuestion}
         />
       </section>
 

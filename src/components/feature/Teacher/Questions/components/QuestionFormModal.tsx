@@ -64,9 +64,9 @@ export default function QuestionFormModal({
             <option value="" defaultChecked>
               Pilih Kelas
             </option>
-            {lessons.map((l) => (
+            {lessons.map((l: LessonList) => (
               <option key={l.id} value={l.id}>
-                {l.subject} - {l.class}
+                {l.subject.name} - {l.class.name}
               </option>
             ))}
           </select>
