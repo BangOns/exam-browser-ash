@@ -1,5 +1,5 @@
 import { ApiResponse } from "@/types/api-response";
-import { SubjectList } from "@/types/subject";
+import { SubjectList, SubjectRequest } from "@/types/subject";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -13,6 +13,42 @@ export async function GET(req: NextRequest) {
     const res = await fetch(`${process.env.API_URL}/subjects`, {
       headers: {
         Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = (await res.json()) as ApiResponse<SubjectList>;
+
+    return NextResponse.json(
+      {
+        data: data.data,
+        message: data.message,
+        status: data.status,
+        meta: data.meta,
+      },
+      { status: res.status },
+    );
+  } catch {
+    return NextResponse.json(
+      { message: "Internal server error" },
+      { status: 500 },
+    );
+  }
+}
+export async function POST(req: NextRequest) {
+  const token = req.cookies.get("access_token")?.value;
+
+  if (!token) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+
+  try {
+    const datas = (await req.json()) as SubjectRequest; // ✅ fix
+    const res = await fetch(`${process.env.API_URL}/subjects`, {
+      method: "POST",
+      body: JSON.stringify(datas), // ✅ fix
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json", // ✅ tambah
       },
     });
 

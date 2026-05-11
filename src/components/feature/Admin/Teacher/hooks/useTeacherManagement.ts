@@ -34,6 +34,8 @@ export function useTeacherManagement() {
     subjectData?.data || [],
   );
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpenClass, setModalOpenClass] = useState(false);
+  const [modalOpenLesson, setModalOpenLesson] = useState(false);
   const [editing, setEditing] = useState<TeacherRequest | null>(null);
   const [editingId, setEditingId] = useState<TeacherRequestEdit | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
@@ -129,6 +131,10 @@ export function useTeacherManagement() {
     classTeacher,
     subjectTeacher,
     modalOpen,
+    modalOpenClass,
+    setModalOpenClass,
+    modalOpenLesson,
+    setModalOpenLesson,
     editing,
     editingId,
     deleteConfirm,

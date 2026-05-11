@@ -7,6 +7,8 @@ import InfoCard from "@/components/shared/InfoCard";
 import { useTeacherManagement } from "@/components/feature/Admin/Teacher/hooks/useTeacherManagement";
 import { TeacherRequest, TeacherRequestEdit } from "@/types/teacher";
 import dynamic from "next/dynamic";
+import SubjectModal from "@/components/feature/Admin/Teacher/components/SubjectModal";
+import ClassModal from "@/components/feature/Admin/Teacher/components/ClassModal";
 const TeacherFormModal = dynamic(
   () =>
     import("@/components/feature/Admin/Teacher/components/TeacherFormModal"),
@@ -24,6 +26,10 @@ export default function AdminTeacherListPage() {
     classTeacher,
     subjectTeacher,
     modalOpen,
+    modalOpenLesson,
+    setModalOpenLesson,
+    modalOpenClass,
+    setModalOpenClass,
     editing,
     editingId,
     openAdd,
@@ -42,12 +48,26 @@ export default function AdminTeacherListPage() {
           title="Teacher List"
           description="Manage teacher accounts and assignments"
         />
-        <Button
-          onClick={openAdd}
-          className=" cursor-pointer px-5 py-2.5 h-10 rounded-xl bg-indigo-500 text-white text-sm font-semibold hover:bg-indigo-600 transition-colors shadow-sm"
-        >
-          + Add Teacher
-        </Button>
+        <section className="flex gap-3">
+          <Button
+            onClick={() => setModalOpenClass(true)}
+            className=" cursor-pointer px-5 py-2.5 h-10 rounded-xl bg-indigo-500 text-white text-sm font-semibold hover:bg-indigo-600 transition-colors shadow-sm"
+          >
+            List Kelas
+          </Button>
+          <Button
+            onClick={() => setModalOpenLesson(true)}
+            className=" cursor-pointer px-5 py-2.5 h-10 rounded-xl bg-indigo-500 text-white text-sm font-semibold hover:bg-indigo-600 transition-colors shadow-sm"
+          >
+            List Pelajaran
+          </Button>
+          <Button
+            onClick={openAdd}
+            className=" cursor-pointer px-5 py-2.5 h-10 rounded-xl bg-indigo-500 text-white text-sm font-semibold hover:bg-indigo-600 transition-colors shadow-sm"
+          >
+            + Add Teacher
+          </Button>
+        </section>
       </div>
 
       {/* Summary */}
@@ -97,6 +117,20 @@ export default function AdminTeacherListPage() {
             subjectTeacher?.map((s) => ({ label: s.name, value: s.id })) || []
           }
           handleSave={handleSaveEdit}
+        />
+      )}
+      {modalOpenLesson && (
+        <SubjectModal
+          modalOpen={modalOpenLesson}
+          setModalOpen={setModalOpenLesson}
+          subjectList={subjectTeacher}
+        />
+      )}
+      {modalOpenClass && (
+        <ClassModal
+          modalOpen={modalOpenClass}
+          setModalOpen={setModalOpenClass}
+          classList={classTeacher}
         />
       )}
     </div>
