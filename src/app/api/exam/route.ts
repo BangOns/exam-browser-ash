@@ -1,5 +1,5 @@
 import { ApiResponse } from "@/types/api-response";
-import { TeacherList, TeacherRequest } from "@/types/teacher";
+import { ExamList, ExamRequest } from "@/types/exam";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    const data = (await res.json()) as ApiResponse<TeacherList>;
+    const data = (await res.json()) as ApiResponse<ExamList>;
 
     return NextResponse.json(
       {
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const datas = (await req.json()) as TeacherRequest; // ✅ fix
+    const datas = (await req.json()) as ExamRequest; // ✅ fix
     const res = await fetch(`${process.env.API_URL}/exam`, {
       method: "POST",
       body: JSON.stringify(datas), // ✅ fix
@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    const data = (await res.json()) as ApiResponse<TeacherList>;
+    const data = (await res.json()) as ApiResponse<ExamList>;
 
     return NextResponse.json(
       {

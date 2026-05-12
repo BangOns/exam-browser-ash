@@ -46,15 +46,13 @@ export default function QuestionFormModal({
         </section>
 
         {/* select class and subject */}
-        <section className="">
+        <section>
           <span className="text-sm font-semibold text-slate-700">
             Pilih kelas
           </span>
           <select
             className="px-3  w-full py-1.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 bg-white"
             onChange={(e) => {
-              console.log(e.target.value);
-
               setEditingQuestion({
                 ...editingQuestion,
                 lesson_id: e.target.value,
@@ -173,13 +171,12 @@ export default function QuestionFormModal({
               </label>
               <Input
                 type="number"
-                min={1}
                 className="h-10 w-32 px-4 rounded-xl border-slate-200 text-sm focus-visible:ring-2 focus-visible:ring-emerald-500/30 focus-visible:border-emerald-500 transition-all shadow-none"
-                value={editingQuestion.max_points || 10}
+                value={editingQuestion.max_points}
                 onChange={(e) =>
                   setEditingQuestion({
                     ...editingQuestion,
-                    max_points: parseInt(e.target.value) || 10,
+                    max_points: parseInt(e.target.value),
                   })
                 }
               />

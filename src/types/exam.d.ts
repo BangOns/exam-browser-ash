@@ -1,3 +1,5 @@
+import { DetailQuestion } from "./question";
+
 export type ExamRow = {
   id: number;
   name: string;
@@ -26,3 +28,24 @@ export type ExamQuestionNow = Omit<ExamRow, "status"> & {
 //   status: "Active" | "Scheduled" | "Draft" | "Completed";
 //   questionIds: number[];
 // };
+export type ExamList = {
+  id: string;
+  name: string;
+  class: DetailQuestion;
+  subject: DetailQuestion;
+  status: string | "active" | "scheduled" | "draft" | "completed";
+  questions: string[];
+};
+export type ExamRequest = {
+  name: string;
+  lesson_id: string;
+  status: "active" | "scheduled" | "draft" | "completed";
+  questions?: string[];
+};
+export type ExamRequestEdit = {
+  id: string;
+  name: string;
+  lesson_id: string;
+  status: "active" | "scheduled" | "draft" | "completed";
+  questions?: string[];
+};

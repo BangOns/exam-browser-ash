@@ -5,22 +5,17 @@ import { Button } from "@/components/ui/button";
 import { initialQuestions } from "@/data/dummy/questions";
 import QuestionPickerModal from "@/components/feature/Teacher/Exams/components/QuestionPickerModal";
 import PageHeader from "@/components/shared/PageHeader";
-import InfoCard from "@/components/shared/InfoCard";
 import { useExamTeacherManagement } from "@/components/feature/Teacher/Exams/hooks/useExamManagement";
-import { statusTabs } from "@/components/feature/Admin/Exams/constants";
 import ExamFormModalTeacher from "@/components/feature/Teacher/Exams/components/ExamFormModal";
-import { subjectOptions } from "@/constants/subjectOption";
-import { classOptions } from "@/components/feature/Teacher/Exams/constants";
 import { statusOptions } from "@/constants/statusOption";
+import { ExamList, ExamRequest } from "@/types/exam";
 
 export default function TeacherExamsPage() {
   const {
-    exams,
+    lessons,
     openAdd,
     columns,
-    filtered,
-    activeTab,
-    setActiveTab,
+    exams,
     pickerExam,
     setPickerExam,
     pickerOpen,
@@ -32,6 +27,7 @@ export default function TeacherExamsPage() {
     setEditingExam,
     handleSave,
   } = useExamTeacherManagement();
+  console.log(exams);
 
   return (
     <div className="space-y-6">
@@ -49,7 +45,7 @@ export default function TeacherExamsPage() {
       </div>
 
       {/* Summary */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { label: "Total Exams", value: exams.length, emoji: "📝" },
           {
@@ -70,7 +66,7 @@ export default function TeacherExamsPage() {
         ].map((s, i) => (
           <InfoCard key={i} {...s} />
         ))}
-      </div>
+      </div> */}
 
       {/* Filters */}
       {/* <div className="flex gap-2 flex-wrap">
@@ -92,7 +88,7 @@ export default function TeacherExamsPage() {
         <DataTable
           columns={columns}
           className="col-span-full"
-          data={filtered}
+          data={exams as ExamList[]}
         />
       </section>
 
@@ -100,17 +96,15 @@ export default function TeacherExamsPage() {
       <ExamFormModalTeacher
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
-        editingExam={editingExam}
+        editingExam={editingExam as ExamRequest}
         setEditingExam={setEditingExam}
         handleSave={handleSave}
-        exams={exams}
-        subjectOptions={subjectOptions}
-        classOptions={classOptions}
+        lessons={lessons}
         statusOptions={statusOptions}
       />
 
       {/* Question Picker Modal */}
-      {pickerExam && (
+      {/* {pickerExam && (
         <QuestionPickerModal
           isOpen={pickerOpen}
           onClose={() => {
@@ -123,7 +117,7 @@ export default function TeacherExamsPage() {
           selectedIds={pickerExam?.questionIds || []}
           onSave={handlePickerSave}
         />
-      )}
+      )} */}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { ExamRow as Exam } from "@/types/exam";
+import { ExamList, ExamRequest } from "@/types/exam";
 export function columnsExamTeacher({
   openPicker,
   openEdit,
@@ -6,60 +6,39 @@ export function columnsExamTeacher({
   handleDelete,
   setDeleteConfirm,
 }: {
-  openPicker: (exam: Exam) => void;
-  openEdit: (exam: Exam) => void;
-  deleteConfirm: number | null;
-  handleDelete: (id: number) => void;
-  setDeleteConfirm: React.Dispatch<React.SetStateAction<number | null>>;
+  openPicker: (exam: string) => void;
+  openEdit: (id: string) => void;
+  deleteConfirm: string | null;
+  handleDelete: (id: string) => void;
+  setDeleteConfirm: React.Dispatch<React.SetStateAction<string | null>>;
 }) {
   return [
     {
       key: "name",
       label: "Exam Name",
-      render: (row: Exam) => (
+      render: (row: ExamList) => (
         <p className="font-medium text-slate-700">{row.name}</p>
       ),
     },
     {
       key: "subject",
       label: "Subject",
-      render: (row: Exam) => (
-        <span className="badge badge-info">{row.subject}</span>
+      render: (row: ExamList) => (
+        <span className="badge badge-info">{row.subject.name}</span>
       ),
     },
     {
       key: "targetClass",
       label: "Class",
-      render: (row: Exam) => (
-        <span className="badge badge-neutral">{row.targetClass}</span>
+      render: (row: ExamList) => (
+        <span className="badge badge-neutral">{row.class.name}</span>
       ),
     },
-    {
-      key: "questions",
-      label: "Questions",
-      render: (row: Exam) => (
-        <div className="flex items-center gap-2">
-          <span
-            className={`text-sm font-semibold ${
-              row.questionIds && row?.questionIds?.length > 0
-                ? "text-emerald-600"
-                : "text-slate-400"
-            }`}
-          >
-            {row.questionIds && row?.questionIds?.length > 0
-              ? `${row?.questionIds?.length} selected`
-              : row.questions > 0
-                ? `${row.questions} (unlinked)`
-                : "—"}
-          </span>
-        </div>
-      ),
-    },
-    { key: "students", label: "Students" },
+
     {
       key: "status",
       label: "Status",
-      render: (row: Exam) => (
+      render: (row: ExamList) => (
         <span
           className={`badge ${
             row.status === "Active"
@@ -78,25 +57,25 @@ export function columnsExamTeacher({
     {
       key: "actions",
       label: "Actions",
-      render: (row: Exam) => (
+      render: (row: ExamList) => (
         <div className="flex gap-2 flex-wrap">
           <button
-            onClick={() => openPicker(row)}
+            onClick={() => openPicker(row.id)}
             className="text-xs px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100 transition-colors font-medium"
             title="Select questions from bank"
           >
             📋 Questions
           </button>
           <button
-            onClick={() => openEdit(row)}
+            onClick={() => openEdit(row.id.toString() as string)}
             className="text-xs px-3 py-1.5 rounded-lg bg-indigo-50 text-indigo-600 hover:bg-indigo-100 transition-colors font-medium"
           >
             Edit
           </button>
-          {deleteConfirm === row.id ? (
+          {deleteConfirm === row.id.toString() ? (
             <div className="flex gap-1">
               <button
-                onClick={() => handleDelete(row.id)}
+                onClick={() => handleDelete(row.id.toString() as string)}
                 className="text-xs px-3 py-1.5 rounded-lg bg-red-500 text-white hover:bg-red-600 transition-colors font-medium"
               >
                 Confirm
@@ -110,7 +89,7 @@ export function columnsExamTeacher({
             </div>
           ) : (
             <button
-              onClick={() => setDeleteConfirm(row.id)}
+              onClick={() => setDeleteConfirm(row.id.toString() as string)}
               className="text-xs px-3 py-1.5 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 transition-colors font-medium"
             >
               Delete

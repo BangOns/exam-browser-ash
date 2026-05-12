@@ -1,16 +1,13 @@
 import { fetchWithAuth } from "@/lib/fetcher";
-import {
-  QuestionList,
-  QuestionRequest,
-  QuestionRequestEdit,
-} from "@/types/question";
+import { ExamList, ExamRequest, ExamRequestEdit } from "@/types/exam";
+import { QuestionList } from "@/types/question";
 
 export async function getExam() {
-  const res = await fetchWithAuth<QuestionList[]>("/api/exam");
+  const res = await fetchWithAuth<ExamList[]>("/api/exam");
   return res;
 }
 
-export async function createExam(data: QuestionRequest) {
+export async function createExam(data: ExamRequest) {
   const res = await fetchWithAuth("/api/exam", {
     method: "POST",
     body: JSON.stringify(data),
@@ -27,7 +24,7 @@ export async function getExamById(studentId: string) {
   return res;
 }
 
-export async function editExam(data: QuestionRequestEdit) {
+export async function editExam(data: ExamRequestEdit) {
   const { id, ...questionData } = data;
   const res = await fetchWithAuth(`/api/exam/${id}`, {
     method: "PUT",
