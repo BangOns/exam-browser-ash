@@ -35,6 +35,11 @@ export function columnsQuestions(
       label: "Kelas",
       render: (row: QuestionList) => <span>{row.lesson.class.name}</span>,
     },
+    {
+      key: "subject",
+      label: "pelajaran",
+      render: (row: QuestionList) => <span>{row.lesson.subject.name}</span>,
+    },
 
     {
       key: "actions",

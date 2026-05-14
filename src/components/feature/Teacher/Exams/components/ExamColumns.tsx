@@ -1,4 +1,4 @@
-import { ExamList, ExamRequest } from "@/types/exam";
+import { ExamList } from "@/types/exam";
 export function columnsExamTeacher({
   openPicker,
   openEdit,
@@ -8,9 +8,9 @@ export function columnsExamTeacher({
 }: {
   openPicker: (exam: string) => void;
   openEdit: (id: string) => void;
-  deleteConfirm: string | null;
+  deleteConfirm: string;
   handleDelete: (id: string) => void;
-  setDeleteConfirm: React.Dispatch<React.SetStateAction<string | null>>;
+  setDeleteConfirm: React.Dispatch<React.SetStateAction<string>>;
 }) {
   return [
     {
@@ -24,14 +24,14 @@ export function columnsExamTeacher({
       key: "subject",
       label: "Subject",
       render: (row: ExamList) => (
-        <span className="badge badge-info">{row.subject.name}</span>
+        <span className="badge badge-info">{row.lesson.subject.name}</span>
       ),
     },
     {
       key: "targetClass",
       label: "Class",
       render: (row: ExamList) => (
-        <span className="badge badge-neutral">{row.class.name}</span>
+        <span className="badge badge-neutral">{row.lesson.class.name}</span>
       ),
     },
 
@@ -81,7 +81,7 @@ export function columnsExamTeacher({
                 Confirm
               </button>
               <button
-                onClick={() => setDeleteConfirm(null)}
+                onClick={() => setDeleteConfirm("")}
                 className="text-xs px-3 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors font-medium"
               >
                 Cancel

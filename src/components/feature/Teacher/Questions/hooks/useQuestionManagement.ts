@@ -114,6 +114,7 @@ export default function useQuestionManagement() {
       setLessons(dataLesson?.data);
     }
   }, [dataLesson]);
+
   useEffect(() => {
     if (!dataQuestionById) return;
 

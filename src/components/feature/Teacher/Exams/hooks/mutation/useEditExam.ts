@@ -1,12 +1,12 @@
 import { editExam } from "@/services/exam.services";
-import { QuestionRequestEdit } from "@/types/question";
+import { ExamRequestEdit } from "@/types/exam";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useEditExam() {
   const queryClient = useQueryClient();
 
   const { mutateAsync, mutate } = useMutation({
-    mutationFn: (data: QuestionRequestEdit) => editExam(data),
+    mutationFn: (data: ExamRequestEdit) => editExam(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["exam"] });
     },

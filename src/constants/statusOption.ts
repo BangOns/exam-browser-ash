@@ -1,1 +1,1 @@
-export const statusOptions = ["Draft", "Scheduled", "Active", "Completed"];
+export const statusOptions = ["draft", "scheduled", "active", "completed"];

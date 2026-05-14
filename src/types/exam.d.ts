@@ -1,4 +1,4 @@
-import { DetailQuestion } from "./question";
+import { DetailQuestion, QuestionList } from "./question";
 
 export type ExamRow = {
   id: number;
@@ -31,10 +31,13 @@ export type ExamQuestionNow = Omit<ExamRow, "status"> & {
 export type ExamList = {
   id: string;
   name: string;
-  class: DetailQuestion;
-  subject: DetailQuestion;
+  lesson: {
+    id: string;
+    class: DetailQuestion;
+    subject: DetailQuestion;
+  };
   status: string | "active" | "scheduled" | "draft" | "completed";
-  questions: string[];
+  questions: QuestionList[];
 };
 export type ExamRequest = {
   name: string;

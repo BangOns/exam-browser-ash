@@ -2,32 +2,36 @@
 
 import DataTable from "@/components/ui/DataTable";
 import { Button } from "@/components/ui/button";
-import { initialQuestions } from "@/data/dummy/questions";
 import QuestionPickerModal from "@/components/feature/Teacher/Exams/components/QuestionPickerModal";
 import PageHeader from "@/components/shared/PageHeader";
 import { useExamTeacherManagement } from "@/components/feature/Teacher/Exams/hooks/useExamManagement";
 import ExamFormModalTeacher from "@/components/feature/Teacher/Exams/components/ExamFormModal";
 import { statusOptions } from "@/constants/statusOption";
-import { ExamList, ExamRequest } from "@/types/exam";
+import { ExamList, ExamRequest, ExamRequestEdit } from "@/types/exam";
+import ExamFormModalTeacherEdit from "@/components/feature/Teacher/Exams/components/ExamFormModalEdit";
 
 export default function TeacherExamsPage() {
   const {
     lessons,
+    questions,
+    dataExamById,
     openAdd,
     columns,
     exams,
+    examId,
+    handleSaveEdit,
     pickerExam,
     setPickerExam,
-    pickerOpen,
-    setPickerOpen,
+    modalType,
     handlePickerSave,
     modalOpen,
     setModalOpen,
     editingExam,
     setEditingExam,
+    editingExamId,
+    setEditingExamId,
     handleSave,
   } = useExamTeacherManagement();
-  console.log(exams);
 
   return (
     <div className="space-y-6">
@@ -92,32 +96,47 @@ export default function TeacherExamsPage() {
         />
       </section>
 
-      {/* Add/Edit Modal */}
-      <ExamFormModalTeacher
-        modalOpen={modalOpen}
-        setModalOpen={setModalOpen}
-        editingExam={editingExam as ExamRequest}
-        setEditingExam={setEditingExam}
-        handleSave={handleSave}
-        lessons={lessons}
-        statusOptions={statusOptions}
-      />
+      {/* Add Modal */}
+      {editingExam && (
+        <ExamFormModalTeacher
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}
+          editingExam={editingExam as ExamRequest}
+          setEditingExam={setEditingExam}
+          handleSave={handleSave}
+          lessons={lessons}
+          statusOptions={statusOptions}
+        />
+      )}
+      {examId && editingExamId && modalType === "edit" && (
+        <ExamFormModalTeacherEdit
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}
+          editingExam={editingExamId as ExamRequestEdit}
+          setEditingExam={setEditingExamId}
+          handleSave={handleSaveEdit}
+          lessons={lessons}
+          statusOptions={statusOptions}
+        />
+      )}
 
       {/* Question Picker Modal */}
-      {/* {pickerExam && (
+      {pickerExam && modalType === "picker" && (
         <QuestionPickerModal
-          isOpen={pickerOpen}
+          isOpen={modalOpen}
           onClose={() => {
-            setPickerOpen(false);
-            setPickerExam(null);
+            setModalOpen(false);
+            setPickerExam([]);
           }}
-          examName={pickerExam.name}
-          examSubject={pickerExam.subject}
-          allQuestions={initialQuestions}
-          selectedIds={pickerExam?.questionIds || []}
+          examName={dataExamById?.data?.name || ""}
+          examSubject={dataExamById?.data.lesson.subject.name || ""}
+          allQuestions={questions}
+          selectedIds={
+            dataExamById?.data.questions.map((q) => q.id) || pickerExam
+          }
           onSave={handlePickerSave}
         />
-      )} */}
+      )}
     </div>
   );
 }

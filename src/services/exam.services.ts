@@ -1,6 +1,5 @@
 import { fetchWithAuth } from "@/lib/fetcher";
 import { ExamList, ExamRequest, ExamRequestEdit } from "@/types/exam";
-import { QuestionList } from "@/types/question";
 
 export async function getExam() {
   const res = await fetchWithAuth<ExamList[]>("/api/exam");
@@ -19,8 +18,8 @@ export async function createExam(data: ExamRequest) {
   return res;
 }
 
-export async function getExamById(studentId: string) {
-  const res = await fetchWithAuth<QuestionList>(`/api/exam/${studentId}`);
+export async function getExamById(examId: string) {
+  const res = await fetchWithAuth<ExamList>(`/api/exam/${examId}`);
   return res;
 }
 
@@ -37,8 +36,8 @@ export async function editExam(data: ExamRequestEdit) {
   return res;
 }
 
-export async function deleteExam(questionId: string) {
-  const res = await fetchWithAuth(`/api/exam/${questionId}`, {
+export async function deleteExam(examId: string) {
+  const res = await fetchWithAuth(`/api/exam/${examId}`, {
     method: "DELETE",
   });
 

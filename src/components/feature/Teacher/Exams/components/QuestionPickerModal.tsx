@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect } from "react";
 import Modal from "@/components/ui/Modal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Question } from "@/types/question";
+import { QuestionList } from "@/types/question";
 
 const typeBadge: Record<string, string> = {
   "Multiple Choice": "badge-info",
@@ -16,9 +16,9 @@ interface Props {
   onClose: () => void;
   examName: string;
   examSubject: string;
-  allQuestions: Question[];
-  selectedIds: number[];
-  onSave: (ids: number[]) => void;
+  allQuestions: QuestionList[];
+  selectedIds: string[];
+  onSave: (ids: string[]) => void;
 }
 
 export default function QuestionPickerModal({
@@ -33,7 +33,7 @@ export default function QuestionPickerModal({
   const [search, setSearch] = useState("");
   const [filterSubject, setFilterSubject] = useState(examSubject);
   const [filterType, setFilterType] = useState("All");
-  const [selected, setSelected] = useState<number[]>(selectedIds);
+  const [selected, setSelected] = useState<string[]>(selectedIds);
 
   // Reset local state whenever modal opens
   useEffect(() => {
@@ -47,24 +47,27 @@ export default function QuestionPickerModal({
   }, [isOpen]);
 
   const subjects = useMemo(() => {
-    const s = Array.from(new Set(allQuestions.map((q) => q.subject)));
+    const s = Array.from(
+      new Set(allQuestions.map((q) => q.lesson.subject.name)),
+    );
     return ["All", ...s];
   }, [allQuestions]);
 
   const filtered = useMemo(() => {
     return allQuestions.filter((q) => {
-      if (filterSubject !== "All" && q.subject !== filterSubject) return false;
-      if (filterType !== "All" && q.type !== filterType) return false;
+      // if (filterSubject !== "All" && q.lesson.subject.name !== filterSubject)
+      //   return false;
+      // if (filterType !== "All" && q.type !== filterType) return false;
       if (search.trim()) {
         return q.question.toLowerCase().includes(search.toLowerCase());
       }
       return true;
     });
-  }, [allQuestions, filterSubject, filterType, search]);
+  }, [allQuestions, search]);
 
-  const toggle = (id: number) => {
+  const toggle = (id: string) => {
     setSelected((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
     );
   };
 
@@ -83,7 +86,10 @@ export default function QuestionPickerModal({
       title={`Select Questions — ${examName}`}
       maxWidth="max-w-3xl"
     >
-      <div className="flex flex-col gap-4" style={{ minWidth: "min(680px, 90vw)" }}>
+      <div
+        className="flex flex-col gap-4"
+        style={{ minWidth: "min(680px, 90vw)" }}
+      >
         {/* Search */}
         <Input
           type="text"
@@ -187,9 +193,13 @@ export default function QuestionPickerModal({
                         {q.question}
                       </p>
                       <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
-                        <span className="text-xs text-slate-400">{q.subject}</span>
+                        <span className="text-xs text-slate-400">
+                          {q.lesson.subject.name}
+                        </span>
                         <span className="text-slate-300">·</span>
-                        <span className={`badge text-[11px] ${typeBadge[q.type]}`}>
+                        <span
+                          className={`badge text-[11px] ${typeBadge[q.type]}`}
+                        >
                           {q.type}
                         </span>
                       </div>
@@ -204,7 +214,9 @@ export default function QuestionPickerModal({
         {/* Footer */}
         <div className="flex items-center justify-between pt-3 border-t border-slate-100">
           <span className="text-sm text-slate-500">
-            <span className="font-semibold text-emerald-600">{selected.length}</span>{" "}
+            <span className="font-semibold text-emerald-600">
+              {selected.length}
+            </span>{" "}
             question{selected.length !== 1 ? "s" : ""} selected
           </span>
           <div className="flex gap-3">
