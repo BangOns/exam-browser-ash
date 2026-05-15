@@ -1,11 +1,9 @@
-import { Schedule } from "@/types/schedule";
+import { ExamScheduleRequest } from "@/types/exam-schedule";
 
-export const emptySchedule: Schedule = {
-  id: 0,
-  name: "",
-  subject: "Mathematics",
-  date: "",
-  startTime: "",
-  endTime: "",
-  status: "Scheduled",
+export const emptySchedule: ExamScheduleRequest = {
+  exam_id: "",
+  exam_date: "",
+  start_time: "",
+  end_time: "",
+  duration: 0,
 };

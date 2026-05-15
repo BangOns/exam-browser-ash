@@ -2,7 +2,6 @@ import StatCard from "@/components/ui/StatCard";
 import DataTable from "@/components/ui/DataTable";
 
 import { usersData } from "@/data/dummy/user";
-import { scheduleData } from "@/data/dummy/schedule";
 import { statsData } from "@/data/dummy/stats";
 import PageHeader from "@/components/shared/PageHeader";
 import Link from "next/link";
@@ -46,7 +45,7 @@ export default function AdminDashboard() {
             </Link>
           }
         />
-        <DataTable
+        {/* <DataTable
           title="Exam Schedule"
           columns={scheduleColumns}
           data={scheduleData}
@@ -58,7 +57,7 @@ export default function AdminDashboard() {
               + Schedule Exam
             </Link>
           }
-        />
+        /> */}
       </div>
     </article>
   );

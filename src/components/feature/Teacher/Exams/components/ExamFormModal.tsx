@@ -12,7 +12,6 @@ export default function ExamFormModalTeacher({
   setEditingExam,
   handleSave,
   lessons,
-  statusOptions,
 }: {
   modalOpen: boolean;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -20,7 +19,6 @@ export default function ExamFormModalTeacher({
   setEditingExam: (e: ExamRequest) => void;
   handleSave: () => void;
   lessons: LessonList[];
-  statusOptions: string[];
 }) {
   return (
     <Modal
@@ -67,28 +65,6 @@ export default function ExamFormModalTeacher({
             ))}
           </select>
         </section>
-
-        <div>
-          <label className="block text-sm font-semibold text-slate-700 mb-1.5">
-            Status
-          </label>
-          <select
-            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all bg-white"
-            value={editingExam?.status}
-            onChange={(e) =>
-              setEditingExam({
-                ...editingExam,
-                status: e.target.value.toLowerCase() as ExamRequest["status"],
-              })
-            }
-          >
-            {statusOptions.map((s) => (
-              <option key={s} value={s}>
-                {s}
-              </option>
-            ))}
-          </select>
-        </div>
 
         {/* Question count info */}
         <div className="px-4 py-3 rounded-xl bg-emerald-50 border border-emerald-100 text-sm text-emerald-700">

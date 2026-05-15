@@ -3,27 +3,19 @@
 import DataTable from "@/components/ui/DataTable";
 import { Button } from "@/components/ui/button";
 import PageHeader from "@/components/shared/PageHeader";
-import ExamFormModal from "@/components/feature/Admin/Exams/components/ExamFormModal";
-import SubjectTimerModal from "@/components/feature/Admin/Exams/components/SubjectTimerModal";
 import { statusTabs } from "@/components/feature/Admin/Exams/constants";
 import { useExamsManagement } from "@/components/feature/Admin/Exams/hooks/useExamsManagement";
 import { statsExams } from "@/data/dummy/exams";
 import InfoCard from "@/components/shared/InfoCard";
-import { subjectOptions } from "@/constants/subjectOption";
-import { statusOptions } from "@/constants/statusOption";
-import { ExamRow } from "@/types/exam";
 
 export default function AdminExamsPage() {
   const {
     exams,
-    modalOpen,
-    editingExam,
+
     activeTab,
     filtered,
-    handleSave,
     columns,
-    setModalOpen,
-    setEditingExam,
+
     setActiveTab,
   } = useExamsManagement();
 
@@ -52,14 +44,14 @@ export default function AdminExamsPage() {
       </header>
 
       {/* Summary Stats */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+      {/* <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
         {statsExams.map((s, i) => (
           <InfoCard key={i} {...s} />
         ))}
-      </section>
+      </section> */}
 
       {/* Filter tabs */}
-      <section className="flex gap-2 flex-wrap">
+      {/* <section className="flex gap-2 flex-wrap">
         {statusTabs.map((tab) => (
           <Button
             key={tab}
@@ -73,7 +65,7 @@ export default function AdminExamsPage() {
             {tab}
           </Button>
         ))}
-      </section>
+      </section> */}
       <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
         <DataTable
           columns={columns}
@@ -81,26 +73,6 @@ export default function AdminExamsPage() {
           className="col-span-full"
         />
       </section>
-
-      {/* Add/Edit Modal */}
-      <ExamFormModal
-        modalOpen={modalOpen}
-        setModalOpen={setModalOpen}
-        editingExam={editingExam}
-        setEditingExam={setEditingExam}
-        handleSave={handleSave}
-        subjectOptions={subjectOptions}
-        statusOptions={statusOptions as ExamRow["status"][]}
-        exams={exams}
-      />
-
-      {/* Timer Configuration Modal */}
-      {/* <SubjectTimerModal
-        timerModalOpen={timerModalOpen}
-        setTimerModalOpen={setTimerModalOpen}
-        subjectTimers={subjectTimers}
-        setSubjectTimers={setSubjectTimers}
-      /> */}
     </article>
   );
 }

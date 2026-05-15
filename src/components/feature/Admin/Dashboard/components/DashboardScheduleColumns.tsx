@@ -1,4 +1,4 @@
-import { ScheduleRow } from "@/types/schedule";
+import { ExamSchedule } from "@/types/exam-schedule";
 
 export function DashboardScheduleColumns() {
   return [
@@ -9,7 +9,7 @@ export function DashboardScheduleColumns() {
     {
       key: "status",
       label: "Status",
-      render: (row: ScheduleRow) => (
+      render: (row: ExamSchedule) => (
         <span
           className={`badge ${row.status === "In Progress" ? "badge-warning" : "badge-info"}`}
         >

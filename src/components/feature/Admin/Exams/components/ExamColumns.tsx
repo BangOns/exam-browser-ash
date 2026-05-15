@@ -1,38 +1,46 @@
 import { Button } from "@/components/ui/button";
-import { ExamRow } from "@/types/exam";
+import { ExamList } from "@/types/exam";
 
 export function columnsTableExams(
-  generateToken: (id: number) => void,
-  openEdit: (exam: ExamRow) => void,
-  deleteConfirm: number | null,
-  setDeleteConfirm: (id: number | null) => void,
-  handleDelete: (id: number) => void,
+  generateToken: (id: string) => void,
+  deleteConfirm: string | null,
+  setDeleteConfirm: (id: string | null) => void,
+  handleDelete: (id: string) => void,
 ) {
   return [
     {
       key: "name",
       label: "Exam Name",
-      render: (row: ExamRow) => (
+
+      render: (row: ExamList) => (
         <span className="font-semibold text-slate-700">{row.name}</span>
       ),
     },
     {
       key: "subject",
       label: "Subject",
-      render: (row: ExamRow) => (
-        <span className="badge badge-info">{row.subject}</span>
+      render: (row: ExamList) => (
+        <span className="badge badge-info">{row.lesson.subject.name}</span>
       ),
     },
-    { key: "questions", label: "Questions" },
+    {
+      key: "questions",
+      label: "Questions",
+      render: (row: ExamList) => (
+        <span className="badge badge-info">
+          {row.questions.length} Questions
+        </span>
+      ),
+    },
     {
       key: "duration",
       label: "Duration",
-      render: (row: ExamRow) => <span>{row.timer || "60 min"}</span>,
+      render: (row: ExamList) => <span>{row?.schedule?.duration || "-"}</span>,
     },
     {
       key: "status",
       label: "Status",
-      render: (row: ExamRow) => (
+      render: (row: ExamList) => (
         <span
           className={`badge ${
             row.status === "Active"
@@ -51,11 +59,11 @@ export function columnsTableExams(
     {
       key: "token",
       label: "Access Token",
-      render: (row: ExamRow) => (
+      render: (row: ExamList) => (
         <div className="flex items-center gap-2">
           {row.token ? (
             <span className="font-mono bg-slate-100 text-slate-800 px-2 py-1 rounded text-xs font-bold tracking-widest">
-              {row.token}
+              {row.token.token || "-"}
             </span>
           ) : (
             <span className="text-xs text-slate-400 italic">Not generated</span>
@@ -70,19 +78,11 @@ export function columnsTableExams(
         </div>
       ),
     },
-    { key: "created", label: "Created" },
     {
       key: "actions",
       label: "Actions",
-      render: (row: ExamRow) => (
+      render: (row: ExamList) => (
         <div className="flex gap-2">
-          <button
-            onClick={() => openEdit(row)}
-            className="text-xs px-3 py-1.5 rounded-lg bg-indigo-50 text-indigo-600 hover:bg-indigo-100 transition-colors font-medium"
-          >
-            Edit
-          </button>
-
           {deleteConfirm === row.id ? (
             <div className="flex gap-1 animate-slide-up">
               <button

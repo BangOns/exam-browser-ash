@@ -4,16 +4,27 @@ import DataTable from "@/components/ui/DataTable";
 import { Button } from "@/components/ui/button";
 import InfoCard from "@/components/shared/InfoCard";
 import PageHeader from "@/components/shared/PageHeader";
-import SheduleFormModal from "@/components/feature/Admin/Schedule/components/SheduleFormModal";
+import ScheduleFormModal from "@/components/feature/Admin/Schedule/components/ScheduleFormModal";
 import { useScheduleManagement } from "@/components/feature/Admin/Schedule/hooks/useScheduleManagement";
-import { subjectOptions } from "@/constants/subjectOption";
+import {
+  ExamSchedule,
+  ExamScheduleRequest,
+  ExamScheduleRequestEdit,
+} from "@/types/exam-schedule";
+import { ExamList } from "@/types/exam";
+import ScheduleFormModalEdit from "@/components/feature/Admin/Schedule/components/ScheduleFormModalEdit";
 export default function AdminSchedulePage() {
   const {
     schedules,
+    isLoadingSchedules,
+    exam,
     modalOpen,
     editing,
+    editingById,
+    setEditingById,
     openAdd,
     handleSave,
+    handleSaveEdit,
     setModalOpen,
     setEditing,
     columns,
@@ -54,19 +65,27 @@ export default function AdminSchedulePage() {
       <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
         <DataTable
           columns={columns}
-          data={schedules}
+          data={schedules as ExamSchedule[]}
           className="col-span-full"
+          isLoading={isLoadingSchedules}
         />
       </section>
       {/* Modal add schedule */}
-      <SheduleFormModal
-        modalOpen={modalOpen}
-        setModalOpen={setModalOpen}
-        editing={editing}
+      <ScheduleFormModal
+        modalOpen={modalOpen === "add"}
+        setModalOpen={() => setModalOpen(null)}
+        editing={editing as ExamScheduleRequest}
         setEditing={setEditing}
-        schedules={schedules}
-        subjectOptions={subjectOptions}
+        examList={exam as ExamList[]}
         handleSave={handleSave}
+      />
+      <ScheduleFormModalEdit
+        modalOpen={modalOpen === "edit"}
+        setModalOpen={() => setModalOpen(null)}
+        editing={editingById as ExamScheduleRequestEdit}
+        setEditing={setEditingById}
+        examList={exam as ExamList[]}
+        handleSave={handleSaveEdit}
       />
     </div>
   );

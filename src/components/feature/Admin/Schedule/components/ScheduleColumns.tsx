@@ -1,4 +1,4 @@
-import { Schedule } from "@/types/schedule";
+import { ExamSchedule, ExamScheduleRequest } from "@/types/exam-schedule";
 
 export function ScheduleColumns({
   openEdit,
@@ -6,26 +6,29 @@ export function ScheduleColumns({
   handleDelete,
   setDeleteConfirm,
 }: {
-  openEdit: (s: Schedule) => void;
-  deleteConfirm: number | null;
-  handleDelete: (id: number) => void;
-  setDeleteConfirm: (id: number | null) => void;
+  openEdit: (s: string) => void;
+  deleteConfirm: string | null;
+  handleDelete: (id: string) => void;
+  setDeleteConfirm: (id: string) => void;
 }) {
   return [
     {
       key: "name",
       label: "Exam Name",
-      render: (row: Schedule) => (
+
+      render: (row: ExamSchedule) => (
         <div>
-          <p className="font-medium text-slate-700">{row.name}</p>
-          <p className="text-xs text-slate-400">{row.subject}</p>
+          <p className="font-medium text-slate-700">{row.exam.name || "-"}</p>
+          <p className="text-xs text-slate-400">
+            {row.exam.lesson.subject.name || "-"}
+          </p>
         </div>
       ),
     },
     {
       key: "date",
       label: "Date",
-      render: (row: Schedule) => (
+      render: (row: ExamSchedule) => (
         <div className="flex items-center gap-2 text-sm text-slate-600 font-medium">
           <svg
             className="w-4 h-4 text-slate-400"
@@ -40,14 +43,14 @@ export function ScheduleColumns({
               d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
             />
           </svg>
-          {row.date}
+          {row.exam_date || "-"}
         </div>
       ),
     },
     {
       key: "time",
       label: "Time",
-      render: (row: Schedule) => (
+      render: (row: ExamSchedule) => (
         <div className="flex items-center gap-2 text-sm text-slate-600 font-medium whitespace-nowrap">
           <svg
             className="w-4 h-4 text-slate-400"
@@ -62,14 +65,14 @@ export function ScheduleColumns({
               d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          {row.startTime} - {row.endTime}
+          {row.start_time.slice(0, 5)} - {row.end_time.slice(0, 5)}
         </div>
       ),
     },
     {
       key: "status",
       label: "Status",
-      render: (row: Schedule) => (
+      render: (row: ExamSchedule) => (
         <span
           className={`badge ${
             row.status === "Scheduled"
@@ -86,24 +89,24 @@ export function ScheduleColumns({
     {
       key: "actions",
       label: "Actions",
-      render: (row: Schedule) => (
+      render: (row: ExamSchedule) => (
         <div className="flex gap-2">
           <button
-            onClick={() => openEdit(row)}
+            onClick={() => openEdit(row.id.toString())}
             className="text-xs px-3 py-1.5 rounded-lg bg-sky-50 text-sky-600 hover:bg-sky-100 transition-colors font-medium"
           >
             Edit
           </button>
-          {deleteConfirm === row.id ? (
+          {deleteConfirm === row.id.toString() ? (
             <div className="flex gap-1">
               <button
-                onClick={() => handleDelete(row.id)}
+                onClick={() => handleDelete(row.id.toString())}
                 className="text-xs px-3 py-1.5 rounded-lg bg-red-500 text-white hover:bg-red-600 transition-colors font-medium"
               >
                 Confirm
               </button>
               <button
-                onClick={() => setDeleteConfirm(null)}
+                onClick={() => setDeleteConfirm("")}
                 className="text-xs px-3 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors font-medium"
               >
                 Cancel
@@ -111,7 +114,7 @@ export function ScheduleColumns({
             </div>
           ) : (
             <button
-              onClick={() => setDeleteConfirm(row.id)}
+              onClick={() => setDeleteConfirm(row.id.toString())}
               className="text-xs px-3 py-1.5 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 transition-colors font-medium"
             >
               Delete

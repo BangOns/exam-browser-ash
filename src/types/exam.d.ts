@@ -1,4 +1,7 @@
-import { DetailQuestion, QuestionList } from "./question";
+import { ExamSchedule } from "./exam-schedule";
+import { ExamToken } from "./exam-token";
+import { LessonList } from "./lesson";
+import { QuestionList } from "./question";
 
 export type ExamRow = {
   id: number;
@@ -18,26 +21,15 @@ export type ExamQuestionNow = Omit<ExamRow, "status"> & {
   status: "available" | "upcoming" | "completed";
   duration: string;
 };
-// type Exam = {
-//   id: number;
-//   name: string;
-//   subject: string;
-//   targetClass: string;
-//   questions: number;
-//   students: number;
-//   status: "Active" | "Scheduled" | "Draft" | "Completed";
-//   questionIds: number[];
-// };
+
 export type ExamList = {
   id: string;
   name: string;
-  lesson: {
-    id: string;
-    class: DetailQuestion;
-    subject: DetailQuestion;
-  };
+  lesson: LessonList;
+  schedule: ExamSchedule;
   status: string | "active" | "scheduled" | "draft" | "completed";
   questions: QuestionList[];
+  token: ExamToken;
 };
 export type ExamRequest = {
   name: string;

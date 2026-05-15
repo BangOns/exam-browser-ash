@@ -105,7 +105,6 @@ export default function TeacherExamsPage() {
           setEditingExam={setEditingExam}
           handleSave={handleSave}
           lessons={lessons}
-          statusOptions={statusOptions}
         />
       )}
       {examId && editingExamId && modalType === "edit" && (
@@ -116,7 +115,6 @@ export default function TeacherExamsPage() {
           setEditingExam={setEditingExamId}
           handleSave={handleSaveEdit}
           lessons={lessons}
-          statusOptions={statusOptions}
         />
       )}
 

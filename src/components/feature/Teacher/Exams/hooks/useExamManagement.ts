@@ -70,15 +70,22 @@ export function useExamTeacherManagement() {
   const handleSave = useCallback(() => {
     if (!editingExam) return;
 
-    mutatePostExam(editingExam as ExamRequest);
+    const data = {
+      ...editingExam,
+      status: "draft",
+    };
+    mutatePostExam(data as ExamRequest);
 
     setEditingExam(null);
   }, [editingExam, mutatePostExam]);
 
   const handleSaveEdit = useCallback(() => {
     if (!editingExamId) return;
-
-    mutateEditExam(editingExamId as ExamRequestEdit);
+    const data = {
+      ...editingExamId,
+      status: "draft",
+    };
+    mutateEditExam(data as ExamRequestEdit);
 
     setEditingExamId(null);
     setExamId("");
