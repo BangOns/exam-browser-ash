@@ -5,7 +5,7 @@ import {
   FileText,
   LayoutDashboard,
   MonitorCheck,
-  Settings,
+  // Settings,
 } from "lucide-react";
 import { FaUsers } from "react-icons/fa";
 import { NavItem } from "@/types/navigation";
@@ -58,11 +58,11 @@ export const navConfig: Record<
           />
         ),
       },
-      {
-        label: "Settings",
-        href: "/admin/settings",
-        icon: <Settings size={20} stroke="currentColor" strokeWidth={1.8} />,
-      },
+      // {
+      //   label: "Settings",
+      //   href: "/admin/settings",
+      //   icon: <Settings size={20} stroke="currentColor" strokeWidth={1.8} />,
+      // },
     ],
   },
   teacher: {

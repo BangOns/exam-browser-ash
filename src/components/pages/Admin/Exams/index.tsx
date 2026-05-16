@@ -9,15 +9,7 @@ import { statsExams } from "@/data/dummy/exams";
 import InfoCard from "@/components/shared/InfoCard";
 
 export default function AdminExamsPage() {
-  const {
-    exams,
-
-    activeTab,
-    filtered,
-    columns,
-
-    setActiveTab,
-  } = useExamsManagement();
+  const { filtered, columns } = useExamsManagement();
 
   return (
     <article className="space-y-6">

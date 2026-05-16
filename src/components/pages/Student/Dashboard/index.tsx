@@ -5,7 +5,6 @@ import StatCard from "@/components/ui/StatCard";
 import PageHeader from "@/components/shared/PageHeader";
 import CardExamNow from "@/components/feature/Student/Dashboard/components/CardExamNow";
 import { TriangleAlert } from "lucide-react";
-import { examsQuestionNow } from "@/data/dummy/exams";
 import { recentResults } from "@/data/dummy/result";
 import CardRecentResult from "@/components/feature/Student/Dashboard/components/CardRecentResult";
 import TokenVerifyModal from "@/components/feature/Student/Dashboard/components/TokenVerifyModal";
@@ -14,6 +13,7 @@ import { useDashboardStudentManagement } from "@/components/feature/Student/Dash
 
 export default function StudentDashboard() {
   const {
+    exam,
     verifyModal,
     setVerifyModal,
     tokenInput,
@@ -32,7 +32,7 @@ export default function StudentDashboard() {
       />
 
       {/* Stats */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+      {/* <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
         {statsDataStudent.map((stat, i) => (
           <StatCard
             key={i}
@@ -40,7 +40,7 @@ export default function StudentDashboard() {
             accent={i === 3 ? "warning" : "student"}
           />
         ))}
-      </section>
+      </section> */}
 
       {/* Available Exams */}
       <section className="glass-card overflow-hidden animate-slide-up">
@@ -50,18 +50,22 @@ export default function StudentDashboard() {
           </h3>
         </div>
         <div className="p-4 space-y-3">
-          {examsQuestionNow.map((exam) => (
-            <CardExamNow
-              key={exam.id}
-              exam={exam}
-              handleStartExam={handleStartExam}
-            />
-          ))}
+          {exam?.length === 0 ? (
+            <p className="text-center">No available exams</p>
+          ) : (
+            exam.map((exam) => (
+              <CardExamNow
+                key={exam.id}
+                exam={exam}
+                handleStartExam={handleStartExam}
+              />
+            ))
+          )}
         </div>
       </section>
 
       {/* Recent Results */}
-      <div className="glass-card overflow-hidden animate-slide-up">
+      {/* <div className="glass-card overflow-hidden animate-slide-up">
         <div className="px-6 py-4 border-b border-slate-100">
           <h3 className="text-base font-semibold text-slate-800">
             Recent Results
@@ -72,10 +76,10 @@ export default function StudentDashboard() {
             <CardRecentResult result={result} key={i} />
           ))}
         </div>
-      </div>
+      </div> */}
 
       {/* Violation Warning card */}
-      <div className="glass-card border-l-4 border-l-amber-400 p-5 animate-slide-up">
+      {/* <div className="glass-card border-l-4 border-l-amber-400 p-5 animate-slide-up">
         <div className="flex items-start gap-3">
           <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center shrink-0">
             <TriangleAlert />
@@ -91,7 +95,7 @@ export default function StudentDashboard() {
             </p>
           </div>
         </div>
-      </div>
+      </div> */}
       {/* Token Verification Modal */}
       <TokenVerifyModal
         verifyModal={verifyModal}

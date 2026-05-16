@@ -1,8 +1,25 @@
 import { fetchWithAuth } from "@/lib/fetcher";
 import { ExamList, ExamRequest, ExamRequestEdit } from "@/types/exam";
+import {} from "@/utils/filterQuery";
 
-export async function getExam() {
-  const res = await fetchWithAuth<ExamList[]>("/api/exam");
+export async function getExam({
+  page,
+  limit,
+  search,
+  status,
+}: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  status?: string;
+}) {
+  const params = new URLSearchParams(
+    Object.entries({ page, limit, search, status })
+      .filter(([, v]) => v !== undefined && v !== null && v !== "")
+      .map(([k, v]) => [k, String(v)]),
+  );
+
+  const res = await fetchWithAuth<ExamList[]>(`/api/exam?${params.toString()}`);
   return res;
 }
 

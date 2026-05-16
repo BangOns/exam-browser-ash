@@ -5,7 +5,7 @@ import { useGetExam } from "@/components/feature/Teacher/Exams/hooks/useGetExam"
 import { useGenerateToken } from "./mutations/useGenerateToken";
 import { useDeleteExam } from "@/components/feature/Teacher/Exams/hooks/mutation/useDeleteExam";
 export function useExamsManagement() {
-  const { data } = useGetExam();
+  const { data } = useGetExam({ status: "active" });
   const { mutateAsync } = useGenerateToken();
   const { mutateAsync: deleteExam } = useDeleteExam();
   const [exams, setExams] = useState<ExamList[]>([]);

@@ -10,11 +10,26 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const res = await fetch(`${process.env.API_URL}/exam`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
+    const { searchParams } = req.nextUrl;
+    const params = new URLSearchParams(
+      Object.entries({
+        page: searchParams.get("page"),
+        limit: searchParams.get("limit"),
+        search: searchParams.get("search"),
+        status: searchParams.get("status"),
+      })
+        .filter(([, v]) => v !== null && v !== "")
+        .map(([k, v]) => [k, String(v)]),
+    );
+
+    const res = await fetch(
+      `${process.env.API_URL}/exam?${params.toString()}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
 
     const data = (await res.json()) as ApiResponse<ExamList>;
 

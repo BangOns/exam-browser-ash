@@ -1,29 +1,21 @@
+import { useGetExam } from "@/components/feature/Teacher/Exams/hooks/useGetExam";
+import { ExamList } from "@/types/exam";
 import { useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export function useDashboardStudentManagement() {
+  const { data: dataExam } = useGetExam({ status: "active" });
+
+  const [exam, setExam] = useState<ExamList[]>(dataExam?.data || []);
   const router = useRouter();
   const [verifyModal, setVerifyModal] = useState(false);
-  const [selectedExam, setSelectedExam] = useState<number | null>(null);
+  const [selectedExam, setSelectedExam] = useState<string | null>(null);
   const [tokenInput, setTokenInput] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
-  const handleStartExam = useCallback((id: number) => {
+  const handleStartExam = useCallback((id: string) => {
     // Check if suspended
-    const ustr = localStorage.getItem("user");
-    if (ustr) {
-      try {
-        const u = JSON.parse(ustr);
-        if (localStorage.getItem(`suspended_user_${u.id}`) === "true") {
-          alert(
-            "Your access is suspended due to a rule violation. Please contact Admin.",
-          );
-          return;
-        }
-      } catch {
-        // ignore
-      }
-    }
+
     setSelectedExam(id);
     setVerifyModal(true);
     setErrorMsg("");
@@ -47,7 +39,13 @@ export function useDashboardStudentManagement() {
     }
   }, [selectedExam, tokenInput, router]);
 
+  useEffect(() => {
+    if (dataExam) {
+      setExam(dataExam.data);
+    }
+  }, [dataExam]);
   return {
+    exam,
     verifyModal,
     setVerifyModal,
     selectedExam,

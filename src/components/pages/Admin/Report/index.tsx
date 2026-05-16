@@ -11,20 +11,20 @@ import { AuditEntry, ReportList } from "@/types/report";
 
 export default function AdminReportsPage() {
   const { data } = useReportManagement();
-  const stats = [
-    {
-      label: "Total Events",
-      value: data?.meta.pagination.total || 0,
-      emoji: "📊",
-    },
-    // { label: "Violations", value: "23", emoji: "⚠️" },
-    // { label: "System Events", value: "856", emoji: "🔧" },
-    {
-      label: "User Actions",
-      value: data?.meta.pagination.total || 0,
-      emoji: "👤",
-    },
-  ];
+  // const stats = [
+  //   {
+  //     label: "Total Events",
+  //     value: data?.meta.pagination.total || 0,
+  //     emoji: "📊",
+  //   },
+  //   // { label: "Violations", value: "23", emoji: "⚠️" },
+  //   // { label: "System Events", value: "856", emoji: "🔧" },
+  //   {
+  //     label: "User Actions",
+  //     value: data?.meta.pagination.total || 0,
+  //     emoji: "👤",
+  //   },
+  // ];
 
   const activityLogs: AuditEntry[] | [] = useMemo(() => {
     if (!data?.data) return [];
@@ -52,11 +52,11 @@ export default function AdminReportsPage() {
       />
 
       {/* Quick stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((s, i) => (
           <InfoCard key={i} {...s} />
         ))}
-      </div>
+      </div> */}
 
       {/* Filter */}
       {/* <div className="flex gap-2">

@@ -1,17 +1,6 @@
-import StatCard from "@/components/ui/StatCard";
-import DataTable from "@/components/ui/DataTable";
-
-import { usersData } from "@/data/dummy/user";
-import { statsData } from "@/data/dummy/stats";
 import PageHeader from "@/components/shared/PageHeader";
-import Link from "next/link";
-import RecentNotif from "@/components/feature/Admin/Dashboard/components/RecentNotif";
-import { DashboardUserColumns } from "@/components/feature/Admin/Dashboard/components/DashboardUserColumns";
-import { DashboardScheduleColumns } from "@/components/feature/Admin/Dashboard/components/DashboardScheduleColumns";
 
 export default function AdminDashboard() {
-  const userColumns = DashboardUserColumns();
-  const scheduleColumns = DashboardScheduleColumns();
   return (
     <article className="space-y-8">
       {/* Page header */}
@@ -21,17 +10,24 @@ export default function AdminDashboard() {
       />
 
       {/* Stats */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+      {/* <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
         {statsData.map((stat, i) => (
           <StatCard key={i} {...stat} accent={i === 3 ? "danger" : "admin"} />
         ))}
-      </section>
+      </section> */}
 
       {/* Alerts panel */}
-      <RecentNotif />
+      {/* <div className="glass-card p-6 animate-slide-up">
+          <div className="space-y-4">
+            {activityLogs.map((entry) => {
+              const styles = TYPE_STYLES[entry.type];
+              return <ReportCard key={entry.id} entry={entry} styles={styles} />;
+            })}
+          </div>
+        </div> */}
 
       {/* Tables */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+      {/* <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         <DataTable
           title="Recent Users"
           columns={userColumns}
@@ -44,8 +40,8 @@ export default function AdminDashboard() {
               + Add User
             </Link>
           }
-        />
-        {/* <DataTable
+        /> */}
+      {/* <DataTable
           title="Exam Schedule"
           columns={scheduleColumns}
           data={scheduleData}
@@ -58,7 +54,7 @@ export default function AdminDashboard() {
             </Link>
           }
         /> */}
-      </div>
+      {/* </div> */}
     </article>
   );
 }

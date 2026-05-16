@@ -8,8 +8,8 @@ import { useDashboardManagement } from "@/components/feature/Teacher/Dashboard/h
 import { statsDataTeacher } from "@/data/dummy/stats";
 
 export default function TeacherDashboardPage() {
-  const { questionList, resultList, columnsQuestion, columnsResult } =
-    useDashboardManagement();
+  // const { questionList, resultList, columnsQuestion, columnsResult } =
+  //   useDashboardManagement();
   return (
     <article className="space-y-8">
       {/* Page header */}
@@ -19,17 +19,17 @@ export default function TeacherDashboardPage() {
       />
 
       {/* Stats */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+      {/* <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
         {statsDataTeacher.map((stat, i) => (
           <StatCard key={i} {...stat} accent="teacher" />
         ))}
-      </section>
+      </section> */}
 
       {/* Monitoring quick view */}
-      <MonitoringSection />
+      {/* <MonitoringSection /> */}
 
       {/* Tables */}
-      <section className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+      {/* <section className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         <DataTable
           title="Question Bank"
           columns={columnsQuestion}
@@ -45,7 +45,7 @@ export default function TeacherDashboardPage() {
           columns={columnsResult}
           data={resultList}
         />
-      </section>
+      </section> */}
     </article>
   );
 }

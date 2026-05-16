@@ -45,7 +45,7 @@ export default function Sidebar({
   return (
     <aside
       className={` top-0 left-0 h-full bg-sidebar z-40 flex flex-col transition-all duration-300 ease-in-out ${
-        collapsed ? "w-[72px]" : "w-[260px]"
+        collapsed ? "w-18" : "w-65"
       } ${!isMobile ? "fixed" : "w-full"}`}
     >
       {/* Logo area */}
