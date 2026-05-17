@@ -19,7 +19,10 @@ export default function useQuestionManagement() {
   const { data: dataLesson } = useGetLesson();
   const { mutateAsync: mutatePostQuestion } = usePostQuestion();
   const { mutateAsync: mutateEditQuestion } = useEditQuestion();
-  const { mutateAsync: mutateDeleteQuestion } = useDeleteQuestion();
+  const {
+    mutateAsync: mutateDeleteQuestion,
+    isPending: isLoadingDeleteQuestion,
+  } = useDeleteQuestion();
   const [questionId, setQuestionId] = useState<string | null>(null);
   const { data: dataQuestionById } = useGetQuestionById(questionId || "");
   const [questions, setQuestions] = useState<QuestionList[]>(data?.data || []);
@@ -57,10 +60,11 @@ export default function useQuestionManagement() {
 
   const handleSave = () => {
     if (!editingQuestion) return;
-    const data = {
+    const data: QuestionRequest = {
       ...editingQuestion,
       options:
         editingQuestion.type === "Essay" ? undefined : editingQuestion.options,
+      max_points: Number(editingQuestion.max_points) || 10,
     };
     mutatePostQuestion(data);
     setModalOpen(false);
@@ -102,8 +106,15 @@ export default function useQuestionManagement() {
       deleteConfirm,
       setDeleteConfirm,
       handleDelete,
+      isLoadingDeleteQuestion,
     );
-  }, [openEdit, deleteConfirm, setDeleteConfirm, handleDelete]);
+  }, [
+    openEdit,
+    deleteConfirm,
+    setDeleteConfirm,
+    handleDelete,
+    isLoadingDeleteQuestion,
+  ]);
   useEffect(() => {
     if (data?.data) {
       setQuestions(data?.data);
@@ -134,6 +145,7 @@ export default function useQuestionManagement() {
   return {
     questions,
     isLoadingQuestion,
+    isLoadingDeleteQuestion,
     questionId,
     setQuestions,
     lessons,

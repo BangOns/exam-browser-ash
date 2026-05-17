@@ -10,6 +10,7 @@ export default function TokenVerifyModal({
   setTokenInput,
   handleVerifyToken,
   errorMsg,
+  loading,
 }: {
   verifyModal: boolean;
   setVerifyModal: (value: boolean) => void;
@@ -17,6 +18,7 @@ export default function TokenVerifyModal({
   setTokenInput: (value: string) => void;
   handleVerifyToken: () => void;
   errorMsg: string;
+  loading: boolean;
 }) {
   return (
     <Modal
@@ -51,7 +53,7 @@ export default function TokenVerifyModal({
           </Button>
           <Button
             onClick={handleVerifyToken}
-            disabled={!tokenInput}
+            disabled={!tokenInput || loading}
             className="px-5 py-2.5 h-10 rounded-xl bg-sky-500 text-white text-sm font-semibold hover:bg-sky-600 transition-colors shadow-sm disabled:opacity-50"
           >
             Verify & Start

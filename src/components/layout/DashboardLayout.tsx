@@ -6,6 +6,7 @@ import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { useAuth } from "@/context/Auth/AuthContext";
+import LoadSpinner from "../ui/load-spinner";
 
 export default function DashboardLayout({
   role,
@@ -33,7 +34,7 @@ export default function DashboardLayout({
   if (isLoading || !isAuthorized) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+        <LoadSpinner />
       </div>
     );
   }

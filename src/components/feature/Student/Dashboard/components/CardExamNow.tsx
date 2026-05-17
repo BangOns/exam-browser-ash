@@ -50,7 +50,7 @@ export default function CardExamNow({
           <div className="flex items-center gap-3 mt-1 text-xs text-slate-500">
             <span>{exam.lesson.class.name}</span>
             <span>•</span>
-            <span>{exam.schedule.duration}</span>
+            <span>{exam.schedule.duration} menit</span>
             <span>•</span>
             <span>{exam.questions.length} questions</span>
           </div>

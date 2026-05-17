@@ -1,29 +1,31 @@
+import { Button } from "@/components/ui/button";
 import { ArrowLeft, Clock } from "lucide-react";
-import Link from "next/link";
 
 export default function HeaderExamStudent({
   progress,
   answeredCount,
-  setShowViolation,
   initialQuestions,
+  handleModalExit,
+  handleModalSubmit,
 }: {
   examName: string;
   examSubject: string;
   progress: number;
   answeredCount: number;
-  setShowViolation: (show: boolean) => void;
   initialQuestions: number;
+  handleModalExit: () => void;
+  handleModalSubmit: () => void;
 }) {
   return (
     <header className="sticky top-0 z-20 bg-white/95 backdrop-blur-lg border-b border-slate-200 px-6 py-3">
       <div className="flex items-center justify-between max-w-7xl mx-auto">
         <div className="flex items-center gap-4">
-          <Link
-            href="/student"
-            className="text-slate-400 hover:text-slate-600 transition-colors"
+          <Button
+            onClick={handleModalExit}
+            className="text-slate-400 hover:text-slate-600 transition-colors bg-slate-100"
           >
             <ArrowLeft />
-          </Link>
+          </Button>
           <div>
             <h1 className="text-base font-bold text-slate-800">Quiz Physics</h1>
             <p className="text-xs text-slate-400">20 Questions • 60 minutes</p>
@@ -40,7 +42,7 @@ export default function HeaderExamStudent({
           </div>
           <button
             className="px-4 py-2 cursor-pointer rounded-xl bg-red-500 text-white text-sm font-semibold hover:bg-red-600 transition-colors"
-            onClick={() => setShowViolation(true)}
+            onClick={handleModalSubmit}
           >
             Submit Exam
           </button>

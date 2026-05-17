@@ -2,9 +2,13 @@ import { useGetExam } from "@/components/feature/Teacher/Exams/hooks/useGetExam"
 import { ExamList } from "@/types/exam";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { usePostEnterExam } from "./mutations/usePostEnterExam";
+import { ExamTokenRequest } from "@/types/exam-token";
 
 export function useDashboardStudentManagement() {
-  const { data: dataExam } = useGetExam({ status: "active" });
+  const { data: dataExam } = useGetExam({ status: "active,scheduled" });
+  const { mutateAsync: enterExam, isPending: isPendingEnterExam } =
+    usePostEnterExam();
 
   const [exam, setExam] = useState<ExamList[]>(dataExam?.data || []);
   const router = useRouter();
@@ -14,8 +18,6 @@ export function useDashboardStudentManagement() {
   const [errorMsg, setErrorMsg] = useState("");
 
   const handleStartExam = useCallback((id: string) => {
-    // Check if suspended
-
     setSelectedExam(id);
     setVerifyModal(true);
     setErrorMsg("");
@@ -24,20 +26,22 @@ export function useDashboardStudentManagement() {
 
   const handleVerifyToken = useCallback(() => {
     if (!selectedExam) return;
-    const correctToken = localStorage.getItem(`exam_token_${selectedExam}`);
-    if (correctToken && correctToken === tokenInput) {
-      // verification success
-      localStorage.setItem(
-        "exam_session",
-        Math.random().toString(36).substring(2, 10),
-      );
-      router.push("/student/exam");
-    } else {
-      setErrorMsg(
-        "Invalid token. Please ask your admin for the correct access token.",
-      );
-    }
-  }, [selectedExam, tokenInput, router]);
+
+    const data: ExamTokenRequest = {
+      id: selectedExam,
+      token: tokenInput,
+    };
+
+    enterExam(data, {
+      onError: (err) => setErrorMsg(err.data.message),
+      onSuccess: () => {
+        setVerifyModal(false);
+        setErrorMsg("");
+        setTokenInput("");
+        router.push(`/student/exam/${selectedExam}`);
+      },
+    });
+  }, [selectedExam, tokenInput, enterExam, router]);
 
   useEffect(() => {
     if (dataExam) {
@@ -51,6 +55,7 @@ export function useDashboardStudentManagement() {
     selectedExam,
     setSelectedExam,
     tokenInput,
+    isPendingEnterExam,
     setTokenInput,
     errorMsg,
     setErrorMsg,

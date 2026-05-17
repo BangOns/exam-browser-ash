@@ -3,3 +3,7 @@ export interface ExamToken {
   is_active: boolean;
   expired_at: string;
 }
+export interface ExamTokenRequest {
+  token: string;
+  id: string;
+}

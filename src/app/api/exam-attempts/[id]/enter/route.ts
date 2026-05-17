@@ -1,5 +1,5 @@
 import { ApiResponse } from "@/types/api-response";
-import { ExamToken } from "@/types/exam-token";
+import { ExamToken, ExamTokenRequest } from "@/types/exam-token";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(
@@ -14,10 +14,13 @@ export async function POST(
   }
 
   try {
+    const datas = (await req.json()) as ExamTokenRequest["token"];
+
     const res = await fetch(
       `${process.env.API_URL}/exam-attempts/${examId}/enter`,
       {
         method: "POST",
+        body: JSON.stringify(datas), // ✅ fix
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json", // ✅ tambah

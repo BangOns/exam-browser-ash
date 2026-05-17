@@ -41,6 +41,11 @@ export function useScheduleManagement() {
     setScheduleId(id);
     setModalOpen("edit");
   }, []);
+  const handleClose = () => {
+    setModalOpen(null);
+    setEditingById(null);
+    setScheduleId("");
+  };
 
   const handleSave = () => {
     const data: ExamScheduleRequest = {
@@ -74,10 +79,13 @@ export function useScheduleManagement() {
     setModalOpen(null);
   };
 
-  const handleDelete = useCallback((id: string) => {
-    mutateDeleteExamSchedule({ id });
-    setDeleteConfirm("");
-  }, []);
+  const handleDelete = useCallback(
+    (id: string) => {
+      mutateDeleteExamSchedule({ id });
+      setDeleteConfirm("");
+    },
+    [mutateDeleteExamSchedule],
+  );
 
   useEffect(() => {
     if (data?.data) {
@@ -131,6 +139,7 @@ export function useScheduleManagement() {
     handleSave,
     handleSaveEdit,
     handleDelete,
+    handleClose,
     columns,
   };
 }

@@ -14,10 +14,13 @@ export async function POST(
   }
 
   try {
+    const { type } = await req.json();
+
     const res = await fetch(
       `${process.env.API_URL}/exam-attempts/${examId}/exit`,
       {
         method: "POST",
+        body: JSON.stringify({ type }),
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json", // ✅ tambah

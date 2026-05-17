@@ -119,7 +119,7 @@ export default function TeacherExamsPage() {
       )}
 
       {/* Question Picker Modal */}
-      {pickerExam && modalType === "picker" && (
+      {pickerExam && modalType === "picker" && dataExamById && (
         <QuestionPickerModal
           isOpen={modalOpen}
           onClose={() => {

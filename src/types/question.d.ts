@@ -17,7 +17,7 @@ export type Question = {
 export interface QuestionList {
   id: string;
   question: string;
-  type: string;
+  type: "Multiple Choice" | "Essay";
   options: Option[];
   correct_answer: string;
   rubric: string;

@@ -28,6 +28,7 @@ export default function AdminSchedulePage() {
     setModalOpen,
     setEditing,
     columns,
+    handleClose,
   } = useScheduleManagement();
 
   return (
@@ -73,7 +74,7 @@ export default function AdminSchedulePage() {
       {/* Modal add schedule */}
       <ScheduleFormModal
         modalOpen={modalOpen === "add"}
-        setModalOpen={() => setModalOpen(null)}
+        setModalOpen={handleClose}
         editing={editing as ExamScheduleRequest}
         setEditing={setEditing}
         examList={exam as ExamList[]}
@@ -81,7 +82,7 @@ export default function AdminSchedulePage() {
       />
       <ScheduleFormModalEdit
         modalOpen={modalOpen === "edit"}
-        setModalOpen={() => setModalOpen(null)}
+        setModalOpen={handleClose}
         editing={editingById as ExamScheduleRequestEdit}
         setEditing={setEditingById}
         examList={exam as ExamList[]}

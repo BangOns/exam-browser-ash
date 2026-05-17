@@ -152,6 +152,7 @@ export default function QuestionPickerModal({
           ) : (
             filtered.map((q) => {
               const isSelected = selected.includes(q.id);
+
               return (
                 <button
                   key={q.id}

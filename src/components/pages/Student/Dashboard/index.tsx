@@ -21,6 +21,7 @@ export default function StudentDashboard() {
     handleVerifyToken,
     errorMsg,
     handleStartExam,
+    isPendingEnterExam,
   } = useDashboardStudentManagement();
 
   return (
@@ -104,6 +105,7 @@ export default function StudentDashboard() {
         setTokenInput={setTokenInput}
         handleVerifyToken={handleVerifyToken}
         errorMsg={errorMsg}
+        loading={isPendingEnterExam}
       />
     </article>
   );

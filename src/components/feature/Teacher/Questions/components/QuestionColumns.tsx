@@ -5,6 +5,7 @@ export function columnsQuestions(
   deleteConfirm: string | null,
   setDeleteConfirm: (id: string | null) => void,
   handleDelete: (id: string) => void,
+  isLoadingDelete?: boolean,
 ) {
   return [
     {
@@ -56,6 +57,7 @@ export function columnsQuestions(
             <div className="flex gap-1">
               <button
                 onClick={() => handleDelete(row.id)}
+                disabled={isLoadingDelete}
                 className="text-xs px-3 py-1.5 rounded-lg bg-red-500 text-white hover:bg-red-600 transition-colors font-medium"
               >
                 Confirm

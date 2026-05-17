@@ -4,12 +4,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 export function useDeleteQuestion() {
   const queryClient = useQueryClient();
 
-  const { mutateAsync, mutate } = useMutation({
+  const { mutateAsync, mutate, isPending } = useMutation({
     mutationFn: (data: { id: string }) => deleteQuestion(data.id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["questions"] });
     },
   }); // ✅ tutup useMutation dengan });
 
-  return { mutateAsync, mutate };
+  return { mutateAsync, mutate, isPending };
 }
