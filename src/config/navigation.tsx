@@ -88,13 +88,13 @@ export const navConfig: Record<
           <CalendarCheck size={20} stroke="currentColor" strokeWidth={1.8} />
         ),
       },
-      {
-        label: "Monitoring",
-        href: "/teacher/monitoring",
-        icon: (
-          <MonitorCheck size={20} stroke="currentColor" strokeWidth={1.8} />
-        ),
-      },
+      // {
+      //   label: "Monitoring",
+      //   href: "/teacher/monitoring",
+      //   icon: (
+      //     <MonitorCheck size={20} stroke="currentColor" strokeWidth={1.8} />
+      //   ),
+      // },
       {
         label: "Exam Results",
         href: "/teacher/results",
@@ -119,22 +119,22 @@ export const navConfig: Record<
           <LayoutDashboard size={20} stroke="currentColor" strokeWidth={1.8} />
         ),
       },
-      {
-        label: "Exam Results",
-        href: "/student/results",
-        icon: (
-          <ChartNoAxesColumnIncreasing
-            size={20}
-            stroke="currentColor"
-            strokeWidth={1.8}
-          />
-        ),
-      },
-      {
-        label: "Notifications",
-        href: "/student/notifications",
-        icon: <Bell size={20} stroke="currentColor" strokeWidth={1.8} />,
-      },
+      // {
+      //   label: "Exam Results",
+      //   href: "/student/results",
+      //   icon: (
+      //     <ChartNoAxesColumnIncreasing
+      //       size={20}
+      //       stroke="currentColor"
+      //       strokeWidth={1.8}
+      //     />
+      //   ),
+      // },
+      // {
+      //   label: "Notifications",
+      //   href: "/student/notifications",
+      //   icon: <Bell size={20} stroke="currentColor" strokeWidth={1.8} />,
+      // },
     ],
   },
 };
