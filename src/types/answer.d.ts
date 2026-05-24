@@ -1,5 +1,5 @@
 export interface AnswerRequest {
-  answer: AnswerProps[];
+  answers: AnswerProps[];
 }
 
 interface AnswerProps {

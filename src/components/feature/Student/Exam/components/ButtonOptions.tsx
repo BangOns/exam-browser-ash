@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 interface ButtonOptionsProps {
   idx: number;
   option: {
+    label: string;
     text: string;
   };
   selected: boolean;
@@ -17,7 +18,7 @@ export default function ButtonOptions({
 }: ButtonOptionsProps) {
   return (
     <Button
-      onClick={() => onSelect(option.text)}
+      onClick={() => onSelect(option.label)}
       className={`w-full flex items-center gap-4 p-5 justify-start rounded-xl border-2 transition-all duration-200 text-left ${
         selected
           ? "border-sky-500 bg-sky-50 shadow-sm"

@@ -127,6 +127,7 @@ export function useExamTeacherManagement() {
     setDeleteConfirm,
     handleDelete,
   ]);
+
   useEffect(() => {
     if (data?.data) {
       setExams(data?.data);

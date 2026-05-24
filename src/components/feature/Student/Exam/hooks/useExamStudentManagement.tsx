@@ -124,7 +124,7 @@ export function useExamStudentManagement() {
     }
 
     const data: AnswerRequest = {
-      answer: Object.entries(answers).map(([question_id, answer]) => ({
+      answers: Object.entries(answers).map(([question_id, answer]) => ({
         question_id,
         answer: String(answer),
       })),

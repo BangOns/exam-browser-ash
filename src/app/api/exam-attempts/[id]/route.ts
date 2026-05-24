@@ -1,5 +1,6 @@
 import { ApiResponse } from "@/types/api-response";
 import { ExamList } from "@/types/exam";
+import { ExamAttemptResource } from "@/types/result";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -35,7 +36,7 @@ export async function GET(
       },
     );
 
-    const data = (await res.json()) as ApiResponse<ExamList>;
+    const data = (await res.json()) as ApiResponse<ExamAttemptResource>;
 
     return NextResponse.json(
       {

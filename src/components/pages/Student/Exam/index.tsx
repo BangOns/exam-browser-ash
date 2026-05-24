@@ -76,7 +76,9 @@ export default function StudentExamPage() {
                         key={idx}
                         idx={idx}
                         option={option}
-                        selected={getCurrentAnswer(question.id) === option.text}
+                        selected={
+                          getCurrentAnswer(question.id) === option.label
+                        }
                         onSelect={(value) => handleAnswer(question.id, value)}
                       />
                     ))}

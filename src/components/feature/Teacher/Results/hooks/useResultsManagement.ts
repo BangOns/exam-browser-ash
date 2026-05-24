@@ -1,10 +1,16 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { StudentSubmission, AnswerItem } from "@/types/submission";
 import { resultColumns } from "../components/ResultColumns";
 import { resultsData, submissionsData } from "@/data/dummy/result";
 import { ResultRow } from "@/types/result";
+import { useGetExam } from "../../Exams/hooks/useGetExam";
+import { ExamList } from "@/types/exam";
+import { ResultExamColumns } from "../components/ResultExamColumns";
 
 export function useResultsManagement() {
+  const { data } = useGetExam();
+
+  const [exams, setExams] = useState<ExamList[]>([]);
   const [selectedSubmission, selectedSubmissionSet] =
     useState<StudentSubmission | null>(null);
   const [submissionsDataResult, submissionsDataResultSet] =
@@ -66,7 +72,18 @@ export function useResultsManagement() {
       openDetail,
     });
   }, [submissionsDataResult, openDetail]);
+  const columnsTableResult = useMemo(() => {
+    return ResultExamColumns();
+  }, []);
+
+  useEffect(() => {
+    if (data?.data) {
+      setExams(data?.data);
+    }
+  }, [data]);
   return {
+    exams,
+    columnsTableResult,
     selectedSubmission,
     essayScores,
     saved,

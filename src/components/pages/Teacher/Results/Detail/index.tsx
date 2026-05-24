@@ -7,11 +7,13 @@ import { useResultsManagement } from "@/components/feature/Teacher/Results/hooks
 import { resultsData } from "@/data/dummy/result";
 import { Download } from "lucide-react";
 import PageHeader from "@/components/shared/PageHeader";
+import { useResultByIdManagement } from "@/components/feature/Teacher/ResultDetail/hooks/useResultByIdManagement";
 
-export default function TeacherResultsPage() {
+export default function TeacherResultsByIdPage() {
   const {
-    exams,
-    columnsTableResult,
+    result,
+
+    columns,
     // selectedSubmission,
     // essayScores,
     // saved,
@@ -24,13 +26,13 @@ export default function TeacherResultsPage() {
     // highest,
     // lowest,
     // passed,
-  } = useResultsManagement();
+  } = useResultByIdManagement();
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <PageHeader
-          title="Exam Results"
+          title="Exam Results Details"
           description="View and analyze student performance"
         />
         {/* <button className="px-5 py-2.5 rounded-xl bg-emerald-500 text-white text-sm font-semibold hover:bg-emerald-600 transition-colors shadow-sm flex items-center gap-2">
@@ -62,7 +64,7 @@ export default function TeacherResultsPage() {
 
       {/* <ResultCharts /> */}
 
-      <DataTable columns={columnsTableResult} data={exams} />
+      <DataTable columns={columns} data={result} />
 
       {/* <ResultDetailModal
         submission={selectedSubmission}
