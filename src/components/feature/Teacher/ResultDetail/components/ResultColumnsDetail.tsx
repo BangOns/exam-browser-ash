@@ -1,7 +1,9 @@
 import { Badge } from "@/components/ui/badge";
 import { ExamAttemptResource } from "@/types/result";
-
-export function resultColumnsDetail() {
+interface Props {
+  openDetail: (id: string) => void;
+}
+export function ResultColumnsDetail({ openDetail }: Props) {
   return [
     {
       key: "student",
@@ -105,6 +107,7 @@ export function resultColumnsDetail() {
       label: "Actions",
       render: (row: ExamAttemptResource) => (
         <button
+          onClick={() => openDetail(row.id)}
           //   onClick={() => {
           //     const sub = submissionsData.find((s) => s.id === row.submissionId);
           //     if (sub) openDetail(sub);

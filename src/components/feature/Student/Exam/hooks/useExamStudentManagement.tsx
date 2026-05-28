@@ -197,6 +197,7 @@ export function useExamStudentManagement() {
     setAnswers(savedAnswers);
   }, [loadAnswersFromStorage]);
   return {
+    errorMsg,
     currentQ,
     answers,
     initialQuestions,

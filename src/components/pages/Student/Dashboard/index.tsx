@@ -1,14 +1,14 @@
 "use client";
 
-import StatCard from "@/components/ui/StatCard";
+// import StatCard from "@/components/ui/StatCard";
 
 import PageHeader from "@/components/shared/PageHeader";
 import CardExamNow from "@/components/feature/Student/Dashboard/components/CardExamNow";
-import { TriangleAlert } from "lucide-react";
-import { recentResults } from "@/data/dummy/result";
-import CardRecentResult from "@/components/feature/Student/Dashboard/components/CardRecentResult";
+// import { TriangleAlert } from "lucide-react";
+// import { recentResults } from "@/data/dummy/result";
+// import CardRecentResult from "@/components/feature/Student/Dashboard/components/CardRecentResult";
 import TokenVerifyModal from "@/components/feature/Student/Dashboard/components/TokenVerifyModal";
-import { statsDataStudent } from "@/data/dummy/stats";
+// import { statsDataStudent } from "@/data/dummy/stats";
 import { useDashboardStudentManagement } from "@/components/feature/Student/Dashboard/hooks/useDashboardStudentManagement";
 
 export default function StudentDashboard() {

@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { StudentSubmission, AnswerItem } from "@/types/submission";
-import { resultColumns } from "../components/ResultColumns";
 import { resultsData, submissionsData } from "@/data/dummy/result";
 import { ResultRow } from "@/types/result";
 import { useGetExam } from "../../Exams/hooks/useGetExam";
@@ -66,12 +65,12 @@ export function useResultsManagement() {
   const saveGrading = useCallback(() => {
     setSaved(true);
   }, []);
-  const columns = useMemo(() => {
-    return resultColumns({
-      submissionsData: submissionsDataResult,
-      openDetail,
-    });
-  }, [submissionsDataResult, openDetail]);
+  // const columns = useMemo(() => {
+  //   return resultColumns({
+  //     submissionsData: submissionsDataResult,
+  //     openDetail,
+  //   });
+  // }, [submissionsDataResult, openDetail]);
   const columnsTableResult = useMemo(() => {
     return ResultExamColumns();
   }, []);
@@ -91,7 +90,6 @@ export function useResultsManagement() {
     closeDetail,
     setEssayScore,
     saveGrading,
-    columns,
     submissionsDataResult,
     submissionsDataResultSet,
     resultDataSubmission,

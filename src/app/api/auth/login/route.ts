@@ -3,7 +3,7 @@ import { DataUserLogin } from "@/types/user";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const url = process.env.API_URL;
+  const url = process.env.API_URL || "http://localhost:8000/api";
 
   try {
     const { username, password } = (await req.json()) as {

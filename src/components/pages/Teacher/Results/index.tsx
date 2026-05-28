@@ -1,17 +1,18 @@
 "use client";
 
 import DataTable from "@/components/ui/DataTable";
-import ResultDetailModal from "@/components/feature/Teacher/Results/components/ResultDetailModal";
-import ResultCharts from "@/components/feature/Teacher/Results/components/ResultCharts";
+// import ResultDetailModal from "@/components/feature/Teacher/ResultDetail/components/ResultDetailModal";
+// import ResultCharts from "@/components/feature/Teacher/Results/components/ResultCharts";
 import { useResultsManagement } from "@/components/feature/Teacher/Results/hooks/useResultsManagement";
-import { resultsData } from "@/data/dummy/result";
-import { Download } from "lucide-react";
+// import { resultsData } from "@/data/dummy/result";
+// import { Download } from "lucide-react";
 import PageHeader from "@/components/shared/PageHeader";
 
 export default function TeacherResultsPage() {
   const {
     exams,
     columnsTableResult,
+
     // selectedSubmission,
     // essayScores,
     // saved,

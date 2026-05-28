@@ -1,41 +1,34 @@
+import { AnswerRequest } from "@/types/answer";
 import { ApiResponse } from "@/types/api-response";
-import { ExamAttemptResource } from "@/types/result";
+import { ExamToken } from "@/types/exam-token";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(
+export async function PUT(
   req: NextRequest,
-
   { params }: { params: Promise<{ id: string }> },
 ) {
   const token = req.cookies.get("access_token")?.value;
+  const studentId = req.nextUrl.searchParams.get("student_id");
   const { id: examId } = await params;
   if (!token) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
   try {
-    const { searchParams } = req.nextUrl;
-    const params = new URLSearchParams(
-      Object.entries({
-        page: searchParams.get("page"),
-        limit: searchParams.get("limit"),
-        search: searchParams.get("search"),
-        status: searchParams.get("status"),
-      })
-        .filter(([, v]) => v !== null && v !== "")
-        .map(([k, v]) => [k, String(v)]),
-    );
-
+    const datas = (await req.json()) as AnswerRequest;
     const res = await fetch(
-      `${process.env.API_URL}/exam-attempts/${examId}?${params.toString()}`,
+      `${process.env.API_URL}/exam-attempts/${examId}/edit?student_id=${studentId}`,
       {
+        method: "PUT",
+        body: JSON.stringify(datas),
         headers: {
           Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json", // ✅ tambah
         },
       },
     );
 
-    const data = (await res.json()) as ApiResponse<ExamAttemptResource>;
+    const data = (await res.json()) as ApiResponse<ExamToken>;
 
     return NextResponse.json(
       {

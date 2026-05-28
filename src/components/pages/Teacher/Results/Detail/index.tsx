@@ -1,24 +1,30 @@
 "use client";
 
 import DataTable from "@/components/ui/DataTable";
-import ResultDetailModal from "@/components/feature/Teacher/Results/components/ResultDetailModal";
-import ResultCharts from "@/components/feature/Teacher/Results/components/ResultCharts";
-import { useResultsManagement } from "@/components/feature/Teacher/Results/hooks/useResultsManagement";
-import { resultsData } from "@/data/dummy/result";
+import ResultDetailModal from "@/components/feature/Teacher/ResultDetail/components/ResultDetailModal";
+// import ResultCharts from "@/components/feature/Teacher/Results/components/ResultCharts";
+// import { useResultsManagement } from "@/components/feature/Teacher/Results/hooks/useResultsManagement";
+// import { resultsData } from "@/data/dummy/result";
 import { Download } from "lucide-react";
 import PageHeader from "@/components/shared/PageHeader";
 import { useResultByIdManagement } from "@/components/feature/Teacher/ResultDetail/hooks/useResultByIdManagement";
+import { SubmissionAnswer } from "@/types/answer";
 
 export default function TeacherResultsByIdPage() {
   const {
     result,
-
+    resultExamById,
     columns,
+    isOpenModal,
+    isPendingSubmit,
     // selectedSubmission,
-    // essayScores,
-    // saved,
-    // closeDetail,
+    essayScores,
+    addEssayScore,
+    closeDetail,
+    saveExamEssayScores,
+    exportExcel,
     // setEssayScore,
+    //
     // saveGrading,
     // columns,
     // resultDataSubmission,
@@ -27,7 +33,6 @@ export default function TeacherResultsByIdPage() {
     // lowest,
     // passed,
   } = useResultByIdManagement();
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -35,10 +40,10 @@ export default function TeacherResultsByIdPage() {
           title="Exam Results Details"
           description="View and analyze student performance"
         />
-        {/* <button className="px-5 py-2.5 rounded-xl bg-emerald-500 text-white text-sm font-semibold hover:bg-emerald-600 transition-colors shadow-sm flex items-center gap-2">
-          <Download size={20} />
+        <button className="px-5 py-2.5 rounded-xl bg-emerald-500 text-white text-sm font-semibold hover:bg-emerald-600 transition-colors shadow-sm flex items-center gap-2">
+          <Download size={20} onClick={() => exportExcel()} />
           Export
-        </button> */}
+        </button>
       </div>
 
       {/* Summary stats */}
@@ -66,14 +71,17 @@ export default function TeacherResultsByIdPage() {
 
       <DataTable columns={columns} data={result} />
 
-      {/* <ResultDetailModal
-        submission={selectedSubmission}
+      <ResultDetailModal
+        submission={resultExamById?.data as SubmissionAnswer[]}
         essayScores={essayScores}
-        saved={saved}
+        isOpen={isOpenModal}
         onClose={closeDetail}
-        onSetEssayScore={setEssayScore}
-        onSave={saveGrading}
-      /> */}
+        onSetEssayScore={(questionId, points) =>
+          addEssayScore(questionId, points as number)
+        }
+        onSave={saveExamEssayScores}
+        isPending={isPendingSubmit}
+      />
     </div>
   );
 }

@@ -1,5 +1,5 @@
+import { SubmissionAnswer } from "@/types/answer";
 import { ApiResponse } from "@/types/api-response";
-import { ExamAttemptResource } from "@/types/result";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -7,6 +7,7 @@ export async function GET(
 
   { params }: { params: Promise<{ id: string }> },
 ) {
+  const url = process.env.API_URL || "http://localhost:8000/api";
   const token = req.cookies.get("access_token")?.value;
   const { id: examId } = await params;
   if (!token) {
@@ -27,7 +28,7 @@ export async function GET(
     );
 
     const res = await fetch(
-      `${process.env.API_URL}/exam-attempts/${examId}?${params.toString()}`,
+      `${url}/exam-answers/${examId}?${params.toString()}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -35,7 +36,7 @@ export async function GET(
       },
     );
 
-    const data = (await res.json()) as ApiResponse<ExamAttemptResource>;
+    const data = (await res.json()) as ApiResponse<SubmissionAnswer>;
 
     return NextResponse.json(
       {

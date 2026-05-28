@@ -25,7 +25,7 @@ export default function AdminSchedulePage() {
     openAdd,
     handleSave,
     handleSaveEdit,
-    setModalOpen,
+    // setModalOpen,
     setEditing,
     columns,
     handleClose,

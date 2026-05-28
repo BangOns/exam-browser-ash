@@ -41,3 +41,20 @@ export async function SubmitAnswersExam(id: string, answers: AnswerRequest) {
   });
   return res;
 }
+export async function UpdateAnswersExam(
+  id: string,
+  studentId: string,
+  answers: AnswerRequest,
+) {
+  const res = await fetchWithAuth(
+    `/api/exam-attempts/${id}/edit?student_id=${studentId}`,
+    {
+      method: "PUT",
+      body: JSON.stringify(answers),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  return res;
+}
