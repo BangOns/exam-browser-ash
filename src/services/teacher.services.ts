@@ -5,8 +5,10 @@ import {
   TeacherRequestEdit,
 } from "@/types/teacher";
 
-export async function getTeachers() {
-  const res = await fetchWithAuth<TeacherList[]>("/api/teacher");
+export async function getTeachers({ page }: { page?: number }) {
+  const res = await fetchWithAuth<TeacherList[]>("/api/teacher", {
+    params: { page },
+  });
 
   return res;
 }

@@ -1,5 +1,4 @@
 "use client";
-
 import DataTable from "@/components/ui/DataTable";
 import { Button } from "@/components/ui/button";
 import PageHeader from "@/components/shared/PageHeader";
@@ -9,6 +8,7 @@ import { TeacherRequest, TeacherRequestEdit } from "@/types/teacher";
 import dynamic from "next/dynamic";
 import SubjectModal from "@/components/feature/Admin/Teacher/components/SubjectModal";
 import ClassModal from "@/components/feature/Admin/Teacher/components/ClassModal";
+import Pagination from "@/components/shared/Pagination";
 const TeacherFormModal = dynamic(
   () =>
     import("@/components/feature/Admin/Teacher/components/TeacherFormModal"),
@@ -39,6 +39,8 @@ export default function AdminTeacherListPage() {
     setModalOpen,
     setEditing,
     setEditingId,
+    pagination,
+    handlePageChange,
   } = useTeacherManagement();
 
   return (
@@ -86,6 +88,15 @@ export default function AdminTeacherListPage() {
           className="col-span-full"
           isLoading={isLoadingTeachers}
         />
+        {pagination && (
+          <Pagination
+            currentPage={pagination.current_page}
+            lastPage={pagination.last_page}
+            perPage={pagination.per_page || 10}
+            total={pagination.total}
+            onPageChange={handlePageChange}
+          />
+        )}
       </section>
 
       {/* Add Modal */}

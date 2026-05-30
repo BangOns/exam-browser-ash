@@ -1,5 +1,4 @@
 import { useGetExamById } from "@/components/feature/Teacher/Exams/hooks/uesGetExamById";
-import { QuestionList } from "@/types/question";
 import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePostExitExam } from "./mutations/usePostExitExam";
@@ -8,12 +7,13 @@ import { AnswerRequest } from "@/types/answer";
 
 export function useExamStudentManagement() {
   const params = useParams<{ id?: string }>();
-
   const id = params?.id ?? "";
-
   const STORAGE_KEY = `exam_answers_${id}`;
-
-  const { data: dataExam, isLoading: isLoadingQuestions } = useGetExamById(id);
+  const [page, setPage] = useState(1);
+  const { data: dataExam, isLoading: isLoadingQuestions } = useGetExamById({
+    examId: id,
+    page,
+  });
   const router = useRouter();
 
   const { mutateAsync: exitExam, isPending: isPendingExitExam } =
@@ -28,15 +28,17 @@ export function useExamStudentManagement() {
   const [errorMsg, setErrorMsg] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [modalProps, setModalProps] = useState<"exit" | "submit" | null>(null);
-  const [initialQuestions, setInitialQuestions] = useState<QuestionList[]>([]);
   const question = useMemo(
-    () => initialQuestions[currentQ],
-    [currentQ, initialQuestions],
+    () => dataExam?.data.questions[currentQ],
+    [currentQ, dataExam?.data.questions],
   );
   const answeredCount = useMemo(() => Object.keys(answers).length, [answers]);
   const progress = useMemo(
-    () => Math.round((answeredCount / initialQuestions.length) * 100),
-    [answeredCount, initialQuestions.length],
+    () =>
+      Math.round(
+        (answeredCount / (dataExam?.data.questions.length ?? 1)) * 100,
+      ),
+    [answeredCount, dataExam?.data.questions.length],
   );
 
   // Save answers to LocalStorage
@@ -50,12 +52,10 @@ export function useExamStudentManagement() {
     },
     [STORAGE_KEY],
   );
-
   const handleModalOpen = useCallback((props: "exit" | "submit") => {
     setModalOpen(true);
     setModalProps(props);
   }, []);
-
   //  Action untuk menyimpan jawaban ke localStorage
   const handleAnswer = useCallback(
     (questionId: string, answer: number | string) => {
@@ -72,7 +72,6 @@ export function useExamStudentManagement() {
     },
     [saveAnswersToStorage],
   );
-
   const loadAnswersFromStorage = useCallback(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
@@ -85,7 +84,6 @@ export function useExamStudentManagement() {
       return {};
     }
   }, [STORAGE_KEY]);
-
   // mendapatkan jawaban sesuai dengan nomor soal
   const getCurrentAnswer = useCallback(
     (questionId: string) => {
@@ -93,15 +91,12 @@ export function useExamStudentManagement() {
     },
     [answers],
   );
-
   // clear answers
   const clearAnswersStorage = useCallback(() => {
     localStorage.removeItem(STORAGE_KEY);
   }, [STORAGE_KEY]);
-
   const handleExitExam = useCallback(() => {
     if (!id) return;
-
     exitExam(
       { id, type: "exit" },
       {
@@ -149,15 +144,10 @@ export function useExamStudentManagement() {
     setModalOpen(false);
     setModalProps(null);
   }, []);
-
+  const handlePageChange = (page: number) => {
+    setPage(page);
+  };
   useEffect(() => {
-    // Basic auth/session verify
-    // const sessionToken = localStorage.getItem("exam_session");
-    // if (!sessionToken) {
-    //   router.push("/student");
-    //   return;
-    // }
-
     const checkCheat = () => {
       setViolationMsg(
         "You violated the exam rules by switching tabs or leaving the strict fullscreen mode. Your access has been revoked and you have been suspended. Please contact the administrator.",
@@ -183,24 +173,16 @@ export function useExamStudentManagement() {
     };
   }, [router, handleExitExam]);
 
-  // Mengambil data soal dari API
-  useEffect(() => {
-    if (dataExam?.data) {
-      setInitialQuestions(dataExam.data.questions);
-    }
-  }, [dataExam]);
-
   //  Mendapatkan data keseluruhan soal yang sudah di isi didalam local storage
   useEffect(() => {
     const savedAnswers = loadAnswersFromStorage();
-
     setAnswers(savedAnswers);
   }, [loadAnswersFromStorage]);
   return {
     errorMsg,
     currentQ,
     answers,
-    initialQuestions,
+    initialQuestions: dataExam?.data.questions ?? [],
     showViolation,
     violationMsg,
     setCurrentQ,
@@ -221,6 +203,7 @@ export function useExamStudentManagement() {
     modalProps,
     setModalProps,
     handleModalClose,
+    handlePageChange,
     isPendingExitExam,
     isPendingSubmit,
   };

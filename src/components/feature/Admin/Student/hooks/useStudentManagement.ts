@@ -1,12 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import {
-  Student,
-  StudentList,
-  StudentRequest,
-  StudentRequestEdit,
-} from "@/types/student";
-import { initialStudents } from "@/data/dummy/student";
-import { emptyStudent } from "../constant";
+import { StudentRequest, StudentRequestEdit } from "@/types/student";
 import { StudentColumns } from "../components/StudentColumns";
 import { useGetStudents } from "./useGetStudents";
 import { usePostStudent } from "./mutations/usePostStudent";
@@ -14,7 +7,6 @@ import { useGetClass } from "@/hooks/class/get-class";
 import { useEditStudent } from "./mutations/useEditStudent";
 import { useDeleteStudent } from "./mutations/useDeleteStudent";
 import { useGetStudentById } from "./useGetStudentById";
-import { ClassList } from "@/types/class";
 const EMPTY_STUDENT: StudentRequest = {
   full_name: "",
   username: "",
@@ -23,32 +15,25 @@ const EMPTY_STUDENT: StudentRequest = {
   class_id: "",
 };
 export function useStudentManagement() {
-  const { data, isLoading: isLoadingStudents } = useGetStudents();
+  const [page, setPage] = useState<number>(1);
+  const { data, isLoading: isLoadingStudents } = useGetStudents({ page });
   const { data: classData } = useGetClass();
   const { mutateAsync } = usePostStudent();
   const { mutateAsync: mutateEditStudent } = useEditStudent();
   const { mutateAsync: mutateDeleteStudent } = useDeleteStudent();
   const [studentId, setStudentId] = useState<string>("");
   const { data: studentDataById } = useGetStudentById(studentId || "");
-  const [students, setStudents] = useState<StudentList[]>(data?.data || []);
-  const [classStudent, setClassStudent] = useState<ClassList[]>(
-    classData?.data || [],
-  );
+
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<StudentRequest | null>(null);
   const [editingId, setEditingId] = useState<StudentRequestEdit | null>(null);
 
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
-  const openAdd = useCallback(() => {
+  const openAdd = () => {
     setEditing({ ...EMPTY_STUDENT });
     setModalOpen(true);
-  }, []);
-
-  const openEdit = useCallback((id: string) => {
-    setStudentId(id);
-    setModalOpen(true);
-  }, []);
+  };
 
   const handleSave = () => {
     if (!editing) return;
@@ -56,19 +41,20 @@ export function useStudentManagement() {
     setModalOpen(false);
     setEditing(null);
   };
-
-  // const handleRestore = useCallback((id: number) => {
-  //   setStudents((prev) =>
-  //     prev.map((s) => (s.id === id ? { ...s, status: "Active" } : s)),
-  //   );
-  //   localStorage.removeItem(`suspended_user_${id}`);
-  // }, []);
   const handleSaveEdit = () => {
     if (!editingId) return;
     mutateEditStudent(editingId);
     setModalOpen(false);
     setEditingId(null);
   };
+  const handlePageChange = (page: number) => {
+    setPage(page);
+  }; //fungsi untuk mengubah halaman
+
+  const openEdit = useCallback((id: string) => {
+    setStudentId(id);
+    setModalOpen(true);
+  }, []);
   const handleDelete = useCallback(
     (id: string) => {
       if (!id) return;
@@ -76,24 +62,11 @@ export function useStudentManagement() {
     },
     [mutateDeleteStudent],
   );
-
   const columns = useMemo(
     () =>
       StudentColumns(deleteConfirm, setDeleteConfirm, handleDelete, openEdit),
     [deleteConfirm, setDeleteConfirm, handleDelete, openEdit],
   );
-  useEffect(() => {
-    if (data?.data.length) {
-      setStudents(data.data);
-    }
-  }, [data]);
-
-  useEffect(() => {
-    if (classData?.data.length) {
-      setClassStudent(classData.data);
-    }
-  }, [classData]);
-
   useEffect(() => {
     if (!studentDataById) return;
 
@@ -109,12 +82,13 @@ export function useStudentManagement() {
     });
   }, [studentDataById]);
   return {
-    students,
+    students: data?.data || [],
+    pagination: data?.meta.pagination,
     studentId,
     isLoadingStudents,
     editingId,
     setEditingId,
-    classStudent,
+    classStudent: classData?.data || [],
     modalOpen,
     editing,
     deleteConfirm,
@@ -126,6 +100,7 @@ export function useStudentManagement() {
     handleSave,
     handleSaveEdit,
     handleDelete,
+    handlePageChange,
     columns,
   };
 }

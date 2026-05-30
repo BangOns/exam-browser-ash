@@ -1,6 +1,8 @@
 import { ApiResponse } from "@/types/api-response";
 import { getAccessToken, setAccessToken } from "./token";
-
+interface FetchWithAuthOptions extends RequestInit {
+  params?: Record<string, string | number | boolean | undefined | null>;
+}
 let isRefreshing = false;
 let queue: Array<(token: string | null) => void> = [];
 
@@ -14,16 +16,34 @@ const notifyAll = (token: string | null) => {
 
 export const fetchWithAuth = async <T>(
   input: RequestInfo,
-  init: RequestInit = {},
+  init: FetchWithAuthOptions = {},
   retry = true,
 ): Promise<ApiResponse<T>> => {
   const token = getAccessToken();
+  let url = input.toString();
+  if (init.params) {
+    const searchParams = new URLSearchParams();
 
-  const res = await fetch(input, {
+    Object.entries(init.params).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        searchParams.append(key, String(value));
+      }
+    });
+
+    const queryString = searchParams.toString();
+
+    if (queryString) {
+      url += `${url.includes("?") ? "&" : "?"}${queryString}`;
+    }
+  }
+  const fetchInit: RequestInit = {
     ...init,
+  };
+  const res = await fetch(url, {
+    ...fetchInit,
     headers: {
       "Content-Type": "application/json", // ✅ default
-      ...(init.headers || {}),
+      ...(fetchInit.headers || {}),
       Authorization: token ? `Bearer ${token}` : "",
     },
     credentials: "include",

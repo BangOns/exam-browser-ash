@@ -1,6 +1,5 @@
 import { fetchWithAuth } from "@/lib/fetcher";
 import { ExamList, ExamRequest, ExamRequestEdit } from "@/types/exam";
-import {} from "@/utils/filterQuery";
 
 export async function getExam({
   page,
@@ -13,13 +12,14 @@ export async function getExam({
   search?: string;
   status?: string;
 }) {
-  const params = new URLSearchParams(
-    Object.entries({ page, limit, search, status })
-      .filter(([, v]) => v !== undefined && v !== null && v !== "")
-      .map(([k, v]) => [k, String(v)]),
-  );
-
-  const res = await fetchWithAuth<ExamList[]>(`/api/exam?${params.toString()}`);
+  const res = await fetchWithAuth<ExamList[]>(`/api/exam`, {
+    params: {
+      page,
+      limit,
+      search,
+      status,
+    },
+  });
   return res;
 }
 
@@ -35,8 +35,18 @@ export async function createExam(data: ExamRequest) {
   return res;
 }
 
-export async function getExamById(examId: string) {
-  const res = await fetchWithAuth<ExamList>(`/api/exam/${examId}`);
+export async function getExamById({
+  examId,
+  page,
+}: {
+  examId: string;
+  page?: number;
+}) {
+  const res = await fetchWithAuth<ExamList>(`/api/exam/${examId}`, {
+    params: {
+      page,
+    },
+  });
   return res;
 }
 

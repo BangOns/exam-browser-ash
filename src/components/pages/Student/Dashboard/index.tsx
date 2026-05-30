@@ -10,6 +10,7 @@ import CardExamNow from "@/components/feature/Student/Dashboard/components/CardE
 import TokenVerifyModal from "@/components/feature/Student/Dashboard/components/TokenVerifyModal";
 // import { statsDataStudent } from "@/data/dummy/stats";
 import { useDashboardStudentManagement } from "@/components/feature/Student/Dashboard/hooks/useDashboardStudentManagement";
+import Pagination from "@/components/shared/Pagination";
 
 export default function StudentDashboard() {
   const {
@@ -22,6 +23,8 @@ export default function StudentDashboard() {
     errorMsg,
     handleStartExam,
     isPendingEnterExam,
+    handlePageChange,
+    pagination,
   } = useDashboardStudentManagement();
 
   return (
@@ -63,6 +66,17 @@ export default function StudentDashboard() {
             ))
           )}
         </div>
+      </section>
+      <section className="w-full">
+        {pagination && (
+          <Pagination
+            currentPage={pagination.current_page}
+            lastPage={pagination.last_page}
+            perPage={pagination.per_page}
+            total={pagination.total}
+            onPageChange={handlePageChange}
+          />
+        )}
       </section>
 
       {/* Recent Results */}

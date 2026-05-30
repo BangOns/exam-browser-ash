@@ -26,7 +26,7 @@ export function useExamTeacherManagement() {
   const { mutateAsync: mutateEditExam } = useEditExam();
   const { mutateAsync: mutateDeleteExam } = useDeleteExam();
   const [examId, setExamId] = useState<string>("");
-  const { data: dataExamById } = useGetExamById(examId || "");
+  const { data: dataExamById } = useGetExamById({ examId: examId || "" });
   const [exams, setExams] = useState<ExamList[]>([]);
   const [questions, setQuestions] = useState<QuestionList[]>(
     dataQuestion?.data || [],

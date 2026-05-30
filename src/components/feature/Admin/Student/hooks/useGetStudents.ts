@@ -1,10 +1,10 @@
 import { getStudents } from "@/services/student.services";
 import { useQuery } from "@tanstack/react-query";
 
-export function useGetStudents() {
+export function useGetStudents({ page }: { page?: number }) {
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["students"],
-    queryFn: () => getStudents(),
+    queryKey: ["students", page],
+    queryFn: () => getStudents({ page }),
     refetchOnWindowFocus: false,
   });
 

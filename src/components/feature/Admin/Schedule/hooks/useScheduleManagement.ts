@@ -6,9 +6,7 @@ import { useGetExam } from "@/components/feature/Teacher/Exams/hooks/useGetExam"
 import { usePostExamShedule } from "./mutations/usePostTeacher";
 import { useEditExamSchedule } from "./mutations/useEditExamSchedule";
 import { useDeleteExamSchedule } from "./mutations/useDeleteExamSchedule";
-import { ExamList } from "@/types/exam";
 import {
-  ExamSchedule,
   ExamScheduleRequest,
   ExamScheduleRequestEdit,
 } from "@/types/exam-schedule";
@@ -16,16 +14,15 @@ import { useGetExamScheduleById } from "./useGetExamScheduleById";
 import { getDuration } from "@/utils/FormatDate";
 
 export function useScheduleManagement() {
-  const { data, isLoading: isLoadingSchedules } = useGetExamSchedule();
+  const [page, setPage] = useState<number>(1);
+  const { data, isLoading: isLoadingSchedules } = useGetExamSchedule({ page });
   const { data: dataExam } = useGetExam();
   const { mutateAsync: mutatePostExamSchedule } = usePostExamShedule();
   const { mutateAsync: mutateEditExamSchedule } = useEditExamSchedule();
   const { mutateAsync: mutateDeleteExamSchedule } = useDeleteExamSchedule();
   const [scheduleId, setScheduleId] = useState<string>("");
   const { data: dataExamScheduleById } = useGetExamScheduleById(scheduleId);
-  const [schedules, setSchedules] = useState<ExamSchedule[]>(data?.data || []);
 
-  const [exam, setExam] = useState<ExamList[]>(dataExam?.data || []);
   const [modalOpen, setModalOpen] = useState<"add" | "edit" | null>(null);
   const [editing, setEditing] = useState<ExamScheduleRequest | null>(null);
   const [editingById, setEditingById] =
@@ -36,7 +33,6 @@ export function useScheduleManagement() {
     setEditing({ ...emptySchedule });
     setModalOpen("add");
   }, []);
-
   const openEdit = useCallback((id: string) => {
     setScheduleId(id);
     setModalOpen("edit");
@@ -46,7 +42,6 @@ export function useScheduleManagement() {
     setEditingById(null);
     setScheduleId("");
   };
-
   const handleSave = () => {
     const data: ExamScheduleRequest = {
       exam_id: editing?.exam_id || "",
@@ -78,6 +73,9 @@ export function useScheduleManagement() {
     mutateEditExamSchedule(data);
     setModalOpen(null);
   };
+  const handlePageChange = (page: number) => {
+    setPage(page);
+  }; //fungsi untuk mengubah halaman
 
   const handleDelete = useCallback(
     (id: string) => {
@@ -86,17 +84,17 @@ export function useScheduleManagement() {
     },
     [mutateDeleteExamSchedule],
   );
+  const columns = useMemo(
+    () =>
+      ScheduleColumns({
+        openEdit,
+        deleteConfirm,
+        handleDelete,
+        setDeleteConfirm,
+      }),
 
-  useEffect(() => {
-    if (data?.data) {
-      setSchedules(data?.data || []);
-    }
-  }, [data]);
-  useEffect(() => {
-    if (dataExam?.data) {
-      setExam(dataExam?.data || []);
-    }
-  }, [dataExam]);
+    [openEdit, deleteConfirm, handleDelete, setDeleteConfirm],
+  );
   useEffect(() => {
     if (!dataExamScheduleById) return;
     const { data } = dataExamScheduleById;
@@ -110,23 +108,11 @@ export function useScheduleManagement() {
     });
   }, [dataExamScheduleById]);
 
-  const columns = useMemo(
-    () =>
-      ScheduleColumns({
-        openEdit,
-        deleteConfirm,
-        handleDelete,
-        setDeleteConfirm,
-      }),
-
-    [openEdit, deleteConfirm, handleDelete, setDeleteConfirm],
-  );
-
   return {
-    schedules,
+    schedules: data?.data || [],
     isLoadingSchedules,
     modalOpen,
-    exam,
+    exam: dataExam?.data || [],
     editingById,
     setEditingById,
     setModalOpen,
@@ -140,6 +126,8 @@ export function useScheduleManagement() {
     handleSaveEdit,
     handleDelete,
     handleClose,
+    handlePageChange,
     columns,
+    pagination: data?.meta.pagination,
   };
 }

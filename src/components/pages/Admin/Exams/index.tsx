@@ -1,15 +1,17 @@
 "use client";
 
 import DataTable from "@/components/ui/DataTable";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import PageHeader from "@/components/shared/PageHeader";
-import { statusTabs } from "@/components/feature/Admin/Exams/constants";
+// import { statusTabs } from "@/components/feature/Admin/Exams/constants";
 import { useExamsManagement } from "@/components/feature/Admin/Exams/hooks/useExamsManagement";
-import { statsExams } from "@/data/dummy/exams";
-import InfoCard from "@/components/shared/InfoCard";
+// import { statsExams } from "@/data/dummy/exams";
+// import InfoCard from "@/components/shared/InfoCard";
+import Pagination from "@/components/shared/Pagination";
 
 export default function AdminExamsPage() {
-  const { filtered, columns } = useExamsManagement();
+  const { filtered, columns, pagination, handlePageChange } =
+    useExamsManagement();
 
   return (
     <article className="space-y-6">
@@ -64,6 +66,15 @@ export default function AdminExamsPage() {
           data={filtered}
           className="col-span-full"
         />
+        {pagination && (
+          <Pagination
+            currentPage={pagination?.current_page}
+            lastPage={pagination?.last_page}
+            perPage={pagination?.per_page}
+            total={pagination?.total}
+            onPageChange={handlePageChange}
+          />
+        )}
       </section>
     </article>
   );

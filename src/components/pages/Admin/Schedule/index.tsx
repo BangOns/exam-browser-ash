@@ -13,6 +13,7 @@ import {
 } from "@/types/exam-schedule";
 import { ExamList } from "@/types/exam";
 import ScheduleFormModalEdit from "@/components/feature/Admin/Schedule/components/ScheduleFormModalEdit";
+import Pagination from "@/components/shared/Pagination";
 export default function AdminSchedulePage() {
   const {
     schedules,
@@ -29,6 +30,8 @@ export default function AdminSchedulePage() {
     setEditing,
     columns,
     handleClose,
+    handlePageChange,
+    pagination,
   } = useScheduleManagement();
 
   return (
@@ -70,6 +73,15 @@ export default function AdminSchedulePage() {
           className="col-span-full"
           isLoading={isLoadingSchedules}
         />
+        {pagination && (
+          <Pagination
+            currentPage={pagination.current_page}
+            lastPage={pagination.last_page}
+            perPage={pagination.per_page}
+            total={pagination.total}
+            onPageChange={handlePageChange}
+          />
+        )}
       </section>
       {/* Modal add schedule */}
       <ScheduleFormModal

@@ -5,8 +5,10 @@ import {
   ExamScheduleRequestEdit,
 } from "@/types/exam-schedule";
 
-export async function getExamSchedule() {
-  const res = await fetchWithAuth<ExamSchedule[]>("/api/exam-schedules");
+export async function getExamSchedule({ page }: { page?: number }) {
+  const res = await fetchWithAuth<ExamSchedule[]>("/api/exam-schedules", {
+    params: { page },
+  });
   return res;
 }
 

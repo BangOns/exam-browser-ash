@@ -5,7 +5,8 @@ import { useGetExam } from "@/components/feature/Teacher/Exams/hooks/useGetExam"
 import { useGenerateToken } from "./mutations/useGenerateToken";
 import { useDeleteExam } from "@/components/feature/Teacher/Exams/hooks/mutation/useDeleteExam";
 export function useExamsManagement() {
-  const { data } = useGetExam({ status: "active" });
+  const [page, setPage] = useState(1);
+  const { data } = useGetExam({ status: "active", page });
   const { mutateAsync } = useGenerateToken();
   const { mutateAsync: deleteExam } = useDeleteExam();
   const [exams, setExams] = useState<ExamList[]>([]);
@@ -15,7 +16,6 @@ export function useExamsManagement() {
   const [editingExam, setEditingExam] = useState<ExamRow | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("All");
-
   const filtered = useMemo(() => {
     return exams.filter((e) => e.status === "active");
   }, [exams]);
@@ -32,7 +32,12 @@ export function useExamsManagement() {
     },
     [deleteExam],
   );
-
+  const handlePageChange = useCallback(
+    (page: number) => {
+      setPage(page);
+    },
+    [setPage],
+  );
   useEffect(() => {
     if (data?.data) {
       setExams(data?.data);
@@ -50,6 +55,7 @@ export function useExamsManagement() {
   );
   return {
     exams,
+    pagination: data?.meta.pagination,
     modalOpen,
     editingExam,
     deleteConfirm,
@@ -62,5 +68,6 @@ export function useExamsManagement() {
     setEditingExam,
     setDeleteConfirm,
     setActiveTab,
+    handlePageChange,
   };
 }

@@ -8,6 +8,7 @@ import StudentFormModal from "@/components/feature/Admin/Student/components/Stud
 import { StudentRequest, StudentRequestEdit } from "@/types/student";
 import PageHeader from "@/components/shared/PageHeader";
 import StudentFormModalEdit from "@/components/feature/Admin/Student/components/StudentFormModalEdit";
+import Pagination from "@/components/shared/Pagination";
 
 export default function AdminStudentListPage() {
   const {
@@ -25,6 +26,8 @@ export default function AdminStudentListPage() {
     columns,
     setModalOpen,
     setEditing,
+    handlePageChange,
+    pagination,
   } = useStudentManagement();
   return (
     <div className="space-y-6">
@@ -62,6 +65,15 @@ export default function AdminStudentListPage() {
           className="col-span-full"
           isLoading={isLoadingStudents}
         />
+        {pagination && (
+          <Pagination
+            currentPage={pagination.current_page}
+            lastPage={pagination.last_page}
+            perPage={pagination.per_page}
+            total={pagination.total}
+            onPageChange={handlePageChange}
+          />
+        )}
       </section>
 
       {/* Add Modal */}
