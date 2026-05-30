@@ -7,12 +7,15 @@ import { useResultsManagement } from "@/components/feature/Teacher/Results/hooks
 // import { resultsData } from "@/data/dummy/result";
 // import { Download } from "lucide-react";
 import PageHeader from "@/components/shared/PageHeader";
+import Pagination from "@/components/shared/Pagination";
 
 export default function TeacherResultsPage() {
   const {
     exams,
     columnsTableResult,
-
+    pagination,
+    handlePageChange,
+    isLoadingExam,
     // selectedSubmission,
     // essayScores,
     // saved,
@@ -34,10 +37,6 @@ export default function TeacherResultsPage() {
           title="Exam Results"
           description="View and analyze student performance"
         />
-        {/* <button className="px-5 py-2.5 rounded-xl bg-emerald-500 text-white text-sm font-semibold hover:bg-emerald-600 transition-colors shadow-sm flex items-center gap-2">
-          <Download size={20} />
-          Export
-        </button> */}
       </div>
 
       {/* Summary stats */}
@@ -62,8 +61,23 @@ export default function TeacherResultsPage() {
       </div> */}
 
       {/* <ResultCharts /> */}
-
-      <DataTable columns={columnsTableResult} data={exams} />
+      <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+        <DataTable
+          columns={columnsTableResult}
+          data={exams}
+          className="col-span-full"
+          isLoading={isLoadingExam}
+        />
+        {pagination && (
+          <Pagination
+            currentPage={pagination.current_page}
+            total={pagination.total}
+            perPage={pagination.per_page}
+            lastPage={pagination.last_page}
+            onPageChange={handlePageChange}
+          />
+        )}
+      </section>
 
       {/* <ResultDetailModal
         submission={selectedSubmission}

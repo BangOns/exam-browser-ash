@@ -1,4 +1,4 @@
-import { ExamList, ExamRequest, ExamRequestEdit } from "@/types/exam";
+import { ExamRequest, ExamRequestEdit } from "@/types/exam";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { columnsExamTeacher } from "../components/ExamColumns";
 import { useGetExam } from "./useGetExam";
@@ -8,17 +8,16 @@ import { useEditExam } from "./mutation/useEditExam";
 import { useDeleteExam } from "./mutation/useDeleteExam";
 import { useGetExamById } from "./uesGetExamById";
 import { useGetQuestion } from "../../Questions/hooks/useGetQuestion";
-import { QuestionList } from "@/types/question";
 const EMPTY_EXAM: ExamRequest = {
   name: "",
   lesson_id: "",
   status: "draft",
 };
 export function useExamTeacherManagement() {
-  const { data } = useGetExam();
+  const [page, setPage] = useState<number>(1);
+  const { data, isLoading: isLoadingExam } = useGetExam({ page });
   const { data: dataLesson } = useGetLesson();
   const { data: dataQuestion } = useGetQuestion();
-
   // const teacherSubject = useMemo(() => {
   //   return getCurrentUser()?.subject ?? "Mathematics";
   // }, []);
@@ -27,11 +26,6 @@ export function useExamTeacherManagement() {
   const { mutateAsync: mutateDeleteExam } = useDeleteExam();
   const [examId, setExamId] = useState<string>("");
   const { data: dataExamById } = useGetExamById({ examId: examId || "" });
-  const [exams, setExams] = useState<ExamList[]>([]);
-  const [questions, setQuestions] = useState<QuestionList[]>(
-    dataQuestion?.data || [],
-  );
-  const [lessons, setLessons] = useState(dataLesson?.data || []);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [editingExam, setEditingExam] = useState<ExamRequest | null>(null);
@@ -45,16 +39,34 @@ export function useExamTeacherManagement() {
 
   const [pickerExam, setPickerExam] = useState<string[]>([]);
   const [modalType, setModalType] = useState<"edit" | "picker" | null>(null);
-  // const filtered = useMemo(() => {
-  //   return activeTab === "All"
-  //     ? exams
-  //     : exams.filter((e) => e.status === activeTab);
-  // }, [activeTab, exams]);
 
-  const openAdd = useCallback(() => {
+  const openAdd = () => {
     setEditingExam({ ...EMPTY_EXAM });
     setModalOpen(true);
-  }, []);
+  };
+  const handleSave = () => {
+    if (!editingExam) return;
+    const data = {
+      ...editingExam,
+      status: "draft",
+    };
+    mutatePostExam(data as ExamRequest);
+    setEditingExam(null);
+  };
+  const handleSaveEdit = () => {
+    if (!editingExamId) return;
+    const data = {
+      ...editingExamId,
+      status: "draft",
+    };
+    mutateEditExam(data as ExamRequestEdit);
+
+    setEditingExamId(null);
+    setExamId("");
+  };
+  const handlePageChange = (page: number) => {
+    setPage(page);
+  };
   const openEdit = useCallback((id: string) => {
     setExamId(id);
     setModalType("edit");
@@ -66,31 +78,6 @@ export function useExamTeacherManagement() {
 
     setModalOpen(true);
   }, []);
-
-  const handleSave = useCallback(() => {
-    if (!editingExam) return;
-
-    const data = {
-      ...editingExam,
-      status: "draft",
-    };
-    mutatePostExam(data as ExamRequest);
-
-    setEditingExam(null);
-  }, [editingExam, mutatePostExam]);
-
-  const handleSaveEdit = useCallback(() => {
-    if (!editingExamId) return;
-    const data = {
-      ...editingExamId,
-      status: "draft",
-    };
-    mutateEditExam(data as ExamRequestEdit);
-
-    setEditingExamId(null);
-    setExamId("");
-  }, [editingExamId, mutateEditExam]);
-
   const handleDelete = useCallback(
     (id: string) => {
       mutateDeleteExam({ id });
@@ -98,7 +85,6 @@ export function useExamTeacherManagement() {
     },
     [mutateDeleteExam],
   );
-
   const handlePickerSave = useCallback(
     (ids: string[]) => {
       if (!pickerExam || !editingExamId) return;
@@ -112,6 +98,7 @@ export function useExamTeacherManagement() {
     },
     [editingExamId, pickerExam, mutateEditExam],
   );
+
   const columns = useMemo(() => {
     return columnsExamTeacher({
       openPicker: openPickerQuestion,
@@ -129,17 +116,6 @@ export function useExamTeacherManagement() {
   ]);
 
   useEffect(() => {
-    if (data?.data) {
-      setExams(data?.data);
-    }
-  }, [data]);
-
-  useEffect(() => {
-    if (dataLesson?.data) {
-      setLessons(dataLesson?.data);
-    }
-  }, [dataLesson]);
-  useEffect(() => {
     if (!dataExamById) return;
     const { data } = dataExamById;
     setEditingExamId({
@@ -153,18 +129,13 @@ export function useExamTeacherManagement() {
         | "completed",
     });
   }, [dataExamById]);
-  useEffect(() => {
-    if (dataQuestion?.data) {
-      setQuestions(dataQuestion?.data);
-    }
-  }, [dataQuestion]);
   return {
-    exams,
+    exams: data?.data || [],
+    isLoadingExam,
     dataExamById,
     examId,
-    lessons,
-    questions,
-    setExams,
+    lessons: dataLesson?.data || [],
+    questions: dataQuestion?.data || [],
     modalOpen,
     setModalOpen,
     editingExam,
@@ -185,6 +156,8 @@ export function useExamTeacherManagement() {
     handleSaveEdit,
     handleDelete,
     handlePickerSave,
+    handlePageChange,
     columns,
+    pagination: data?.meta.pagination,
   };
 }

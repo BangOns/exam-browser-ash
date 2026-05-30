@@ -11,6 +11,7 @@ import useQuestionManagement from "@/components/feature/Teacher/Questions/hooks/
 import QuestionFormModal from "@/components/feature/Teacher/Questions/components/QuestionFormModal";
 import PageHeader from "@/components/shared/PageHeader";
 import QuestionFormModalEdit from "@/components/feature/Teacher/Questions/components/QuestionFormEditModal";
+import Pagination from "@/components/shared/Pagination";
 
 export default function TeacherQuestionsPage() {
   const {
@@ -28,13 +29,14 @@ export default function TeacherQuestionsPage() {
     // setActiveSubject,
     // activeType,
     // setActiveType,
-    filtered,
     openAdd,
     handleSave,
     handleSaveEdit,
     mcCount,
     essayCount,
     columns,
+    pagination,
+    handlePageChange,
   } = useQuestionManagement();
 
   return (
@@ -54,20 +56,18 @@ export default function TeacherQuestionsPage() {
 
       {/* Summary */}
       <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {[
-          { label: "Total Questions", value: questions.length, emoji: "📋" },
-          { label: "Multiple Choice", value: mcCount, emoji: "☑️" },
-          { label: "Essay", value: essayCount, emoji: "✍️" },
-          {
-            label: "Subjects",
-            value: new Set(questions.map((q) => q.lesson.subject)).size,
-            emoji: "📚",
-          },
-        ].map((s, i) => (
-          <InfoCard key={i} {...s} />
-        ))}
+        {questions &&
+          [
+            { label: "Total Questions", value: questions.length, emoji: "📋" },
+            { label: "Multiple Choice", value: mcCount ?? 0, emoji: "☑️" },
+            { label: "Essay", value: essayCount ?? 0, emoji: "✍️" },
+            {
+              label: "Subjects",
+              value: new Set(questions.map((q) => q.lesson.subject)).size,
+              emoji: "📚",
+            },
+          ].map((s, i) => <InfoCard key={i} {...s} />)}
       </section>
-
       {/* Filters */}
       {/* <section className="space-y-3">
         <div className="flex gap-2 flex-wrap">
@@ -104,10 +104,21 @@ export default function TeacherQuestionsPage() {
       <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
         <DataTable
           columns={columns}
-          data={filtered}
+          data={questions}
           className="col-span-full"
           isLoading={isLoadingQuestion}
         />
+        {pagination && (
+          <div className="col-span-full">
+            <Pagination
+              currentPage={pagination.current_page}
+              total={pagination.total}
+              lastPage={pagination.last_page}
+              perPage={pagination.per_page}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        )}
       </section>
 
       {/* Add/Edit Modal */}

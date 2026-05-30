@@ -5,8 +5,10 @@ import {
   QuestionRequestEdit,
 } from "@/types/question";
 
-export async function getQuestion() {
-  const res = await fetchWithAuth<QuestionList[]>("/api/question");
+export async function getQuestion({ page }: { page?: number }) {
+  const res = await fetchWithAuth<QuestionList[]>("/api/question", {
+    params: { page },
+  });
   return res;
 }
 

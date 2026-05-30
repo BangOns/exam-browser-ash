@@ -7,8 +7,8 @@ import PageHeader from "@/components/shared/PageHeader";
 import { useExamTeacherManagement } from "@/components/feature/Teacher/Exams/hooks/useExamManagement";
 import ExamFormModalTeacher from "@/components/feature/Teacher/Exams/components/ExamFormModal";
 // import { statusOptions } from "@/constants/statusOption";
-import { ExamList, ExamRequest, ExamRequestEdit } from "@/types/exam";
 import ExamFormModalTeacherEdit from "@/components/feature/Teacher/Exams/components/ExamFormModalEdit";
+import Pagination from "@/components/shared/Pagination";
 
 export default function TeacherExamsPage() {
   const {
@@ -31,6 +31,9 @@ export default function TeacherExamsPage() {
     editingExamId,
     setEditingExamId,
     handleSave,
+    handlePageChange,
+    pagination,
+    isLoadingExam,
   } = useExamTeacherManagement();
 
   return (
@@ -92,8 +95,20 @@ export default function TeacherExamsPage() {
         <DataTable
           columns={columns}
           className="col-span-full"
-          data={exams as ExamList[]}
+          data={exams}
+          isLoading={isLoadingExam}
         />
+        {pagination && (
+          <div className="col-span-full">
+            <Pagination
+              currentPage={pagination.current_page}
+              lastPage={pagination.last_page}
+              perPage={pagination.per_page}
+              total={pagination.total}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        )}
       </section>
 
       {/* Add Modal */}
@@ -101,7 +116,7 @@ export default function TeacherExamsPage() {
         <ExamFormModalTeacher
           modalOpen={modalOpen}
           setModalOpen={setModalOpen}
-          editingExam={editingExam as ExamRequest}
+          editingExam={editingExam}
           setEditingExam={setEditingExam}
           handleSave={handleSave}
           lessons={lessons}
@@ -111,7 +126,7 @@ export default function TeacherExamsPage() {
         <ExamFormModalTeacherEdit
           modalOpen={modalOpen}
           setModalOpen={setModalOpen}
-          editingExam={editingExamId as ExamRequestEdit}
+          editingExam={editingExamId}
           setEditingExam={setEditingExamId}
           handleSave={handleSaveEdit}
           lessons={lessons}

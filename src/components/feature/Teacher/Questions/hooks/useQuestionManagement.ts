@@ -1,9 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import {
-  QuestionList,
-  QuestionRequest,
-  QuestionRequestEdit,
-} from "@/types/question";
+import { QuestionRequest, QuestionRequestEdit } from "@/types/question";
 // import { initialQuestions as bankQuestions } from "@/data/dummy/questions";
 import { EMPTY_QUESTION } from "@/components/feature/Teacher/Questions/constants";
 import { columnsQuestions } from "../components/QuestionColumns";
@@ -15,7 +11,8 @@ import { useGetQuestionById } from "./useGetQuesionById";
 import { useDeleteQuestion } from "./mutations/useDeleteQuestion";
 
 export default function useQuestionManagement() {
-  const { data, isLoading: isLoadingQuestion } = useGetQuestion();
+  const [page, setPage] = useState(1);
+  const { data, isLoading: isLoadingQuestion } = useGetQuestion({ page });
   const { data: dataLesson } = useGetLesson();
   const { mutateAsync: mutatePostQuestion } = usePostQuestion();
   const { mutateAsync: mutateEditQuestion } = useEditQuestion();
@@ -25,8 +22,6 @@ export default function useQuestionManagement() {
   } = useDeleteQuestion();
   const [questionId, setQuestionId] = useState<string | null>(null);
   const { data: dataQuestionById } = useGetQuestionById(questionId || "");
-  const [questions, setQuestions] = useState<QuestionList[]>(data?.data || []);
-  const [lessons, setLessons] = useState(dataLesson?.data || []);
   const [modalOpen, setModalOpen] = useState(false);
   const [editingQuestion, setEditingQuestion] =
     useState<QuestionRequest | null>(null);
@@ -36,28 +31,10 @@ export default function useQuestionManagement() {
   const [activeType, setActiveType] = useState("All");
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
-  const filtered = useMemo(
-    () =>
-      questions.filter((q) => {
-        if (activeSubject !== "All" && q.lesson.subject.name !== activeSubject)
-          return false;
-        if (activeType !== "All" && q.type !== activeType) return false;
-        return true;
-      }),
-    [questions, activeSubject, activeType],
-  );
-
-  const openAdd = useCallback(() => {
+  const openAdd = () => {
     setEditingQuestion({ ...EMPTY_QUESTION });
     setModalOpen(true);
-  }, []);
-
-  const openEdit = useCallback((id: string) => {
-    setQuestionId(id);
-
-    setModalOpen(true);
-  }, []);
-
+  };
   const handleSave = () => {
     if (!editingQuestion) return;
     const data: QuestionRequest = {
@@ -84,6 +61,13 @@ export default function useQuestionManagement() {
     setModalOpen(false);
     setEditingQuestionId(null);
   };
+  const handlePageChange = (page: number) => {
+    setPage(page);
+  };
+  const openEdit = useCallback((id: string) => {
+    setQuestionId(id);
+    setModalOpen(true);
+  }, []);
   const handleDelete = useCallback(
     (id: string) => {
       if (!id) return;
@@ -93,12 +77,12 @@ export default function useQuestionManagement() {
   );
 
   const mcCount = useMemo(
-    () => questions.filter((q) => q.type === "Multiple Choice").length,
-    [questions],
+    () => data?.data.filter((q) => q.type === "Multiple Choice").length,
+    [data?.data],
   );
   const essayCount = useMemo(
-    () => questions.filter((q) => q.type === "Essay").length,
-    [questions],
+    () => data?.data.filter((q) => q.type === "Essay").length,
+    [data?.data],
   );
   const columns = useMemo(() => {
     return columnsQuestions(
@@ -115,22 +99,10 @@ export default function useQuestionManagement() {
     handleDelete,
     isLoadingDeleteQuestion,
   ]);
-  useEffect(() => {
-    if (data?.data) {
-      setQuestions(data?.data);
-    }
-  }, [data]);
-  useEffect(() => {
-    if (dataLesson?.data) {
-      setLessons(dataLesson?.data);
-    }
-  }, [dataLesson]);
 
   useEffect(() => {
     if (!dataQuestionById) return;
-
     const { data } = dataQuestionById;
-
     setEditingQuestionId({
       id: data.id,
       question: data.question,
@@ -143,13 +115,12 @@ export default function useQuestionManagement() {
     });
   }, [dataQuestionById]);
   return {
-    questions,
+    questions: data?.data || [],
+    lessons: dataLesson?.data || [],
+    pagination: data?.meta.pagination,
     isLoadingQuestion,
     isLoadingDeleteQuestion,
     questionId,
-    setQuestions,
-    lessons,
-    setLessons,
     modalOpen,
     setModalOpen,
     editingQuestion,
@@ -160,10 +131,10 @@ export default function useQuestionManagement() {
     setActiveSubject,
     activeType,
     setActiveType,
-    filtered,
     openAdd,
     handleSave,
     handleSaveEdit,
+    handlePageChange,
     mcCount,
     essayCount,
     columns,
