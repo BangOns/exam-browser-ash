@@ -15,20 +15,10 @@ export async function GET(
   }
 
   try {
-    const { searchParams } = req.nextUrl;
-    const params = new URLSearchParams(
-      Object.entries({
-        page: searchParams.get("page"),
-        limit: searchParams.get("limit"),
-        search: searchParams.get("search"),
-        status: searchParams.get("status"),
-      })
-        .filter(([, v]) => v !== null && v !== "")
-        .map(([k, v]) => [k, String(v)]),
-    );
+    const searchParams = req.nextUrl.searchParams;
 
     const res = await fetch(
-      `${url}/exam-answers/${examId}?${params.toString()}`,
+      `${url}/exam-answers/${examId}?${searchParams.toString()}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

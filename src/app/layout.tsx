@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import AuthInitializer from "@/components/layout/AuthInitializer";
 import ContextProvider from "@/components/layout/ContextProvider";
 import { TanstackProvider } from "@/components/layout/TanstackProvider";
+import { ToastContainer } from "react-toastify";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -43,6 +44,7 @@ export default function RootLayout({
           <ContextProvider>
             <AuthInitializer />
             {children}
+            <ToastContainer />
           </ContextProvider>
         </TanstackProvider>
       </body>

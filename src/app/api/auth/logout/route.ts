@@ -17,7 +17,7 @@ export async function POST() {
       credentials: "include",
     });
     if (!request.ok) {
-      throw new Error("Login gagal");
+      throw new Error("Logout gagal");
     }
     const data = (await request.json()) as ApiResponse<DataUserLogin>;
     const response = NextResponse.json(data);
@@ -27,7 +27,10 @@ export async function POST() {
     response.cookies.delete("role");
 
     return response;
-  } catch (error) {
-    return NextResponse.json({ message: "Login gagal" }, { status: 500 });
+  } catch (error: unknown) {
+    const message =
+      error instanceof Error ? error.message : "Internal Server Error";
+
+    return NextResponse.json({ message }, { status: 500 });
   }
 }

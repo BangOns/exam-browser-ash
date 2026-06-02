@@ -1,13 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Clock } from "lucide-react";
 
-export default function HeaderExamStudent({
-  progress,
-  answeredCount,
-  initialQuestions,
-  handleModalExit,
-  handleModalSubmit,
-}: {
+interface Props {
   examName: string;
   examSubject: string;
   progress: number;
@@ -15,7 +9,18 @@ export default function HeaderExamStudent({
   initialQuestions: number;
   handleModalExit: () => void;
   handleModalSubmit: () => void;
-}) {
+  seconds?: number;
+  minutes?: number;
+}
+export default function HeaderExamStudent({
+  progress,
+  answeredCount,
+  initialQuestions,
+  handleModalExit,
+  handleModalSubmit,
+  seconds,
+  minutes,
+}: Props) {
   return (
     <header className="sticky top-0 z-20 bg-white/95 backdrop-blur-lg border-b border-slate-200 px-6 py-3">
       <div className="flex items-center justify-between max-w-7xl mx-auto">
@@ -37,7 +42,8 @@ export default function HeaderExamStudent({
           <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-sky-50 border border-sky-200">
             <Clock className=" text-sky-500" size={16} />
             <span className="text-sm font-bold text-sky-600 tabular-nums">
-              42:15
+              {String(minutes).padStart(2, "0")}:
+              {String(seconds).padStart(2, "0")}:
             </span>
           </div>
           <button

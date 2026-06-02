@@ -34,6 +34,8 @@ export default function StudentExamPage() {
     handleSubmitExam,
     isPendingExitExam,
     isPendingSubmit,
+    seconds,
+    minutes,
   } = useExamStudentManagement();
 
   return (
@@ -48,6 +50,8 @@ export default function StudentExamPage() {
             progress={progress}
             answeredCount={answeredCount}
             initialQuestions={initialQuestions.length}
+            seconds={seconds}
+            minutes={minutes}
           />
           <section className="flex-1 flex max-w-7xl mx-auto w-full p-6 gap-6">
             {/* Question area */}

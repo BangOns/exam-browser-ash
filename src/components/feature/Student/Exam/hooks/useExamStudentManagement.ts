@@ -4,23 +4,27 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePostExitExam } from "./mutations/usePostExitExam";
 import { usePostSubmiExam } from "./mutations/usePostSubmitExam";
 import { AnswerRequest } from "@/types/answer";
+import { useExamCountdown } from "./useCountDownExam";
 
 export function useExamStudentManagement() {
   const params = useParams<{ id?: string }>();
   const id = params?.id ?? "";
   const STORAGE_KEY = `exam_answers_${id}`;
   const [page, setPage] = useState(1);
+  const router = useRouter();
+
   const { data: dataExam, isLoading: isLoadingQuestions } = useGetExamById({
     examId: id,
     page,
   });
-  const router = useRouter();
-
   const { mutateAsync: exitExam, isPending: isPendingExitExam } =
     usePostExitExam();
   const { mutateAsync: submitExam, isPending: isPendingSubmit } =
     usePostSubmiExam();
-
+  const { minutes, seconds, isExpired, isLoading } = useExamCountdown(
+    dataExam?.data.schedule?.exam_date,
+    dataExam?.data.schedule?.end_time,
+  );
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number | string>>({});
   const [showViolation, setShowViolation] = useState(false);
@@ -113,7 +117,7 @@ export function useExamStudentManagement() {
   const handleSubmitExam = useCallback(() => {
     if (!id) return;
 
-    if (Object.keys(answers).length === 0) {
+    if (Object.keys(answers).length === 0 && !isExpired) {
       setErrorMsg("Jawaban masih kosong");
       return;
     }
@@ -139,7 +143,7 @@ export function useExamStudentManagement() {
         },
       },
     );
-  }, [id, submitExam, router, clearAnswersStorage, answers]);
+  }, [id, submitExam, router, clearAnswersStorage, answers, isExpired]);
   const handleModalClose = useCallback(() => {
     setModalOpen(false);
     setModalProps(null);
@@ -172,6 +176,20 @@ export function useExamStudentManagement() {
       window.removeEventListener("blur", handleBlur);
     };
   }, [router, handleExitExam]);
+  useEffect(() => {
+    const submitExamForce = () => {
+      setViolationMsg(
+        "Exam time has ended. Your answers have been submitted automatically.",
+      );
+      setShowViolation(true);
+      handleSubmitExam();
+    };
+
+    if (isLoading) return;
+    if (!isExpired) return;
+
+    submitExamForce();
+  }, [isExpired, isLoading]);
 
   //  Mendapatkan data keseluruhan soal yang sudah di isi didalam local storage
   useEffect(() => {
@@ -206,5 +224,7 @@ export function useExamStudentManagement() {
     handlePageChange,
     isPendingExitExam,
     isPendingSubmit,
+    minutes,
+    seconds,
   };
 }

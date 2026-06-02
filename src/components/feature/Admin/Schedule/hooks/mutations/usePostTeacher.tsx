@@ -1,6 +1,7 @@
 import { createExamSchedule } from "@/services/schedule.services";
 import { ExamScheduleRequest } from "@/types/exam-schedule";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 export function usePostExamShedule() {
   const queryClient = useQueryClient();
@@ -9,6 +10,7 @@ export function usePostExamShedule() {
     mutationFn: (data: ExamScheduleRequest) => createExamSchedule(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["schedules"] });
+      toast.success("Exam schedule created successfully");
     },
   });
 

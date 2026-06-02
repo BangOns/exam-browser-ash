@@ -1,5 +1,6 @@
 import { deleteExamSchedule } from "@/services/schedule.services";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 export function useDeleteExamSchedule() {
   const queryClient = useQueryClient();
@@ -8,6 +9,7 @@ export function useDeleteExamSchedule() {
     mutationFn: (data: { id: string }) => deleteExamSchedule(data.id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["schedules"] });
+      toast.success("Exam schedule deleted successfully");
     },
   }); // ✅ tutup useMutation dengan });
 

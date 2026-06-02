@@ -10,11 +10,16 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const res = await fetch(`${process.env.API_URL}/teacher`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
+    const searchParams = req.nextUrl.searchParams;
+
+    const res = await fetch(
+      `${process.env.API_URL}/teacher?${searchParams.toString()}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
 
     const data = (await res.json()) as ApiResponse<TeacherList>;
 
