@@ -14,3 +14,10 @@ export interface Pagination {
   per_page: number;
   total: number;
 }
+export interface ApiError {
+  status: number;
+  data: {
+    message: string;
+    status: boolean;
+  };
+}

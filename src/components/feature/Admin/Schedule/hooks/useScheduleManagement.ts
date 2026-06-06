@@ -3,7 +3,7 @@ import { emptySchedule } from "../constant";
 import { ScheduleColumns } from "../components/ScheduleColumns";
 import { useGetExamSchedule } from "./useGetExamSchedule";
 import { useGetExam } from "@/components/feature/Teacher/Exams/hooks/useGetExam";
-import { usePostExamShedule } from "./mutations/usePostTeacher";
+import { usePostExamShedule } from "./mutations/usePostExamSchedule";
 import { useEditExamSchedule } from "./mutations/useEditExamSchedule";
 import { useDeleteExamSchedule } from "./mutations/useDeleteExamSchedule";
 import {
@@ -12,6 +12,7 @@ import {
 } from "@/types/exam-schedule";
 import { useGetExamScheduleById } from "./useGetExamScheduleById";
 import { getDuration } from "@/utils/FormatDate";
+import { toast } from "react-toastify";
 
 export function useScheduleManagement() {
   const [page, setPage] = useState<number>(1);
@@ -70,7 +71,11 @@ export function useScheduleManagement() {
       ) as number,
     };
 
-    mutateEditExamSchedule(data);
+    mutateEditExamSchedule(data, {
+      onError: (error: Error) => {
+        toast.error(error.message || "Terjadi Kesalahan");
+      },
+    });
     setModalOpen(null);
   };
   const handlePageChange = (page: number) => {

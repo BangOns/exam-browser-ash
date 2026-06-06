@@ -37,7 +37,12 @@ export default function ClassModal({
 
   const { mutate: updateClass, isPending: isPendingUpdate } = useUpdateClass();
 
-  const { mutate: deleteClass, isPending: isPendingDelete } = useDeleteClass();
+  const {
+    mutate: deleteClass,
+    isPending: isPendingDelete,
+    isError: isErrorDeleteClass,
+    error: errorDeleteClass,
+  } = useDeleteClass();
 
   const isEditMode = Boolean(classId);
 
@@ -60,7 +65,7 @@ export default function ClassModal({
     resetForm();
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const payload: ClassRequest = {
@@ -121,7 +126,6 @@ export default function ClassModal({
             onChange={(e) => handleChange("department", e.target.value)}
           />
         </section>
-
         <section className="flex gap-2">
           <Button
             type="submit"
@@ -143,7 +147,11 @@ export default function ClassModal({
           )}
         </section>
       </form>
-
+      {isErrorDeleteClass && (
+        <section className="w-full border border-red-500 py-1.5 text-red-500 mt-3 rounded-md bg-red-100 text-center">
+          {errorDeleteClass?.data.message}
+        </section>
+      )}
       <ul className="mt-5 flex flex-col gap-3">
         {classList?.length ? (
           classList.map((item) => (

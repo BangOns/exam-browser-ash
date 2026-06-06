@@ -5,6 +5,7 @@ import { usePostExitExam } from "./mutations/usePostExitExam";
 import { usePostSubmiExam } from "./mutations/usePostSubmitExam";
 import { AnswerRequest } from "@/types/answer";
 import { useExamCountdown } from "./useCountDownExam";
+import { toast } from "react-toastify";
 
 export function useExamStudentManagement() {
   const params = useParams<{ id?: string }>();
@@ -133,7 +134,7 @@ export function useExamStudentManagement() {
       { id, data },
       {
         onError: (err) =>
-          setErrorMsg(err?.data?.message ?? "Terjadi kesalahan"),
+          toast.error(err?.data?.message ?? "Terjadi kesalahan"),
 
         onSuccess: () => {
           setErrorMsg("");
