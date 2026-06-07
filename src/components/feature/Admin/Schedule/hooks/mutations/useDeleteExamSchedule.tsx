@@ -11,6 +11,9 @@ export function useDeleteExamSchedule() {
       queryClient.invalidateQueries({ queryKey: ["schedules"] });
       toast.success("Exam schedule deleted successfully");
     },
+    onError: (response) => {
+      toast.error(response.message || "Gagal menghapus Jadwal Ujian");
+    },
   }); // ✅ tutup useMutation dengan });
 
   return { mutateAsync, mutate };

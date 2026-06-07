@@ -25,9 +25,7 @@ export function ResultColumnsDetail({ openDetail }: Props) {
       key: "exam",
       label: "Exam",
       render: (row: ExamAttemptResource) => (
-        <span className="font-medium text-slate-700">
-          {row.attempts[0].exam}
-        </span>
+        <span className="font-medium text-slate-700">{row.attempts.exam}</span>
       ),
     },
     {
@@ -39,18 +37,18 @@ export function ResultColumnsDetail({ openDetail }: Props) {
             <div
               className="h-full rounded-full"
               style={{
-                width: `${row.attempts[0].total_score}%`,
+                width: `${row.attempts.total_score}%`,
                 background:
-                  row.attempts[0].total_score >= 80
+                  row.attempts.total_score >= 80
                     ? "#22c55e"
-                    : row.attempts[0].total_score >= 60
+                    : row.attempts.total_score >= 60
                       ? "#f59e0b"
                       : "#ef4444",
               }}
             />
           </div>
           <span className="text-sm font-semibold">
-            {row.attempts[0].total_score}
+            {row.attempts.total_score}
           </span>
         </div>
       ),
@@ -62,14 +60,14 @@ export function ResultColumnsDetail({ openDetail }: Props) {
         <section className="flex items-center gap-2">
           <Badge
             variant={
-              row.attempts[0].status.toLowerCase() === "submitted"
+              row.attempts.status.toLowerCase() === "submitted"
                 ? "success"
-                : row.attempts[0].status.toLowerCase() === "pending"
+                : row.attempts.status.toLowerCase() === "pending"
                   ? "pending"
                   : "error"
             }
           >
-            {row.attempts[0].status}
+            {row.attempts.status}
           </Badge>
         </section>
       ),
@@ -80,11 +78,11 @@ export function ResultColumnsDetail({ openDetail }: Props) {
     //   render: (row: ExamAttemptResource) => (
     //     <span
     //       className={`badge ${
-    //         row.attempts[0]..startsWith("A")
+    //         row.attempts..startsWith("A")
     //           ? "badge-success"
-    //           : row.attempts[0].grade.startsWith("B")
+    //           : row.attempts.grade.startsWith("B")
     //             ? "badge-info"
-    //             : row.attempts[0].grade.startsWith("C")
+    //             : row.attempts.grade.startsWith("C")
     //               ? "badge-warning"
     //               : "badge-danger"
     //       }`}
@@ -98,7 +96,7 @@ export function ResultColumnsDetail({ openDetail }: Props) {
       label: "Submit Date",
       render: (row: ExamAttemptResource) => (
         <span className="text-sm text-slate-500 text-center">
-          {row.attempts[0].submitted_at || "-"}
+          {row.attempts.submitted_at || "-"}
         </span>
       ),
     },

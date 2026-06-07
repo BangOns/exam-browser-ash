@@ -55,5 +55,5 @@ export interface ExamAttemptResource {
   nama: string;
   nisn: string;
   kelas: string;
-  attempts: ExamAttempt[];
+  attempts: ExamAttempt;
 }

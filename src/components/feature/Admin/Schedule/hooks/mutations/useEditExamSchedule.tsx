@@ -12,6 +12,9 @@ export function useEditExamSchedule() {
       queryClient.invalidateQueries({ queryKey: ["schedules"] });
       toast.success("Exam schedule edited successfully");
     },
+    onError: (response) => {
+      toast.error(response.message || "Gagal mengubah Jadwal Ujian");
+    },
   });
 
   return { mutateAsync, mutate };

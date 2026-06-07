@@ -171,14 +171,29 @@ export default function QuestionFormModal({
               </label>
               <Input
                 type="number"
-                className="h-10 w-32 px-4 rounded-xl border-slate-200 text-sm focus-visible:ring-2 focus-visible:ring-emerald-500/30 focus-visible:border-emerald-500 transition-all shadow-none"
-                value={editingQuestion.max_points}
-                onChange={(e) =>
-                  setEditingQuestion({
-                    ...editingQuestion,
-                    max_points: parseInt(e.target.value),
-                  })
-                }
+                min={0}
+                max={10}
+                value={editingQuestion.max_points ?? ""}
+                onChange={(e) => {
+                  const value = e.target.value;
+
+                  if (value === "") {
+                    setEditingQuestion({
+                      ...editingQuestion,
+                      max_points: undefined,
+                    });
+                    return;
+                  }
+
+                  const number = Number(value);
+
+                  if (number <= 10) {
+                    setEditingQuestion({
+                      ...editingQuestion,
+                      max_points: number,
+                    });
+                  }
+                }}
               />
             </div>
           </div>

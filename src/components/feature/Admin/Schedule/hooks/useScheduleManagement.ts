@@ -71,11 +71,7 @@ export function useScheduleManagement() {
       ) as number,
     };
 
-    mutateEditExamSchedule(data, {
-      onError: (error: Error) => {
-        toast.error(error.message || "Terjadi Kesalahan");
-      },
-    });
+    mutateEditExamSchedule(data);
     setModalOpen(null);
   };
   const handlePageChange = (page: number) => {

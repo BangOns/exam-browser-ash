@@ -12,6 +12,9 @@ export function usePostExamShedule() {
       queryClient.invalidateQueries({ queryKey: ["schedules"] });
       toast.success("Exam schedule created successfully");
     },
+    onError: (response) => {
+      toast.error(response.message || "Gagal menambah Jadwal Ujian");
+    },
   });
 
   return { mutateAsync, mutate };

@@ -94,16 +94,13 @@ export default function ClassModal({
   };
 
   const handleEdit = (item: ClassList) => {
-    const [level = "", department = ""] = item.name.split(" ");
-
     setForm({
-      level,
-      department,
+      level: item.level,
+      department: item.department,
     });
 
     setClassId(item.id);
   };
-
   const handleDelete = (id: string) => {
     deleteClass({ id });
   };

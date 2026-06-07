@@ -66,7 +66,7 @@ export default function FormLogin() {
       <Button
         type="submit"
         disabled={isLoading}
-        className="w-full h-[52px] bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl shadow-lg shadow-indigo-200 transition-all duration-300 text-base"
+        className="w-full h-13 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl shadow-lg shadow-indigo-200 transition-all duration-300 text-base"
       >
         Sign In
       </Button>

@@ -21,7 +21,6 @@ export default function Login() {
           />
 
           <FormLogin />
-          <FooterLogin description="Mock Emails: admin@school.id, teacher@school.id, student@school.id" />
         </div>
       </section>
     </main>
