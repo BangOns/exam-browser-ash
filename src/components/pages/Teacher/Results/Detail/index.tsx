@@ -9,6 +9,7 @@ import { Download } from "lucide-react";
 import PageHeader from "@/components/shared/PageHeader";
 import { useResultByIdManagement } from "@/components/feature/Teacher/ResultDetail/hooks/useResultByIdManagement";
 import { SubmissionAnswer } from "@/types/answer";
+import { Button } from "@/components/ui/button";
 
 export default function TeacherResultsByIdPage() {
   const {
@@ -40,10 +41,13 @@ export default function TeacherResultsByIdPage() {
           title="Exam Results Details"
           description="View and analyze student performance"
         />
-        <button className="px-5 py-2.5 rounded-xl bg-emerald-500 text-white text-sm font-semibold hover:bg-emerald-600 transition-colors shadow-sm flex items-center gap-2">
-          <Download size={20} onClick={() => exportExcel()} />
+        <Button
+          onClick={exportExcel}
+          className="px-5 py-2.5 rounded-xl bg-emerald-500 text-white text-sm font-semibold hover:bg-emerald-600 transition-colors shadow-sm flex items-center gap-2"
+        >
+          <Download size={20} />
           Export
-        </button>
+        </Button>
       </div>
 
       {/* Summary stats */}

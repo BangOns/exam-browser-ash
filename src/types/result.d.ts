@@ -39,6 +39,13 @@ export type ExamDetail = ResultDetail & {
   totalTime: string;
   questions: QuestionResult[];
 };
+export interface ExamAttemptResource {
+  id: string;
+  nama: string;
+  nisn: string;
+  kelas: string;
+  attempts: ExamAttempt;
+}
 export interface ExamAttempt {
   id: string;
   exam: string;
@@ -48,12 +55,4 @@ export interface ExamAttempt {
   started_at: string | null;
   submitted_at: string | null;
   last_activity_at: string | null;
-}
-
-export interface ExamAttemptResource {
-  id: string;
-  nama: string;
-  nisn: string;
-  kelas: string;
-  attempts: ExamAttempt;
 }

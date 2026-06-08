@@ -1,4 +1,4 @@
-import { ExamSchedule, ExamScheduleRequest } from "@/types/exam-schedule";
+import { ExamSchedule } from "@/types/exam-schedule";
 
 export function ScheduleColumns({
   openEdit,
@@ -20,6 +20,7 @@ export function ScheduleColumns({
         <div>
           <p className="font-medium text-slate-700">{row.exam.name || "-"}</p>
           <p className="text-xs text-slate-400">
+            {row.exam.lesson.class.name || "-"} -
             {row.exam.lesson.subject.name || "-"}
           </p>
         </div>

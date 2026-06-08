@@ -1,13 +1,13 @@
 import { ExamRequest, ExamRequestEdit } from "@/types/exam";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { columnsExamTeacher } from "../components/ExamColumns";
-import { useGetExam } from "./useGetExam";
 import { useGetLesson } from "@/hooks/lesson/useGetLesson";
 import { usePostExam } from "./mutation/usePostExam";
 import { useEditExam } from "./mutation/useEditExam";
 import { useDeleteExam } from "./mutation/useDeleteExam";
 import { useGetExamById } from "./uesGetExamById";
 import { useGetQuestion } from "../../Questions/hooks/useGetQuestion";
+import { useGetExamByIdTeacher } from "@/hooks/exam/get-exam-teacher-id";
 const EMPTY_EXAM: ExamRequest = {
   name: "",
   lesson_id: "",
@@ -15,12 +15,10 @@ const EMPTY_EXAM: ExamRequest = {
 };
 export function useExamTeacherManagement() {
   const [page, setPage] = useState<number>(1);
-  const { data, isLoading: isLoadingExam } = useGetExam({ page });
+  const { data, isLoading: isLoadingExam } = useGetExamByIdTeacher({ page });
   const { data: dataLesson } = useGetLesson();
   const { data: dataQuestion } = useGetQuestion();
-  // const teacherSubject = useMemo(() => {
-  //   return getCurrentUser()?.subject ?? "Mathematics";
-  // }, []);
+
   const { mutateAsync: mutatePostExam } = usePostExam();
   const { mutateAsync: mutateEditExam } = useEditExam();
   const { mutateAsync: mutateDeleteExam } = useDeleteExam();

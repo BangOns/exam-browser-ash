@@ -1,12 +1,15 @@
-import { useGetExam } from "@/components/feature/Teacher/Exams/hooks/useGetExam";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { usePostEnterExam } from "./mutations/usePostEnterExam";
 import { ExamTokenRequest } from "@/types/exam-token";
+import { useGetExamByIdStudent } from "@/hooks/exam/get-exam-student-id";
 
 export function useDashboardStudentManagement() {
   const [page, setPage] = useState(1);
-  const { data: dataExam } = useGetExam({ status: "active,scheduled", page });
+  const { data: dataExam } = useGetExamByIdStudent({
+    status: "active,scheduled",
+    page,
+  });
   const { mutateAsync: enterExam, isPending: isPendingEnterExam } =
     usePostEnterExam();
 

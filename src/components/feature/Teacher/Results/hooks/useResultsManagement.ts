@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { StudentSubmission, AnswerItem } from "@/types/submission";
 import { resultsData, submissionsData } from "@/data/dummy/result";
 import { ResultRow } from "@/types/result";
-import { useGetExam } from "../../Exams/hooks/useGetExam";
+import { useGetExam } from "../../Exams/hooks/useGetExamByIdTeacher";
 import { ResultExamColumns } from "../components/ResultExamColumns";
 
 export function useResultsManagement() {

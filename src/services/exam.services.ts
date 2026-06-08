@@ -22,6 +22,48 @@ export async function getExam({
   });
   return res;
 }
+export async function getExamByIdTeacher({
+  page,
+  limit,
+  search,
+  status,
+}: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  status?: string;
+}) {
+  const res = await fetchWithAuth<ExamList[]>(`/api/exam-teacher`, {
+    params: {
+      page,
+      limit,
+      search,
+      status,
+    },
+  });
+  return res;
+}
+export async function getExamByIdStudent({
+  page,
+  limit,
+  search,
+  status,
+}: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  status?: string;
+}) {
+  const res = await fetchWithAuth<ExamList[]>(`/api/exam-student`, {
+    params: {
+      page,
+      limit,
+      search,
+      status,
+    },
+  });
+  return res;
+}
 
 export async function createExam(data: ExamRequest) {
   const res = await fetchWithAuth("/api/exam", {

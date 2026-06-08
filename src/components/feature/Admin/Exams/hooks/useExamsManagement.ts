@@ -1,7 +1,7 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { ExamList, ExamRow } from "@/types/exam";
 import { columnsTableExams } from "@/components/feature/Admin/Exams/components/ExamColumns";
-import { useGetExam } from "@/components/feature/Teacher/Exams/hooks/useGetExam";
+import { useGetExam } from "@/components/feature/Teacher/Exams/hooks/useGetExamByIdTeacher";
 import { useGenerateToken } from "./mutations/useGenerateToken";
 import { useDeleteExam } from "@/components/feature/Teacher/Exams/hooks/mutation/useDeleteExam";
 export function useExamsManagement() {

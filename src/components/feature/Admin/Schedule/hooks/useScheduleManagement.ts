@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { emptySchedule } from "../constant";
 import { ScheduleColumns } from "../components/ScheduleColumns";
 import { useGetExamSchedule } from "./useGetExamSchedule";
-import { useGetExam } from "@/components/feature/Teacher/Exams/hooks/useGetExam";
 import { usePostExamShedule } from "./mutations/usePostExamSchedule";
 import { useEditExamSchedule } from "./mutations/useEditExamSchedule";
 import { useDeleteExamSchedule } from "./mutations/useDeleteExamSchedule";
@@ -12,7 +11,7 @@ import {
 } from "@/types/exam-schedule";
 import { useGetExamScheduleById } from "./useGetExamScheduleById";
 import { getDuration } from "@/utils/FormatDate";
-import { toast } from "react-toastify";
+import { useGetExam } from "@/hooks/exam/get-exam";
 
 export function useScheduleManagement() {
   const [page, setPage] = useState<number>(1);
