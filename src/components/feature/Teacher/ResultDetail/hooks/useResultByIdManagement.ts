@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { ExamAttemptResource } from "@/types/result";
 import { useGetResultExamById } from "./useGetResultExamById";
 import { ResultColumnsDetail } from "../components/ResultColumnsDetail";
-import { AnswerRequest } from "@/types/answer";
+import { AnswerRequest, ScoreRequest } from "@/types/answer";
 import { usePostEditExam } from "./mutations/useEditAnswerExam";
 import exportExamResultsToExcel from "../utils/exportToExcel";
 
@@ -13,9 +13,8 @@ export function useResultByIdManagement() {
 
   const id = params?.id ?? "";
   const { data: detailResult } = useGetExamAttemptsById(id || "");
-
-  const [idExam, setIdExam] = useState<string>("");
-  const { data: resultExamById } = useGetResultExamById({ id: idExam });
+  const [attemptId, setAttemptId] = useState<string>("");
+  const { data: resultExamById } = useGetResultExamById({ id: attemptId });
   const [result, setResult] = useState<ExamAttemptResource[]>([]);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [essayScores, setEssayScores] = useState<Record<string, number>>({});
@@ -23,32 +22,36 @@ export function useResultByIdManagement() {
     usePostEditExam();
   const openDetail = (id: string) => {
     setIsOpenModal(true);
-    setIdExam(id);
+    setAttemptId(id);
   };
   const closeDetail = () => {
     setIsOpenModal(false);
     setEssayScores({});
-    setIdExam("");
+    setAttemptId("");
   };
+
   const exportExcel = useCallback(() => {
     if (!result || result.length === 0) return;
     exportExamResultsToExcel(result);
   }, [result]);
+
   const addEssayScore = useCallback((questionId: string, points: number) => {
     setEssayScores((prev) => ({ ...prev, [questionId]: points }));
   }, []);
+
   const saveExamEssayScores = useCallback(() => {
-    const data: AnswerRequest = {
+    const data: ScoreRequest = {
+      attempt_id: attemptId,
       answers: Object.entries(essayScores).map(([question_id, answer]) => ({
         question_id,
-        answer: String(answer),
+        score: Number(answer),
       })),
     };
     const idStudent = resultExamById?.data.find((item) => item.student.id)
       ?.student.id;
     editExam(
       {
-        id: id,
+        id: attemptId,
         studentId: idStudent ?? "",
         data,
       },
@@ -58,7 +61,7 @@ export function useResultByIdManagement() {
         },
       },
     );
-  }, [essayScores, editExam, id, resultExamById]);
+  }, [essayScores, editExam, attemptId, resultExamById]);
 
   const columns = useMemo(() => {
     return ResultColumnsDetail({

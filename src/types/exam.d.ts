@@ -30,12 +30,16 @@ export type ExamList = {
   status: string | "active" | "scheduled" | "draft" | "completed";
   questions: QuestionList[];
   token: ExamToken;
+  pg_weight: number;
+  essay_weight: number;
 };
 export type ExamRequest = {
   name: string;
   lesson_id: string;
   status: "active" | "scheduled" | "draft" | "completed";
   questions?: string[];
+  pg_weight: number; // ✅ tambah
+  essay_weight: number; // ✅ tambah
 };
 export type ExamRequestEdit = {
   id: string;
@@ -43,4 +47,6 @@ export type ExamRequestEdit = {
   lesson_id: string;
   status: "active" | "scheduled" | "draft" | "completed";
   questions?: string[];
+  pg_weight: number; // ✅ tambah
+  essay_weight: number; // ✅ tambah
 };

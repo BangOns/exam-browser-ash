@@ -20,6 +20,31 @@ export default function ExamFormModalTeacherEdit({
   handleSave: () => void;
   lessons: LessonList[];
 }) {
+  const totalWeight =
+    (editingExam?.pg_weight ?? 0) + (editingExam?.essay_weight ?? 0);
+  const isWeightValid = totalWeight === 100;
+
+  const handlePgWeightChange = (value: number) => {
+    const pg = Math.min(100, Math.max(0, value));
+    setEditingExam({
+      ...editingExam,
+      pg_weight: pg,
+      essay_weight: 100 - pg,
+    });
+  };
+
+  const handleEssayWeightChange = (value: number) => {
+    const essay = Math.min(100, Math.max(0, value));
+    setEditingExam({
+      ...editingExam,
+      essay_weight: essay,
+      pg_weight: 100 - essay,
+    });
+  };
+
+  const isFormValid =
+    editingExam?.name.trim() && editingExam?.lesson_id && isWeightValid;
+
   return (
     <Modal
       isOpen={modalOpen}
@@ -72,7 +97,59 @@ export default function ExamFormModalTeacherEdit({
             ))}
           </select>
         </section>
+        {/* Bobot Soal */}
+        <div>
+          <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+            Bobot Soal
+          </label>
+          <div className="grid grid-cols-2 gap-3">
+            {/* PG Weight */}
+            <div className="p-3 rounded-xl border border-slate-200 bg-slate-50">
+              <label className="block text-xs font-medium text-slate-500 mb-1">
+                Pilihan Ganda (%)
+              </label>
+              <Input
+                type="text"
+                className="h-9 text-sm text-center font-semibold"
+                value={editingExam?.pg_weight ?? 0}
+                onChange={(e) => {
+                  const val = parseInt(e.target.value) || 0;
+                  handlePgWeightChange(val);
+                }}
+              />
+            </div>
 
+            {/* Essay Weight */}
+            <div className="p-3 rounded-xl border border-slate-200 bg-slate-50">
+              <label className="block text-xs font-medium text-slate-500 mb-1">
+                Essay (%)
+              </label>
+              <Input
+                type="text"
+                className="h-9 text-sm text-center font-semibold"
+                value={editingExam?.essay_weight ?? 0}
+                onChange={(e) => {
+                  const val = parseInt(e.target.value) || 0;
+                  handleEssayWeightChange(val);
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Total indicator */}
+          <div
+            className={`mt-2 px-3 py-2 rounded-lg text-xs font-medium flex justify-between ${
+              isWeightValid
+                ? "bg-emerald-50 text-emerald-600 border border-emerald-100"
+                : "bg-red-50 text-red-500 border border-red-100"
+            }`}
+          >
+            <span>Total Bobot</span>
+            <span>
+              {totalWeight}% {isWeightValid ? "✅" : "— harus 100%"}
+            </span>
+          </div>
+        </div>
         {/* Question Count */}
         <div className="px-4 py-3 rounded-xl bg-emerald-50 border border-emerald-100 text-sm text-emerald-700">
           <span className="font-semibold">
@@ -97,7 +174,7 @@ export default function ExamFormModalTeacherEdit({
 
           <Button
             onClick={handleSave}
-            disabled={!editingExam?.name?.trim()}
+            disabled={!editingExam?.name?.trim() || !isFormValid}
             className="px-5 py-2.5 h-10 rounded-xl bg-emerald-500 text-white text-sm font-semibold hover:bg-emerald-600 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Edit Exam

@@ -1,5 +1,5 @@
 import { fetchWithAuth } from "@/lib/fetcher";
-import { AnswerRequest } from "@/types/answer";
+import { AnswerRequest, ScoreRequest } from "@/types/answer";
 import { ExamTokenRequest } from "@/types/exam-token";
 
 export async function generateToken(id: string) {
@@ -44,7 +44,7 @@ export async function SubmitAnswersExam(id: string, answers: AnswerRequest) {
 export async function UpdateAnswersExam(
   id: string,
   studentId: string,
-  answers: AnswerRequest,
+  answers: ScoreRequest,
 ) {
   const res = await fetchWithAuth(
     `/api/exam-attempts/${id}/edit?student_id=${studentId}`,

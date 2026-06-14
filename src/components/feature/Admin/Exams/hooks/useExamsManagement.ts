@@ -1,9 +1,9 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { ExamList, ExamRow } from "@/types/exam";
 import { columnsTableExams } from "@/components/feature/Admin/Exams/components/ExamColumns";
-import { useGetExam } from "@/components/feature/Teacher/Exams/hooks/useGetExamByIdTeacher";
 import { useGenerateToken } from "./mutations/useGenerateToken";
 import { useDeleteExam } from "@/components/feature/Teacher/Exams/hooks/mutation/useDeleteExam";
+import { useGetExam } from "@/hooks/exam/get-exam";
 export function useExamsManagement() {
   const [page, setPage] = useState(1);
   const { data } = useGetExam({ status: "active", page });

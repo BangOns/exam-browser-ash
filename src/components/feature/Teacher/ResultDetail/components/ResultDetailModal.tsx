@@ -31,8 +31,11 @@ export default function ResultDetailModal({
     hasEssay &&
     submission
       ?.filter((a: SubmissionAnswer) => a.question.type === "Essay")
-      .every((a: SubmissionAnswer) => essayScores[a.question.id] !== undefined);
-
+      .every(
+        (a: SubmissionAnswer) =>
+          essayScores[a.question.id] !== undefined || // ✅ guru baru input
+          (a.score !== null && a.score !== undefined), // ✅ sudah pernah dinilai
+      );
   return (
     <Modal
       isOpen={isOpen}
@@ -127,7 +130,8 @@ export default function ResultDetailModal({
                   <div className="flex items-center gap-3">
                     <input
                       type="number"
-                      max={answerItem.question.max_points}
+                      min={0}
+                      max={100}
                       value={
                         essayScores[answerItem.question.id] !== undefined
                           ? essayScores[answerItem.question.id]
@@ -135,32 +139,24 @@ export default function ResultDetailModal({
                       }
                       onChange={(e) => {
                         const value = e.target.value;
-
-                        // Allow empty string so user can clear and retype
                         if (value === "") {
                           onSetEssayScore(answerItem.question.id, "");
                           return;
                         }
-
                         const numericValue = Number(value);
-
-                        // Ignore invalid or out-of-range input
                         if (
                           isNaN(numericValue) ||
-                          numericValue > answerItem.question.max_points
+                          numericValue > 100 ||
+                          numericValue < 0
                         ) {
                           return;
                         }
-
                         onSetEssayScore(answerItem.question.id, numericValue);
                       }}
                       placeholder="0"
                       className="w-24 rounded-lg border px-3 py-2"
                     />
-
-                    <span className="text-sm text-slate-500">
-                      / {answerItem.question.max_points}
-                    </span>
+                    <span className="text-sm text-slate-500">/ 100</span>
                   </div>
                 </div>
               )}

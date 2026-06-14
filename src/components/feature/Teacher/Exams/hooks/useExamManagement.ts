@@ -12,6 +12,8 @@ const EMPTY_EXAM: ExamRequest = {
   name: "",
   lesson_id: "",
   status: "draft",
+  essay_weight: 0,
+  pg_weight: 0,
 };
 export function useExamTeacherManagement() {
   const [page, setPage] = useState<number>(1);
@@ -53,11 +55,11 @@ export function useExamTeacherManagement() {
   };
   const handleSaveEdit = () => {
     if (!editingExamId) return;
-    const data = {
+    const data: ExamRequestEdit = {
       ...editingExamId,
       status: "draft",
     };
-    mutateEditExam(data as ExamRequestEdit);
+    mutateEditExam(data);
 
     setEditingExamId(null);
     setExamId("");
@@ -86,7 +88,6 @@ export function useExamTeacherManagement() {
   const handlePickerSave = useCallback(
     (ids: string[]) => {
       if (!pickerExam || !editingExamId) return;
-
       mutateEditExam({
         ...editingExamId,
         questions: ids,
@@ -125,6 +126,8 @@ export function useExamTeacherManagement() {
         | "scheduled"
         | "draft"
         | "completed",
+      essay_weight: data.essay_weight,
+      pg_weight: data.pg_weight,
     });
   }, [dataExamById]);
   return {

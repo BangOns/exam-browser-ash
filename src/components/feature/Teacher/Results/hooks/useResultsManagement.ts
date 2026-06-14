@@ -2,12 +2,15 @@ import { useMemo, useState } from "react";
 import { StudentSubmission, AnswerItem } from "@/types/submission";
 import { resultsData, submissionsData } from "@/data/dummy/result";
 import { ResultRow } from "@/types/result";
-import { useGetExam } from "../../Exams/hooks/useGetExamByIdTeacher";
 import { ResultExamColumns } from "../components/ResultExamColumns";
+import { useGetExamByIdTeacher } from "@/hooks/exam/get-exam-teacher-id";
 
 export function useResultsManagement() {
   const [page, setPage] = useState(1);
-  const { data, isLoading: isLoadingExam } = useGetExam({ page });
+  const { data, isLoading: isLoadingExam } = useGetExamByIdTeacher({
+    page,
+    status: "completed",
+  });
 
   const [selectedSubmission, selectedSubmissionSet] =
     useState<StudentSubmission | null>(null);

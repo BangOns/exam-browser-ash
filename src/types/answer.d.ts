@@ -34,8 +34,16 @@ export interface Question {
 export interface AnswerRequest {
   answers: AnswerProps[];
 }
+export interface ScoreRequest {
+  attempt_id: string;
+  answers: ScoreProps[];
+}
 
 interface AnswerProps {
   question_id: string;
   answer: string | number;
+}
+interface ScoreProps {
+  question_id: string;
+  score: number;
 }
