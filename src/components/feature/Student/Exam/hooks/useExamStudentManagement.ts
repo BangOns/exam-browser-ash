@@ -177,6 +177,7 @@ export function useExamStudentManagement() {
       window.removeEventListener("blur", handleBlur);
     };
   }, [router, handleExitExam]);
+
   useEffect(() => {
     const submitExamForce = () => {
       setViolationMsg(

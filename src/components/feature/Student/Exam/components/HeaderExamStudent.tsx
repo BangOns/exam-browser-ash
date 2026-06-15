@@ -31,10 +31,10 @@ export default function HeaderExamStudent({
           >
             <ArrowLeft />
           </Button>
-          <div>
+          {/*<div>
             <h1 className="text-base font-bold text-slate-800">Quiz Physics</h1>
             <p className="text-xs text-slate-400">20 Questions • 60 minutes</p>
-          </div>
+          </div>*/}
         </div>
 
         {/* Timer */}
@@ -43,7 +43,7 @@ export default function HeaderExamStudent({
             <Clock className=" text-sky-500" size={16} />
             <span className="text-sm font-bold text-sky-600 tabular-nums">
               {String(minutes).padStart(2, "0")}:
-              {String(seconds).padStart(2, "0")}:
+              {String(seconds).padStart(2, "0")}
             </span>
           </div>
           <button
